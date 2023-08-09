@@ -4,11 +4,14 @@ import { product } from "@/utils/product";
 import { Rating } from "@mui/material";
 import { productRating } from "./ProductCard";
 import { formatUSDWithComma } from "@/utils/formatter";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
+import { MdCheckCircle } from "react-icons/md";
 import SetColors from "./SetColors";
 import SetQuantity from "./SetQuantity";
 import Button from "./Button";
 import ProductImage from "./ProductImage";
+import { useCart } from "@/hooks/useCart";
+import { useRouter } from "next/navigation";
 
 interface ProductDetailsProps {
   product: any;
@@ -39,7 +42,11 @@ const productDetails = "grid grid-cols-1 md:grid-cols-2 gap-12";
 const productShowRating =
   product.reviews.reduce((acc: number, item: any) => item.rating + acc, 0) /
   product.reviews.length;
+
 const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
+  const { handleAddProductToType, cartProducts } = useCart(); //handles add to cart from CartContextProvider
+  const [isProductInCart, setIsProductInCart] = useState(false);
+  console.log(cartProducts);
   const [expanded, setExpanded] = useState(false);
   const [cartProduct, setCartProduct] = useState<CartProductsType>({
     id: product.id,
@@ -48,9 +55,24 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
     category: product.category,
     brand: product.brand,
     selectedImg: { ...product.images[0] },
-    quantity: 2,
+    quantity: 1,
     price: product.price,
   });
+
+  const router = useRouter();
+
+  useEffect(() => {
+    setIsProductInCart(false);
+
+    if (cartProducts) {
+      const existingIndex = cartProducts.findIndex(
+        (item) => item.id === product.id
+      );
+      if (existingIndex > -1) {
+        setIsProductInCart(true);
+      }
+    }
+  }, [cartProducts]);
 
   const handleColorSelect = useCallback(
     (value: SelectedImgType) => {
@@ -81,10 +103,11 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
 
   return (
     <div className={productDetails}>
-      <ProductImage 
-       cartProduct={cartProduct} 
-       product={product}
-       handleColorSelect={handleColorSelect}/>
+      <ProductImage
+        cartProduct={cartProduct}
+        product={product}
+        handleColorSelect={handleColorSelect}
+      />
       <div className="flex flex-col gap-1 text-sm">
         <span className="text-2xl font-medium text-stone-800">
           {product.name}
@@ -98,7 +121,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
             <span className="bg-green-300 px-1">Save 30%</span>
           </span>
           <span>
-          <div className="flex justify-between space-x-2 items-center sm:flex-row-reverse md:flex-row">
+            <div className="flex justify-between space-x-2 items-center sm:flex-row-reverse md:flex-row">
               <Rating
                 sx={{ fontSize: "1rem" }}
                 value={productShowRating}
@@ -110,7 +133,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
                   {product.reviews.length}
                 </strong>
               </span>
-          </div>
+            </div>
           </span>
         </span>
         <Horizontal />
@@ -124,7 +147,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
           </button>
         </div>
         <Horizontal />
-        <div className="flex space-x-10">
+        <div className="flex space-x-10 mb-6">
           <span className={colorCategories}>
             Category | <span className="text-black">{product.category}</span>
           </span>
@@ -133,34 +156,57 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
           </span>
           <span
             className={`
-              ${product.inStock
-                ? "text-green-400 font-semibold"
-                : "text-rose-400 font-semibold"}`
-            }
+              ${
+                product.inStock
+                  ? "text-green-400 font-semibold"
+                  : "text-rose-400 font-semibold"
+              }`}
           >
             <span className={colorCategories}>Status |</span>{" "}
             {product.inStock ? "In stock" : "Out of stock"}
           </span>
         </div>
-        <div>
-          <SetColors
-            cartProduct={cartProduct}
-            images={product.images}
-            handleColorSelect={handleColorSelect}
-          />
-        </div>
-        <div>
-          <SetQuantity
-            cartProduct={cartProduct}
-            handleQtyIncrease={handleQtyIncrease}
-            handleQtyDecrease={handleQtyDecrease}
-          />
-        </div>
-        <div className="md:max-w-[200px] sm:w-full">
-          <Button 
-          label="Add to cart"
-          onClick={() => {}} />
-        </div>
+
+        {isProductInCart ? (
+          <>
+            <p className="flex items-center mb-2 gap-1 text-stone-500">
+              <MdCheckCircle size={20} className="text-sky-400" />
+              <span>Product added to your cart</span>
+            </p>
+            <div>
+              <button>
+                <Button
+                  label="View Cart"
+                  outline
+                  onClick={() => router.push("/cart")}
+                />
+              </button>
+            </div>
+          </>
+        ) : (
+          <>
+            <div>
+              <SetColors
+                cartProduct={cartProduct}
+                images={product.images}
+                handleColorSelect={handleColorSelect}
+              />
+            </div>
+            <div>
+              <SetQuantity
+                cartProduct={cartProduct}
+                handleQtyIncrease={handleQtyIncrease}
+                handleQtyDecrease={handleQtyDecrease}
+              />
+            </div>
+            <div className="md:max-w-[200px] sm:w-full">
+              <Button
+                label="Add to cart"
+                onClick={() => handleAddProductToType(cartProduct)}
+              />
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

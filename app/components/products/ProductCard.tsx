@@ -3,6 +3,7 @@ import Image from "next/image";
 import { formatter, formatUSDWithComma } from "@/utils/formatter";
 import { Rating } from "@mui/material";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 interface ProductCardProps {
   data: any;
@@ -16,6 +17,19 @@ const productCotainer =
   "col-span-1 cursor-pointer border-[1px] shadow-lg bg-white rounded-lg";
 
 const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
+  const [windowWidth, setWindowWidth] = useState<number>(0);
+
+  useEffect(() => {
+    const updateWindowWidth = () => {
+      setWindowWidth(window.innerWidth);
+    };
+    
+    window.addEventListener('resize', updateWindowWidth);
+    updateWindowWidth();
+    return () => {
+      window.removeEventListener('resize', updateWindowWidth);
+    };
+  }, []);
   const productShowRating =
     data.reviews.reduce((acc: number, item: any) => item.rating + acc, 0) /
     data.reviews.length;
@@ -41,7 +55,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
         <div className="flex justify-between mx-2 mt-1 text-xs">
           <span>{formatUSDWithComma(data.price)}</span>
           <span className="bg-green-300 px-1">
-            {window.innerWidth < 640 ? "+30%" : "Save 30%"}
+            {windowWidth < 640 ? "+30%" : "Save 30%"}
           </span>
         </div>
         <div className="flex justify-between mx-2 my-2 flex-col md:flex-row text-center ">

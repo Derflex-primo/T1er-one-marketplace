@@ -22,16 +22,16 @@ const ListRating: React.FC<ListRatingProps> = ({ product }) => {
   };
 
   return (
-    <div>
+    <div className="max-w-[650px]">
       <Heading title="Product reviews" />
-      <div className="mt-8 max-h-[400px] overflow-y-auto scrollbar-thin scrollbar-thumb-black scrollbar-track-transparent">
+      <div className="mt-8  max-h-[400px] overflow-y-auto scrollbar-thin scrollbar-thumb-black scrollbar-track-transparent">
         {product.reviews &&
           product.reviews.map((review: any, index: number) => {
             const expanded = expandedStates[index];
             const hasLongComment = review.comment.length > 180;
             return (
-              <div key={review.id} className="max-w-[50%]">
-                <div className="max-w-[300px] flex gap-2 items-center">
+              <div key={review.id} className="max-w-[95%]">
+                <div className=" flex gap-2 items-center">
                   <Avatar src={review?.user.image} />
                   <div className="">{review?.user.name}</div>
                   <div className="font-thin text-xs text-stone-400">
