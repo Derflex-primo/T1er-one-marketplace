@@ -4,6 +4,7 @@ import { Roboto } from "next/font/google";
 import NavBar from "./components/nav/NavBar";
 import Footer from "./components/footer/Footer";
 import CartProvider from "@/providers/CartProvider";
+import { Toaster } from "react-hot-toast";
 
 const roboto = Roboto({ subsets: ["latin"], weight: ["400", "700", "900"] });
 
@@ -20,6 +21,26 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={roboto.className}>
+        <Toaster
+          toastOptions={{
+            success: {
+              style: {
+                background: "rgb(68 64 60)",
+                color: "#fff",
+              },
+              iconTheme: {
+                primary: "rgb(14 165 233)",
+                secondary: "white",
+              },
+            },
+            error: {
+              style: {
+                background: "rgb(68 64 60)",
+                color: "#fff"
+              },
+            },
+          }}
+        />
         <CartProvider>
           <div className="flex flex-col min-h-screen">
             <NavBar />

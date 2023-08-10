@@ -1,7 +1,9 @@
+"use client"
 import Link from "next/link";
 import Image from "next/image";
 import { Michroma } from "next/font/google";
 import Container from "../Container";
+import PiShoppingBagOpenThin from "./CartCount";
 
 const michroma = Michroma({subsets: ["latin"], weight: ["400"]})
 
@@ -30,12 +32,7 @@ const NavBar = () => {
             <Link href="/" className={`${michroma.className} text-lg font-semibold`}>T1er One</Link>
             <div className="hidden md:block">Search</div>
             <div className="flex items-center gap-8 md:gap-12">
-                <Image 
-                 src={cartLogo} 
-                 height={30} 
-                 width={30} 
-                 alt="Cart icon" />
-
+                <PiShoppingBagOpenThin />
                 <Image
                  src={userLogo}
                  width={30}

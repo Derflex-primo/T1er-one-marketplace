@@ -1,6 +1,5 @@
 "use client";
 
-import { product } from "@/utils/product";
 import { Rating } from "@mui/material";
 import { productRating } from "./ProductCard";
 import { formatUSDWithComma } from "@/utils/formatter";
@@ -39,9 +38,6 @@ const Horizontal = () => {
 };
 export const colorCategories = "font-medium text-stone-600";
 const productDetails = "grid grid-cols-1 md:grid-cols-2 gap-12";
-const productShowRating =
-  product.reviews.reduce((acc: number, item: any) => item.rating + acc, 0) /
-  product.reviews.length;
 
 const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
   const { handleAddProductToType, cartProducts } = useCart(); //handles add to cart from CartContextProvider
@@ -122,11 +118,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
           </span>
           <span>
             <div className="flex justify-between space-x-2 items-center sm:flex-row-reverse md:flex-row">
-              <Rating
-                sx={{ fontSize: "1rem" }}
-                value={productShowRating}
-                readOnly
-              />
+              <Rating sx={{ fontSize: "1rem" }} readOnly />
               <span className={productRating}>
                 reviews{" "}
                 <strong className="text-rose-500">
@@ -138,13 +130,15 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
         </span>
         <Horizontal />
         <div>
-          <p className="text-stone-500 text-justify ">
+          <p className="text-stone-500 text-justify">
             {expanded ? product.description : product.description.slice(0, 468)}
-            {!expanded && "...."}
+            {!expanded && product.description.length > 468 && "..."}
           </p>
-          <button className="hover:underline " onClick={toggleDescription}>
-            {expanded ? "See less" : "See more"}
-          </button>
+          {product.description.length > 468 && (
+            <button className="hover:underline" onClick={toggleDescription}>
+              {expanded ? "See less" : "See more"}
+            </button>
+          )}
         </div>
         <Horizontal />
         <div className="flex space-x-10 mb-6">
@@ -169,15 +163,15 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
 
         {isProductInCart ? (
           <>
-            <p className="flex items-center mb-2 gap-1 text-stone-500">
-              <MdCheckCircle size={20} className="text-sky-400" />
+            <p className="flex items-center gap-1 text-stone-500">
+              <MdCheckCircle size={18} className="text-sky-500" />
               <span>Product added to your cart</span>
             </p>
             <div>
-              <button>
+              <button className="md:max-w-[200px] sm:w-full mt-4">
                 <Button
                   label="View Cart"
-                  outline
+                  outline={true}
                   onClick={() => router.push("/cart")}
                 />
               </button>
@@ -192,14 +186,14 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
                 handleColorSelect={handleColorSelect}
               />
             </div>
-            <div>
+            <div className="mt-4">
               <SetQuantity
                 cartProduct={cartProduct}
                 handleQtyIncrease={handleQtyIncrease}
                 handleQtyDecrease={handleQtyDecrease}
               />
             </div>
-            <div className="md:max-w-[200px] sm:w-full">
+            <div className="md:max-w-[200px] sm:w-full mt-4">
               <Button
                 label="Add to cart"
                 onClick={() => handleAddProductToType(cartProduct)}

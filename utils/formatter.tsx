@@ -1,7 +1,7 @@
 
 export const formatter = (str: string) => {
-  if (str.length < 16) return str;
-  return str.substring(0, 16) + "...";
+  if (str.length < 12) return str;
+  return str.substring(0, 12) + "...";
 };
 
 export const formatUSDWithComma = (number: number) => {

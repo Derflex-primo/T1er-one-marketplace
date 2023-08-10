@@ -23,11 +23,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
     const updateWindowWidth = () => {
       setWindowWidth(window.innerWidth);
     };
-    
-    window.addEventListener('resize', updateWindowWidth);
+
+    window.addEventListener("resize", updateWindowWidth);
     updateWindowWidth();
     return () => {
-      window.removeEventListener('resize', updateWindowWidth);
+      window.removeEventListener("resize", updateWindowWidth);
     };
   }, []);
   const productShowRating =
@@ -49,9 +49,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
             className={productImage}
           />
         </div>
-        <div className="mx-2">
-          <h1>{formatter(data.name)}</h1>
-        </div>
+        <h1 className="mx-2">{formatter(data.name)}</h1>
         <div className="flex justify-between mx-2 mt-1 text-xs">
           <span>{formatUSDWithComma(data.price)}</span>
           <span className="bg-green-300 px-1">
