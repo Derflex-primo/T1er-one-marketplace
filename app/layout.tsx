@@ -5,6 +5,7 @@ import NavBar from "./components/nav/NavBar";
 import Footer from "./components/footer/Footer";
 import CartProvider from "@/providers/CartProvider";
 import { Toaster } from "react-hot-toast";
+import { AuthContextProvider } from "@/providers/AuthProvider";
 
 const roboto = Roboto({ subsets: ["latin"], weight: ["400", "700", "900"] });
 
@@ -21,6 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={roboto.className}>
+        <AuthContextProvider>
         <Toaster
           toastOptions={{
             success: {
@@ -48,6 +50,7 @@ export default function RootLayout({
             <Footer />
           </div>
         </CartProvider>
+        </AuthContextProvider>
       </body>
     </html>
   );
