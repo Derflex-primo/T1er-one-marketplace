@@ -12,6 +12,8 @@ import { Modal, Box, Typography } from "@mui/material";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebookSquare } from "react-icons/fa";
 import { BsInstagram } from "react-icons/bs";
+import { MdWallet } from "react-icons/md";
+import { CgProfile } from "react-icons/cg";
 
 const michroma = Michroma({ subsets: ["latin"], weight: ["400"] });
 
@@ -28,7 +30,7 @@ const style = {
 };
 
 const NavBar = () => {
-  const { user, googleSignIn,  logOut } = UserAuth();
+  const { user, googleSignIn, logOut } = UserAuth();
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -91,14 +93,25 @@ const NavBar = () => {
               T1er One
             </Link>
             <div className="hidden md:block">Search</div>
-            <div className="flex items-center gap-8 md:gap-12">
-              <PiShoppingBagOpenThin />
-
+            <div className="flex items-center gap-4 ">
               {loading ? (
-                <SkeletonLoading width="132px" height="28px" />
+                <SkeletonLoading width="182px" height="42px" />
               ) : !user ? (
                 <>
-                  <button onClick={handleOpen}>Sign In</button>
+                  <div className="flex items-center  ">
+                    <span className="flex items-center space-x-4 border-[1.4px] rounded-l-xl pr-3 py-3 px-4 hover:border-slate-400 transition ease-in-out delay-75">
+                      <MdWallet size={24} />
+                      <button
+                        onClick={handleOpen}
+                        className="cursor-pointer font-semibold text-stone-800"
+                      >
+                        Connect wallet
+                      </button>
+                    </span>
+                    <span className="cursor-pointer border-[1.4px] border-l-none rounded-r-xl py-[9px] px-3 hover:border-slate-400 transition ease-in-out delay-75">
+                      <CgProfile size={30} />
+                    </span>
+                  </div>
                   <Modal
                     open={open}
                     onClose={handleClose}
@@ -116,7 +129,7 @@ const NavBar = () => {
                           fontWeight: 600,
                         }}
                       >
-                        Connect your account
+                        Connect your wallet or google
                       </Typography>
                       <Typography
                         id="modal-modal-description"
@@ -129,7 +142,7 @@ const NavBar = () => {
                           textAlign: "center",
                         }}
                       >
-                        If you don't have a account, you can either select a
+                        If you don't have a wallet, you can either select a
                         provider and create one.{" "}
                         <span className="text-sky-500">Learn more</span>
                       </Typography>
@@ -142,63 +155,49 @@ const NavBar = () => {
                           className="flex px-6 justify-between items-center cursor-pointer hover:bg-stone-100 py-4"
                         >
                           <span className="flex space-x-4 font-semibold">
-                            <FcGoogle size={24} /> <span>Google</span>
+                            <FcGoogle size={24} /> <span>Google Pay</span>
                           </span>
                           <span className="text-stone-600 text-xs font-semibold">
                             POPULAR
                           </span>
                         </div>
                       </Typography>
-                      <Typography>
-                        <div className="flex px-6  justify-between items-center cursor-pointer hover:bg-stone-100 py-4">
-                          <span className="flex space-x-4 font-semibold">
-                            <FaFacebookSquare
-                              size={24}
-                              className="text-blue-500"
-                            />{" "}
-                            <span>Facebook</span>
-                          </span>
-                          <span className="text-stone-600 text-xs font-semibold"></span>
-                        </div>
-                      </Typography>
-                      <Typography>
-                        <div className="flex px-6  justify-between items-center cursor-pointer hover:bg-stone-100 py-4">
-                          <span className="flex space-x-4 font-semibold">
-                            <BsInstagram size={24} className="text-rose-400" />{" "}
-                            <span>Instagram</span>
-                          </span>
-                          <span className="text-stone-600 text-xs font-semibold">
-                            USER CHOICE
-                          </span>
-                        </div>
-                      </Typography>
-                      <Typography sx={{textAlign: "center", mb: 2}}>
+                      <Typography sx={{ textAlign: "center", mb: 2 }}>
                         <hr className="pb-4" />
-                         <strong>
-                         Show more
-                         </strong>
+                        <strong>Show more</strong>
                       </Typography>
                     </Box>
                   </Modal>
-
-                  <h1 className="cursor-pointer">Sign Up</h1>
                 </>
               ) : (
-                <>
-                  <h1 onClick={handleSignOut} className="cursor-pointer">
-                    Log Out
-                  </h1>
-                  <Image
-                    src={user.photoURL}
-                    width={30}
-                    height={30}
-                    className="bg-white border-[1px] rounded-full"
-                    alt="User menu"
-                  />
-                </>
+                <div className="flex items-center  ">
+                  <span className="flex items-center space-x-4 border-[1.4px] rounded-l-xl pr-3 py-3 px-4 hover:border-slate-400 transition ease-in-out delay-75">
+                    <MdWallet size={24} />
+                    <button
+                      onClick={handleOpen}
+                      className="cursor-pointer font-semibold text-stone-800"
+                    >
+                      Connected
+                    </button>
+                  </span>
+                  <span
+                    onClick={handleSignOut}
+                    className="cursor-pointer border-[1.4px] border-l-none rounded-r-xl py-[9px] px-3 hover:border-slate-400 transition ease-in-out delay-75"
+                  >
+                    <Image
+                      src={user.photoURL}
+                      width={30}
+                      height={30}
+                      className="bg-white border-[1px] rounded-full"
+                      alt="User menu"
+                    />
+                  </span>
+                </div>
               )}
 
-              <div></div>
+              <div className="border-[1.4px] px-2 py-2 rounded-xl hover:border-slate-400 transition ease-in-out delay-75 ">
+                <PiShoppingBagOpenThin />
+              </div>
             </div>
           </div>
         </Container>

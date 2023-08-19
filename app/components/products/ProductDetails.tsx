@@ -42,7 +42,6 @@ const productDetails = "grid grid-cols-1 md:grid-cols-2 gap-12";
 const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
   const { handleAddProductToType, cartProducts } = useCart(); //handles add to cart from CartContextProvider
   const [isProductInCart, setIsProductInCart] = useState(false);
-  console.log(cartProducts);
   const [expanded, setExpanded] = useState(false);
   const [cartProduct, setCartProduct] = useState<CartProductsType>({
     id: product.id,

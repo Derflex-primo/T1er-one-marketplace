@@ -40,7 +40,7 @@ const Button:React.FC<ButtonProps> = ({
    text-center 
    text-white 
    bg-stone-700 
-   rounded-lg 
+   rounded-xl 
    hover:bg-stone-800 
    focus:ring-4 
    focus:outline-none 
