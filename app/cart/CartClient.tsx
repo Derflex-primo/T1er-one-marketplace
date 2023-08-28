@@ -1,4 +1,5 @@
 "use client";
+import React, { useState } from 'react';
 import { useCart } from "@/hooks/useCart";
 import Link from "next/link";
 import { MdArrowBack, MdOutlineRemoveShoppingCart } from "react-icons/md";
@@ -6,9 +7,28 @@ import Heading from "../components/Heading";
 import Button from "../components/products/Button";
 import ItemContent from "./ItemContent";
 import { formatUSDWithComma } from "@/utils/formatter";
+import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
+import { config } from "@/config/config";
+import { Toaster } from 'react-hot-toast';
+
+const app = initializeApp(config.firebaseConfig);
+const auth = getAuth(app);
 
 const CartClient = () => {
   const { cartProducts, handleClearCart, cartTotalAmount } = useCart();
+  const currentUser = auth.currentUser;
+
+
+
+  const handleCheckout = () => {
+    if (!currentUser) {
+      alert("Connect your wallet") // TEMPORARYY
+    } else {
+      console.log("Proceeding - loading checkout");
+    }
+  };
+
   if (!cartProducts || cartProducts.length === 0) {
     return (
       <div className="flex flex-col items-center">
@@ -55,7 +75,7 @@ const CartClient = () => {
           <p className="text-stone-500 mb-2">
             Taxes & shipping calculated at checkout.
           </p>
-          <Button label="Check out"  onClick={() => {}} />
+          <Button label="Check out" onClick={handleCheckout} />
           <Link
             href={"/"}
             className="flex  items-center gap-1 mt-2 text-stone-500"
@@ -70,3 +90,7 @@ const CartClient = () => {
 };
 
 export default CartClient;
+
+
+// CREATE DATA BASE
+

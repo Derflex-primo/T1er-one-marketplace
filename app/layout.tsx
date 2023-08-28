@@ -5,7 +5,15 @@ import NavBar from "./components/nav/NavBar";
 import Footer from "./components/footer/Footer";
 import CartProvider from "@/providers/CartProvider";
 import { Toaster } from "react-hot-toast";
-import { AuthContextProvider } from "@/providers/AuthProvider";
+import { initializeApp } from "firebase/app";
+import { config } from "@/config/config";
+import AuthRouteProvider from "@/providers/AuthRouteProvider";
+import { ProductProvider } from "@/providers/ProductProvider";
+
+
+
+
+export const Firebase = initializeApp(config.firebaseConfig);
 
 const roboto = Roboto({ subsets: ["latin"], weight: ["400", "700", "900"] });
 
@@ -22,7 +30,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={roboto.className}>
-        <AuthContextProvider>
         <Toaster
           toastOptions={{
             success: {
@@ -43,6 +50,8 @@ export default function RootLayout({
             },
           }}
         />
+      <ProductProvider>
+        <AuthRouteProvider >
         <CartProvider>
           <div className="flex flex-col min-h-screen">
             <NavBar />
@@ -50,7 +59,8 @@ export default function RootLayout({
             <Footer />
           </div>
         </CartProvider>
-        </AuthContextProvider>
+        </AuthRouteProvider>
+        </ProductProvider>
       </body>
     </html>
   );

@@ -4,9 +4,10 @@ import { formatter, formatUSDWithComma } from "@/utils/formatter";
 import { Rating } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { ProductTypes } from "@/types";
 
 interface ProductCardProps {
-  data: any;
+  data: ProductTypes;
 }
 
 const productImage =
@@ -30,10 +31,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
       window.removeEventListener("resize", updateWindowWidth);
     };
   }, []);
-  const productShowRating =
-    data.reviews.reduce((acc: number, item: any) => item.rating + acc, 0) /
-    data.reviews.length;
+
+  const productShowRating = data.reviews ? data.reviews[0].rating : 0;
+
   const router = useRouter();
+
   return (
     <div
       onClick={() => router.push(`/product/${data.id}`)}
@@ -41,13 +43,15 @@ const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
     >
       <div>
         <div className="aspect-square overflow-hidden relative w-full">
-          <Image
-            src={data.images[0].image}
-            fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            alt={data.name}
-            className={productImage}
-          />
+          {data.images && (
+            <Image
+              src={data.images[0].image}
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              alt={data.name}
+              className={productImage}
+            />
+          )}
         </div>
         <h1 className="mx-2">{formatter(data.name)}</h1>
         <div className="flex justify-between mx-2 mt-1 text-xs">
@@ -62,10 +66,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
             value={productShowRating}
             readOnly
           />
-          <span className={`${productRating}`}>
-            reviews{" "}
-            <strong className="text-rose-500">{data.reviews.length}</strong>
-          </span>
+          <span className={`${productRating}`}>review</span>
         </div>
       </div>
     </div>

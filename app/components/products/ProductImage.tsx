@@ -1,12 +1,12 @@
 "use client";
 
-import { CartProductsType, SelectedImgType } from "./ProductDetails";
+import { ProductTypes, ImageProps } from "@/types";
 import Image from "next/image";
 
 interface ProductDetailsProps {
-  cartProduct: CartProductsType;
+  cartProduct: ProductTypes;
   product: any;
-  handleColorSelect: (value: SelectedImgType) => void;
+  handleColorSelect: (value: ImageProps) => void;
 }
 
 const ProductImage: React.FC<ProductDetailsProps> = ({
@@ -14,6 +14,11 @@ const ProductImage: React.FC<ProductDetailsProps> = ({
   product,
   handleColorSelect,
 }) => {
+  const selectedColor = cartProduct.images[0].color; 
+  const selectedImage = cartProduct.images.find(
+    (image) => image.color === selectedColor
+  );
+
   return (
     <div
       className="
@@ -41,12 +46,12 @@ const ProductImage: React.FC<ProductDetailsProps> = ({
      min-h-[300px] 
      sm:min-h-[400px]"
       >
-       {product.images.map((image: SelectedImgType) => {
+       {product.images.map((image: ImageProps) => {
         return (
             <div key={image.color}
             onClick={() => handleColorSelect(image)}
             className={`relative w-[80%] aspect-square rounded border-stone-400
-            ${cartProduct.selectedImg.color === image.color ? "border-[1.5px]" : "border-none" }`
+            ${selectedColor === image.color ? "border-[1.5px]" : "border-none" }`
             }>
                 <Image 
                  src={image.image}
@@ -68,7 +73,7 @@ const ProductImage: React.FC<ProductDetailsProps> = ({
        fill
        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
        quality={100}
-       src={cartProduct.selectedImg.image}
+       src={selectedImage?.image || ''} // Use the selectedImage's image
        alt={cartProduct.name}
        className="
        w-full 

@@ -11,27 +11,11 @@ import Button from "./Button";
 import ProductImage from "./ProductImage";
 import { useCart } from "@/hooks/useCart";
 import { useRouter } from "next/navigation";
-
-interface ProductDetailsProps {
-  product: any;
-}
-
-export type CartProductsType = {
-  id: string;
-  name: string;
-  description: string;
-  category: string;
-  brand: string;
-  selectedImg: SelectedImgType;
-  quantity: number;
-  price: number;
-};
-
-export type SelectedImgType = {
-  color: string;
-  colorCode: string;
-  image: string;
-};
+import {
+  ProductTypes,
+  ProductDetailsProps,
+  ImageProps,
+} from "@/types";
 
 const Horizontal = () => {
   return <hr className="w-[100%] my-2" />;
@@ -43,15 +27,17 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
   const { handleAddProductToType, cartProducts } = useCart(); //handles add to cart from CartContextProvider
   const [isProductInCart, setIsProductInCart] = useState(false);
   const [expanded, setExpanded] = useState(false);
-  const [cartProduct, setCartProduct] = useState<CartProductsType>({
+  const [cartProduct, setCartProduct] = useState<ProductTypes>({
     id: product.id,
     name: product.name,
     description: product.description,
     category: product.category,
     brand: product.brand,
-    selectedImg: { ...product.images[0] },
-    quantity: 1,
+    images: product.images,
+    selectedImg: product.images[0] || null,  
+    quantity: 1, 
     price: product.price,
+    reviews: product.reviews,
   });
 
   const router = useRouter();
@@ -70,12 +56,12 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
   }, [cartProducts]);
 
   const handleColorSelect = useCallback(
-    (value: SelectedImgType) => {
+    (value: ImageProps) => {
       setCartProduct((prev) => {
         return { ...prev, selectedImg: value };
       });
     },
-    [cartProduct.selectedImg]
+    [cartProduct.images]
   );
 
   const toggleDescription = () => {
@@ -121,7 +107,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
               <span className={productRating}>
                 reviews{" "}
                 <strong className="text-rose-500">
-                  {product.reviews.length}
+                  {product.reviews?.length}
                 </strong>
               </span>
             </div>
