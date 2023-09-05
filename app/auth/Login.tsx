@@ -1,4 +1,5 @@
-import { config } from "@/config/config";
+"use client";
+
 import { Box, Modal, Typography } from "@mui/material";
 import { initializeApp } from "firebase/app";
 import {
@@ -13,7 +14,8 @@ import { CgProfile } from "react-icons/cg";
 import { FcGoogle } from "react-icons/fc";
 import { MdWallet } from "react-icons/md";
 import Image from "next/image";
-import CartCount from "../components/nav/CartCount";
+import CartCount from "../components/nav-ui/CartCount";
+import { config } from "@/lib/db/firebaseUtils";
 
 const app = initializeApp(config.firebaseConfig);
 const auth = getAuth(app);
@@ -32,8 +34,6 @@ const style = {
   borderRadius: "16px",
 };
 
-
-
 const LogInPage: React.FC<LogInPageProps> = (props) => {
   const [authing, setAuthing] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -51,7 +51,7 @@ const LogInPage: React.FC<LogInPageProps> = (props) => {
     return () => unsubscribe();
   }, [auth]);
 
-    const signInWithGoogle = async () => {
+  const signInWithGoogle = async () => {
     setAuthing(true);
     signInWithPopup(auth, new GoogleAuthProvider())
       .then((response) => {
@@ -79,10 +79,10 @@ const LogInPage: React.FC<LogInPageProps> = (props) => {
   return (
     <div className="flex items-center gap-4 ">
       <div className="flex items-center  ">
-        <span className="flex items-center space-x-4 border-[1.4px] rounded-l-xl pr-3 py-3 px-4 hover:border-slate-400 transition ease-in-out delay-75">
+        <span className="flex items-center space-x-4 border-[1.4px] rounded-l-xl pr-3 py-3 px-4 hover:border-slate-400 transition ease-in-out delay-75 ">
           <MdWallet size={24} />
           <button
-            className="cursor-pointer font-semibold text-stone-800"
+            className="cursor-pointer font-semibold text-stone-800 "
             onClick={handleOpen}
             disabled={authing}
           >
@@ -115,21 +115,22 @@ const LogInPage: React.FC<LogInPageProps> = (props) => {
       >
         <Box sx={style}>
           <Typography
+            component="div"
             id="modal-modal-title"
             variant="h6"
-            component="h2"
             sx={{
               textAlign: "center",
               fontWeight: 600,
             }}
           >
             {currentUser ? (
-              <h1 className="text-green-500">Connected</h1>
+              <span className="text-green-500">Connected</span>
             ) : (
-              <h1>Connect your wallet</h1>
+              <span>Connect your wallet</span>
             )}
           </Typography>
           <Typography
+            component="div"
             id="modal-modal-description"
             sx={{
               mt: 2,
@@ -140,13 +141,17 @@ const LogInPage: React.FC<LogInPageProps> = (props) => {
               textAlign: "center",
             }}
           >
-            If you don't have a wallet, you can either select a provider and
-            create one. <span className="text-sky-500">Learn more</span>
+            <span>
+              {" "}
+              If you don't have a wallet, you can either select a provider and
+              create one.
+            </span>{" "}
+            <span className="text-sky-500">Learn more</span>
           </Typography>
-          <Typography sx={{ px: 3 }}>
+          <Typography component="div" sx={{ px: 3 }}>
             <hr />
           </Typography>
-          <Typography>
+          <Typography component="div">
             <div
               onClick={() => signInWithGoogle()}
               className="flex px-6 justify-between items-center cursor-pointer hover:bg-stone-100 py-4"
@@ -159,14 +164,14 @@ const LogInPage: React.FC<LogInPageProps> = (props) => {
               </span>
             </div>
           </Typography>
-          <Typography sx={{ textAlign: "center", mb: 2 }}>
+          <Typography component="div" sx={{ textAlign: "center", mb: 2 }}>
             <hr className="pb-4" />
             <strong>Show more</strong>
           </Typography>
         </Box>
       </Modal>
       <div className="border-[1.4px] px-2 py-2 rounded-xl cursor-pointer hover:border-slate-400 transition ease-in-out delay-75 ">
-        <CartCount  />
+        <CartCount />
       </div>
     </div>
   );

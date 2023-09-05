@@ -1,19 +1,22 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Roboto } from "next/font/google";
-import NavBar from "./components/nav/NavBar";
-import Footer from "./components/footer/Footer";
+import { Michroma, Roboto } from "next/font/google";
+import NavBar from "./components/nav-ui/NavBar";
+import Footer from "./components/footer-ui/Footer";
 import CartProvider from "@/providers/CartProvider";
 import { Toaster } from "react-hot-toast";
 import { initializeApp } from "firebase/app";
-import { config } from "@/config/config";
 import AuthRouteProvider from "@/providers/AuthRouteProvider";
-import { ProductProvider } from "@/providers/ProductProvider";
+import ProductProvider from "@/providers/ProductProvider";
+import { config } from "@/lib/db/firebaseUtils";
+
 
 
 
 
 export const Firebase = initializeApp(config.firebaseConfig);
+
+const michroma = Michroma({ subsets: ["latin"], weight: "400" });
 
 const roboto = Roboto({ subsets: ["latin"], weight: ["400", "700", "900"] });
 
@@ -29,7 +32,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={roboto.className}>
+      <body className={`${roboto.className}${michroma.className}`}>
         <Toaster
           toastOptions={{
             success: {

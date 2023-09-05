@@ -3,7 +3,8 @@
 import React, { useEffect, useState } from "react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { initializeApp } from "firebase/app";
-import { config } from "@/config/config";
+import { config } from "@/lib/db/firebaseUtils";
+
 
 
 

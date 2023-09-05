@@ -5,7 +5,7 @@ import Image from "next/image";
 
 interface ProductDetailsProps {
   cartProduct: ProductTypes;
-  product: any;
+  product: ProductTypes;
   handleColorSelect: (value: ImageProps) => void;
 }
 
@@ -14,11 +14,8 @@ const ProductImage: React.FC<ProductDetailsProps> = ({
   product,
   handleColorSelect,
 }) => {
-  const selectedColor = cartProduct.images[0].color; 
-  const selectedImage = cartProduct.images.find(
-    (image) => image.color === selectedColor
-  );
-
+  const selectedColor = cartProduct.selectedImg ? cartProduct.selectedImg.color : cartProduct.images[0].color;
+  const selectedImage = cartProduct.selectedImg;
   return (
     <div
       className="
@@ -73,7 +70,7 @@ const ProductImage: React.FC<ProductDetailsProps> = ({
        fill
        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
        quality={100}
-       src={selectedImage?.image || ''} // Use the selectedImage's image
+       src={selectedImage?.image || ''} 
        alt={cartProduct.name}
        className="
        w-full 

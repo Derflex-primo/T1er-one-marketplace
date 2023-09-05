@@ -1,9 +1,10 @@
 "use client";
 
-import { useProducts } from "@/providers/ProductProvider";
+
+import { useProducts } from "@/hooks/useProducts";
 import Container from "./components/Container";
 import HomeBanner from "./components/HomeBanner";
-import ProductCard from "./components/products/ProductCard";
+import ProductCard from "./components/products-ui/ProductCard";
 
 
 const productsWrap = "grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-8"

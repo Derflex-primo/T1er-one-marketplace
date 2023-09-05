@@ -1,10 +1,11 @@
 "use client";
 
 import Container from "@/app/components/Container"
-import ProductDetails from "@/app/components/products/ProductDetails"
-import ListRating from "@/app/components/products/ListRating"
+import ProductDetails from "@/app/components/products-ui/ProductDetails"
+import ListRating from "@/app/components/products-ui/ListRating"
 import { IParams } from "@/types";
-import { useProducts } from "@/providers/ProductProvider";
+import { useProducts } from "@/hooks/useProducts";
+
 
 // ADD MORE PRODUCTS
 

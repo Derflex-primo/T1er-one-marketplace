@@ -1,8 +1,11 @@
 "use client";
 
+
+
+// RE - DO PRODUCT DETAILS - ui
+
 import { Rating } from "@mui/material";
 import { productRating } from "./ProductCard";
-import { formatUSDWithComma } from "@/utils/formatter";
 import React, { useCallback, useEffect, useState } from "react";
 import { MdCheckCircle } from "react-icons/md";
 import SetColors from "./SetColors";
@@ -16,12 +19,13 @@ import {
   ProductDetailsProps,
   ImageProps,
 } from "@/types";
+import { formatUSDWithComma } from "@/lib/utils/formats";
 
 const Horizontal = () => {
   return <hr className="w-[100%] my-2" />;
 };
 export const colorCategories = "font-medium text-stone-600";
-const productDetails = "grid grid-cols-1 md:grid-cols-2 gap-12";
+export const productDetails = "grid grid-cols-1 md:grid-cols-2 gap-12";
 
 const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
   const { handleAddProductToType, cartProducts } = useCart(); //handles add to cart from CartContextProvider
@@ -30,17 +34,19 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
   const [cartProduct, setCartProduct] = useState<ProductTypes>({
     id: product.id,
     name: product.name,
+    case: product.case,
     description: product.description,
     category: product.category,
     brand: product.brand,
     images: product.images,
     selectedImg: product.images[0] || null,  
     quantity: 1, 
-    price: product.price,
+    type: product.type,
     reviews: product.reviews,
   });
 
   const router = useRouter();
+
 
   useEffect(() => {
     setIsProductInCart(false);
@@ -97,7 +103,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
         <span className="flex flex-wrap justify-between items-center">
           <span className="flex space-x-4 items-center">
             <span className="text-base  text-black ">
-              {formatUSDWithComma(product.price)}
+              {formatUSDWithComma(product.type[0].price)}
             </span>
             <span className="bg-green-300 px-1">Save 30%</span>
           </span>
@@ -136,13 +142,13 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
           <span
             className={`
               ${
-                product.inStock
+                product.quantity > 0
                   ? "text-green-400 font-semibold"
                   : "text-rose-400 font-semibold"
               }`}
           >
             <span className={colorCategories}>Status |</span>{" "}
-            {product.inStock ? "In stock" : "Out of stock"}
+            {product.quantity > 0 ? "In stock" : "Out of stock"}
           </span>
         </div>
 

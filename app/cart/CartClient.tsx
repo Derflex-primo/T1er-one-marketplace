@@ -4,13 +4,12 @@ import { useCart } from "@/hooks/useCart";
 import Link from "next/link";
 import { MdArrowBack, MdOutlineRemoveShoppingCart } from "react-icons/md";
 import Heading from "../components/Heading";
-import Button from "../components/products/Button";
+import Button from "../components/products-ui/Button";
 import ItemContent from "./ItemContent";
-import { formatUSDWithComma } from "@/utils/formatter";
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
-import { config } from "@/config/config";
-import { Toaster } from 'react-hot-toast';
+import { config } from '@/lib/db/firebaseUtils';
+import { formatUSDWithComma } from '@/lib/utils/formats';
 
 const app = initializeApp(config.firebaseConfig);
 const auth = getAuth(app);

@@ -1,10 +1,10 @@
 "use client";
 import Image from "next/image";
-import { formatter, formatUSDWithComma } from "@/utils/formatter";
 import { Rating } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ProductTypes } from "@/types";
+import { formatStr, formatUSDWithComma } from "@/lib/utils/formats";
 
 interface ProductCardProps {
   data: ProductTypes;
@@ -32,7 +32,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
     };
   }, []);
 
-  const productShowRating = data.reviews ? data.reviews[0].rating : 0;
+  const productShowRating = data.reviews?.[0]?.rating ?? 0;
 
   const router = useRouter();
 
@@ -53,9 +53,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
             />
           )}
         </div>
-        <h1 className="mx-2">{formatter(data.name)}</h1>
+        <h1 className="mx-2">{formatStr(data.name)}</h1>
         <div className="flex justify-between mx-2 mt-1 text-xs">
-          <span>{formatUSDWithComma(data.price)}</span>
+          <span>{formatUSDWithComma(data.type[0].price)}</span>
           <span className="bg-green-300 px-1">
             {windowWidth < 640 ? "+30%" : "Save 30%"}
           </span>

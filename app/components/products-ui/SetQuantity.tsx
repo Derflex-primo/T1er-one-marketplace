@@ -1,12 +1,13 @@
 "use client";
 
 import React from "react";
-import { CartProductsType, colorCategories } from "./ProductDetails";
+import { colorCategories } from "./ProductDetails";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
+import { ProductTypes } from "@/types";
 
 interface SetQuantityProps {
   cartCounter?: boolean;
-  cartProduct: CartProductsType;
+  cartProduct: ProductTypes;
   handleQtyIncrease: () => void;
   handleQtyDecrease: () => void;
 }

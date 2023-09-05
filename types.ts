@@ -5,18 +5,23 @@ export interface ProductDetailsProps {
 
 export interface ProductTypes {
     id: string;
+    case?: "DROP" | "SELL" | "SWAP";
     name: string;
     description: string;
-    price: number;
+    type: PriceProps[];
     brand: string;
     category: string;
-    inStock?: boolean;
     images: ImageProps[];
     reviews?: ReviewProps[];
     quantity: number;
     selectedImg?: ImageProps | null;
 }
 
+
+export interface PriceProps {
+    options: string;
+    price: number;
+}
 
 
 
@@ -62,3 +67,10 @@ export interface _InitProductsProps {
     data: ProductTypes;
     id: string;
 }
+
+
+export interface ImagePreviewProps {
+    uploadedImages: string[];
+    onDelete: (index: number) => void;
+    imageColors: { color: string; name: string }[];
+  }
