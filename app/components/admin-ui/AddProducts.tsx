@@ -15,11 +15,15 @@ import {
   getDownloadURL,
   uploadString,
 } from "firebase/storage";
+import SpecsCategories, { CategoryType } from "./SpecsCategories";
 
 const productCollectionRef = collection(db, "products");
 const storage = getStorage(app);
 
+export const inputUi = "border rounded-md p-1 mt-1 text-black";
 const AddProducts = () => {
+  // Handle Category
+  const [selectedCategory, setSelectedCategory] = useState("");
   // Image attributes
   const [uploadedImages, setUploadedImages] = useState<string[]>([]);
   const [imageColors, setImageColors] = useState<
@@ -124,6 +128,11 @@ const AddProducts = () => {
         setPrice(value); // Keep as is
       }
     }
+  };
+
+  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newCategory = e.target.value;
+    setSelectedCategory(newCategory);
   };
 
   useEffect(() => {
@@ -267,190 +276,196 @@ const AddProducts = () => {
     }
   };
 
-  const inputUi = "border rounded-md p-1 mt-1 text-black";
   return (
-    <div className={`${productDetails} mt-8`}>
-      <ImagePreview
-        uploadedImages={uploadedImages}
-        onDelete={handleDeleteImage}
-        imageColors={imageColors}
-      />
+    <>
+      <div className={`${productDetails} mt-8`}>
+        <ImagePreview
+          uploadedImages={uploadedImages}
+          onDelete={handleDeleteImage}
+          imageColors={imageColors}
+        />
 
-      <div className="flex flex-col gap-1 border rounded-xl h-full text-xs font-semibold text-stone-500 ">
-        <form className="space-y-6 p-6" action="">
-          <div className="flex justify-between">
-            <div className="flex flex-col space-y-2">
-              <span>
-                <h1>ITEM NAME:</h1>
-                <input
-                  className={inputUi}
-                  type="text"
-                  required
-                  ref={itemNameRef}
-                />
-              </span>
-              <div className="relative">
-                <h1 className="mb-2">ITEM IMAGE:</h1>
-                <div className="p-2  border border-dashed  py-6 rounded-md text-center">
+        <div className="flex flex-col gap-1 border rounded-xl h-full text-xs font-semibold text-stone-500 ">
+          <form className="space-y-6 p-6" action="">
+            <div className="flex justify-between">
+              <div className="flex flex-col space-y-2">
+                <span>
+                  <h1>ITEM NAME:</h1>
                   <input
-                    className="hidden"
-                    id="fileInput"
-                    type="file"
-                    accept="image/*"
-                    onChange={async (e) => {
-                      handleMultipleFiles(e.target.files);
-                    }}
+                    className={inputUi}
+                    type="text"
                     required
-                    ref={itemImagesRef}
-                    multiple
+                    ref={itemNameRef}
                   />
-                  <label
-                    htmlFor="fileInput"
-                    className="cursor-pointer"
-                    onDrop={async (e) => {
-                      e.preventDefault();
-                      handleMultipleFiles(e.dataTransfer.files);
-                    }}
-                    onDragOver={(e) => {
-                      e.preventDefault();
-                    }}
-                  >
-                    Drag & Drop your image or{" "}
-                    <span className="text-blue-600 hover:underline">
-                      Browse
-                    </span>
-                  </label>
+                </span>
+                <div className="relative">
+                  <h1 className="mb-2">ITEM IMAGE:</h1>
+                  <div className="p-2  border border-dashed  py-6 rounded-md text-center">
+                    <input
+                      className="hidden"
+                      id="fileInput"
+                      type="file"
+                      accept="image/*"
+                      onChange={async (e) => {
+                        handleMultipleFiles(e.target.files);
+                      }}
+                      required
+                      ref={itemImagesRef}
+                      multiple
+                    />
+                    <label
+                      htmlFor="fileInput"
+                      className="cursor-pointer"
+                      onDrop={async (e) => {
+                        e.preventDefault();
+                        handleMultipleFiles(e.dataTransfer.files);
+                      }}
+                      onDragOver={(e) => {
+                        e.preventDefault();
+                      }}
+                    >
+                      Drag & Drop your image or{" "}
+                      <span className="text-blue-600 hover:underline">
+                        Browse
+                      </span>
+                    </label>
+                  </div>
                 </div>
               </div>
+              <div className="flex flex-col space-y-3">
+                <span>
+                  <h1>TYPE:</h1>
+                  <select
+                    className={`${inputUi} text-black text-[12px]`}
+                    onChange={(e) => setSelectedType(e.target.value)}
+                    required
+                    ref={itemTypeRef}
+                  >
+                    <option value="Currency">Gov. Currency</option>
+                    <option value="Web3 Tokens">Web3 Tokens</option>
+                  </select>
+                </span>
+                <span>
+                  <h1>OPTIONS:</h1>
+                  <select
+                    className={`${inputUi} text-black text-[12px]`}
+                    onChange={(e) => setSelectedOption(e.target.value)}
+                    required
+                    ref={itemTypeOptionRef}
+                  >
+                    {Object.keys(options).map((key) => (
+                      <option key={key} value={key}>
+                        {(options as Record<string, string>)[key]}
+                      </option>
+                    ))}
+                  </select>
+                </span>
+                <span>
+                  <h1>PRICE:</h1>
+                  <div className="space-x-2">
+                    <span
+                      className={
+                        selectedType === "Currency"
+                          ? "text-green-500"
+                          : selectedType === "Web3 Tokens"
+                          ? "text-violet-500"
+                          : ""
+                      }
+                    >
+                      {selectedOption ? selectedOption : ""}
+                    </span>
+                    <input
+                      className={inputUi}
+                      type="text"
+                      min={1}
+                      value={price}
+                      onChange={handlePriceChange}
+                      required
+                      ref={itemTypePriceRef}
+                    />
+                  </div>
+                </span>
+              </div>
             </div>
-            <div className="flex flex-col space-y-3">
+            <div>
+              <h1>DESCRIPTION:</h1>
+              <textarea
+                name="message"
+                className={`${inputUi} w-full resize-y  max-h-40 overflow-auto`}
+                required
+                ref={itemDescriptionRef}
+              ></textarea>
+            </div>
+            <div className="flex justify-between">
               <span>
-                <h1>TYPE:</h1>
+                <h1>CATEGORY:</h1>
                 <select
                   className={`${inputUi} text-black text-[12px]`}
-                  onChange={(e) => setSelectedType(e.target.value)}
+                  name="CATEGORY"
+                  id="category"
                   required
-                  ref={itemTypeRef}
+                  value={selectedCategory}
+                  ref={itemCategoryRef}
+                  onChange={handleCategoryChange}
                 >
-                  <option value="Currency">Gov. Currency</option>
-                  <option value="Web3 Tokens">Web3 Tokens</option>
-                </select>
-              </span>
-              <span>
-                <h1>OPTIONS:</h1>
-                <select
-                  className={`${inputUi} text-black text-[12px]`}
-                  onChange={(e) => setSelectedOption(e.target.value)}
-                  required
-                  ref={itemTypeOptionRef}
-                >
-                  {Object.keys(options).map((key) => (
-                    <option key={key} value={key}>
-                      {(options as Record<string, string>)[key]}
+                  {sortedOptions.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
                     </option>
                   ))}
                 </select>
               </span>
               <span>
-                <h1>PRICE:</h1>
-                <div className="space-x-2">
-                  <span
-                    className={
-                      selectedType === "Currency"
-                        ? "text-green-500"
-                        : selectedType === "Web3 Tokens"
-                        ? "text-violet-500"
-                        : ""
-                    }
-                  >
-                    {selectedOption ? selectedOption : ""}
-                  </span>
-                  <input
-                    className={inputUi}
-                    type="text"
-                    min={1}
-                    value={price}
-                    onChange={handlePriceChange}
-                    required
-                    ref={itemTypePriceRef}
-                  />
-                </div>
+                <h1>BRAND:</h1>
+                <input
+                  className={inputUi}
+                  type="text"
+                  required
+                  ref={itemBrandRef}
+                />
+              </span>
+              <span>
+                <h1>QUANTITY:</h1>
+                <input
+                  className={inputUi}
+                  type="number"
+                  min={1}
+                  required
+                  ref={itemQuantityRef}
+                />
               </span>
             </div>
+          </form>
+          {/* IN THE FUTURE SHOW THE COLOR FLAG */}
+          <div className="max-h-p4 grid grid-cols-3 border-t text-xs text-black rounded-b-lg   overflow-hidden">
+            <button
+              disabled={!isValid}
+              className="border-r py-1 hover:bg-stone-700  hover:text-slate-50 ease-in-out delay-75"
+              onClick={() => addProduct("DROP")}
+            >
+              DROP
+            </button>
+            <button
+              disabled={!isValid}
+              className="border-r py-1 hover:bg-stone-700  hover:text-slate-50 ease-in-out delay-75"
+              onClick={() => addProduct("SELL")}
+            >
+              SELL
+            </button>
+            <button
+              disabled={!isValid}
+              className="py-1 hover:bg-stone-700 hover:text-slate-50 ease-in-out delay-75"
+              onClick={() => addProduct("SWAP")}
+            >
+              SWAP
+            </button>
           </div>
-          <div>
-            <h1>DESCRIPTION:</h1>
-            <textarea
-              name="message"
-              className={`${inputUi} w-full resize-y  max-h-40 overflow-auto`}
-              required
-              ref={itemDescriptionRef}
-            ></textarea>
-          </div>
-          <div className="flex justify-between">
-            <span>
-              <h1>CATEGORY:</h1>
-              <select
-                className={`${inputUi} text-black text-[12px]`}
-                name="CATEGORY"
-                id="category"
-                required
-                ref={itemCategoryRef}
-              >
-                {sortedOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </span>
-            <span>
-              <h1>BRAND:</h1>
-              <input
-                className={inputUi}
-                type="text"
-                required
-                ref={itemBrandRef}
-              />
-            </span>
-            <span>
-              <h1>QUANTITY:</h1>
-              <input
-                className={inputUi}
-                type="number"
-                min={1}
-                required
-                ref={itemQuantityRef}
-              />
-            </span>
-          </div>
-        </form>
-        {/* IN THE FUTURE SHOW THE COLOR FLAG */}
-        <div className="max-h-p4 grid grid-cols-3 border-t text-xs text-black rounded-b-lg   overflow-hidden">
-          <button
-            disabled={!isValid}
-            className="border-r py-1 hover:bg-stone-700  hover:text-slate-50 ease-in-out delay-75"
-            onClick={() => addProduct("DROP")}
-          >
-            DROP
-          </button>
-          <button
-            disabled={!isValid}
-            className="border-r py-1 hover:bg-stone-700  hover:text-slate-50 ease-in-out delay-75"
-            onClick={() => addProduct("SELL")}
-          >
-            SELL
-          </button>
-          <button
-            disabled={!isValid}
-            className="py-1 hover:bg-stone-700 hover:text-slate-50 ease-in-out delay-75"
-            onClick={() => addProduct("SWAP")}
-          >
-            SWAP
-          </button>
         </div>
       </div>
-    </div>
+      <div className="mt-12">
+        <SpecsCategories category={selectedCategory as CategoryType} />
+      </div>
+    </>
   );
 };
 

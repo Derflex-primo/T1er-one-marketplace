@@ -4,7 +4,7 @@ import { TiDocumentDelete } from "react-icons/ti";
 import { ImagePreviewProps } from "@/types";
 import { CircularProgress } from "@mui/material";
 
-// FIX LOADING STATE 
+// FIX LOADING STATE
 
 const ImagePreview: React.FC<ImagePreviewProps> = ({
   uploadedImages,
@@ -12,7 +12,7 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({
   imageColors,
 }) => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [isLoadingMainImage, setLoadingMainImage] = useState(true);  
+  const [isLoadingMainImage, setLoadingMainImage] = useState(true);
   const [animateDefault, setAnimateDefault] = useState(false);
   const [timer, setTimer] = useState<NodeJS.Timeout | null>(null);
 
@@ -22,23 +22,23 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({
     }
 
     if (uploadedImages.length > 0) {
-      setLoadingMainImage(true);  
+      setLoadingMainImage(true);
       setAnimateDefault(true);
 
       const newTimer = setTimeout(() => {
         setSelectedImage(uploadedImages[uploadedImages.length - 1]);
         setAnimateDefault(false);
-        setLoadingMainImage(false);  
+        setLoadingMainImage(false);
       }, 3000);
 
       setTimer(newTimer);
     } else {
-      setLoadingMainImage(false);  
+      setLoadingMainImage(false);
       setAnimateDefault(false);
     }
   }, [uploadedImages]);
   return (
-    <div className="image-upload-preview bg-stone-50 p-4 rounded shadow-lg max-h-[400px] relative">
+    <div className="image-upload-preview  p-4 rounded shadow-lg relative">
       <div className="h-[260px] w-full relative">
         {isLoadingMainImage ? (
           <div className="absolute inset-0 flex justify-center items-center  animate-pulse ">

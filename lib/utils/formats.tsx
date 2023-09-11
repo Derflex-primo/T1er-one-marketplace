@@ -18,17 +18,42 @@ export const isSeeMore = (description: string) => {
 
 //ADMIN read_only
 export const options = [
-  { value: "smartPhones", label: "Smart phones" },
+  { value: "smartPhones", label: "Smartphones" },
   { value: "laptops", label: "Laptops" },
   { value: "cameras", label: "Cameras" },
-  { value: "camera-lens", label: "Camera lens" },
+  { value: "camera-lens", label: "Camera lenses" },
   { value: "wired-headphones", label: "Wired headphones" },
-  { value: "wiredless-headphones", label: "Wiredless headphones" },
+  { value: "wireless-headphones", label: "Wireless headphones" },
   { value: "cords", label: "Cords" },
-  { value: "accesories", label: "Accesories" },
+  { value: "accessories", label: "Accessories" },
   { value: "microphone", label: "Microphones" },
-  { value: "chips", label: "Chips" }
+  { value: "chips", label: "Chips" },
+  { value: "desktop", label: "Desktops" }, //-
+  { value: "tablet", label: "Tablets" },
+  { value: "monitor", label: "Monitors" },
+  { value: "external-hard-drives", label: "External Hard Drives" },
+  { value: "memory-cards", label: "Memory Cards" },
+  { value: "routers", label: "Routers" },
+  { value: "modems", label: "Modems" },
+  { value: "network-switches", label: "Network Switches" },
+  { value: "printer", label: "Printers" },
+  { value: "scanner", label: "Scanners" },
+  { value: "gaming-consoles", label: "Gaming Consoles" },
+  { value: "gaming-accessories", label: "Gaming Accessories" },
+  { value: "software", label: "Software" },
+  { value: "server-equipment", label: "Server Equipment" },
+  { value: "diy-electronics", label: "DIY Electronics" },
+  { value: "drones", label: "Drones" },
+  { value: "virtual-reality", label: "Virtual Reality" },
+  { value: "smartwatches", label: "Smartwatches" },
+  { value: "fitness-trackers", label: "Fitness Trackers" },
+  { value: "e-readers", label: "E-readers" },
+  { value: "projectors", label: "Projectors" },
+  { value: "televisions", label: "Televisions" },
+  { value: "car-tech", label: "Car Tech" },
+  { value: "home-automation", label: "Home Automation" },
 ];
+
 
 export const sortedOptions = [...options].sort((a, b) =>
   a.label.localeCompare(b.label)
