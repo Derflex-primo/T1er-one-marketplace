@@ -1,8 +1,27 @@
 import React from "react";
 import { containerDisplay } from "../SpecsCategories";
 import { inputUi } from "../AddProducts";
+import { ItemSpecsRefProps, Specs } from "@/types";
 
-export const SoftwareSpecs = () => {
+export interface SoftwareSpecsProps extends ItemSpecsRefProps {
+  onSpecsChange: (newSpecs: Specs) => void;
+}
+
+export const SoftwareSpecs: React.FC<SoftwareSpecsProps> = ({
+  specs,
+  onSpecsChange,
+}) => {
+  const handleInputChange = (event: {
+    target: { name: string; value: string };
+  }) => {
+    const { name, value } = event.target;
+    const newSpecs = {
+      ...specs,
+      [name]: value,
+    };
+
+    onSpecsChange(newSpecs);
+  };
   const softwareFields = [
     "Software Name",
     "Version",
@@ -48,7 +67,13 @@ export const SoftwareSpecs = () => {
         {softwareFields.map((field, index) => (
           <div className="flex flex-col mb-4" key={index}>
             <label>{field}:</label>
-            <input className={inputUi} type="text" />
+            <input
+              type="text"
+              name={field}
+              value={specs[field] || ""}
+              onChange={handleInputChange}
+              className={inputUi}
+            />
           </div>
         ))}
       </div>

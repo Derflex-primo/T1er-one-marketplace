@@ -1,8 +1,24 @@
 import React from "react";
 import { inputUi } from "../AddProducts";
 import { containerDisplay } from "../SpecsCategories";
+import { ItemSpecsRefProps, Specs } from "@/types";
 
-export const ExternalHardDriveSpecs = () => {
+export interface ExternalHardDriveSpecsProps extends ItemSpecsRefProps {
+  onSpecsChange: (newSpecs: Specs) => void;
+}
+
+export const ExternalHardDriveSpecs: React.FC<ExternalHardDriveSpecsProps> = ({ specs, onSpecsChange }) => {
+  const handleInputChange = (event: {
+    target: { name: string; value: string };
+  }) => {
+    const { name, value } = event.target;
+    const newSpecs = {
+      ...specs,
+      [name]: value,
+    };
+
+    onSpecsChange(newSpecs);
+  };
   const externalHardDriveFields = [
     "Brand",
     "Model Number",
@@ -49,7 +65,13 @@ export const ExternalHardDriveSpecs = () => {
         {externalHardDriveFields.map((field, index) => (
           <div className="flex flex-col mb-4" key={index}>
             <label>{field}:</label>
-            <input className={inputUi} type="text" />
+            <input
+              type="text"
+              name={field}
+              value={specs[field] || ""}
+              onChange={handleInputChange}
+              className={inputUi}
+            />
           </div>
         ))}
       </div>

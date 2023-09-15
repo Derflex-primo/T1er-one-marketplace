@@ -1,8 +1,27 @@
 import React from "react";
 import { containerDisplay } from "../SpecsCategories";
 import { inputUi } from "../AddProducts";
+import { ItemSpecsRefProps, Specs } from "@/types";
 
-export const ScannerSpecs = () => {
+export interface ScannerSpecsProps extends ItemSpecsRefProps {
+  onSpecsChange: (newSpecs: Specs) => void;
+}
+
+export const ScannerSpecs: React.FC<ScannerSpecsProps> = ({
+  specs,
+  onSpecsChange,
+}) => {
+  const handleInputChange = (event: {
+    target: { name: string; value: string };
+  }) => {
+    const { name, value } = event.target;
+    const newSpecs = {
+      ...specs,
+      [name]: value,
+    };
+
+    onSpecsChange(newSpecs);
+  };
   const scannerFields = [
     "Brand",
     "Model Number",
@@ -69,7 +88,13 @@ export const ScannerSpecs = () => {
         {scannerFields.map((field, index) => (
           <div className="flex flex-col mb-4" key={index}>
             <label>{field}:</label>
-            <input className={inputUi} type="text" />
+            <input
+              type="text"
+              name={field}
+              value={specs[field] || ""}
+              onChange={handleInputChange}
+              className={inputUi}
+            />
           </div>
         ))}
       </div>

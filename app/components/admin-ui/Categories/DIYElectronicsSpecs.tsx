@@ -1,8 +1,27 @@
 import React from "react";
 import { containerDisplay } from "../SpecsCategories";
 import { inputUi } from "../AddProducts";
+import { ItemSpecsRefProps, Specs } from "@/types";
 
-export const DIYElectronicsSpecs = () => {
+export interface DIYElectronicsSpecsProps extends ItemSpecsRefProps {
+  onSpecsChange: (newSpecs: Specs) => void;
+}
+
+export const DIYElectronicsSpecs: React.FC<DIYElectronicsSpecsProps> = ({
+  specs,
+  onSpecsChange,
+}) => {
+  const handleInputChange = (event: {
+    target: { name: string; value: string };
+  }) => {
+    const { name, value } = event.target;
+    const newSpecs = {
+      ...specs,
+      [name]: value,
+    };
+
+    onSpecsChange(newSpecs);
+  };
   const diyElectronicsFields = [
     "Component Type",
     "Brand",
@@ -36,7 +55,13 @@ export const DIYElectronicsSpecs = () => {
         {diyElectronicsFields.map((field, index) => (
           <div className="flex flex-col mb-4" key={index}>
             <label>{field}:</label>
-            <input className={inputUi} type="text" />
+            <input
+              type="text"
+              name={field}
+              value={specs[field] || ""}
+              onChange={handleInputChange}
+              className={inputUi}
+            />
           </div>
         ))}
       </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { ProductTypes } from "@/types";
+import { CategoryType, ProductSpecs, ProductTypes, Specs } from "@/types";
 import { useEffect, useRef, useState } from "react";
 import { productDetails } from "../products-ui/ProductDetails";
 import { fiatCurrencies, sortedOptions, web3Tokens } from "@/lib/utils/formats";
@@ -15,7 +15,7 @@ import {
   getDownloadURL,
   uploadString,
 } from "firebase/storage";
-import SpecsCategories, { CategoryType } from "./SpecsCategories";
+import SpecsCategories from "./SpecsCategories";
 
 const productCollectionRef = collection(db, "products");
 const storage = getStorage(app);
@@ -23,7 +23,8 @@ const storage = getStorage(app);
 export const inputUi = "border rounded-md p-1 mt-1 text-black";
 const AddProducts = () => {
   // Handle Category
-  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState<string>(""); // To keep track of selected category
+  const [specs, setSpecs] = useState<Specs>({});
   // Image attributes
   const [uploadedImages, setUploadedImages] = useState<string[]>([]);
   const [imageColors, setImageColors] = useState<
@@ -35,6 +36,17 @@ const AddProducts = () => {
   const [options, setOptions] = useState({});
   const [selectedOption, setSelectedOption] = useState("USD");
   const [price, setPrice] = useState("");
+
+   // Specs - C
+  const handleSpecsChange = (newSpecs: Specs) => {
+    setSpecs(newSpecs);
+  };
+
+  const handleCategoryChanges = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const newCategory = event.target.value as CategoryType;
+    setSelectedCategory(newCategory);
+  };
+  
 
   const handleDeleteImage = (index: number) => {
     setUploadedImages((prevImages) => {
@@ -98,14 +110,6 @@ const AddProducts = () => {
       // Update state and local storage
       setImageColors((prevColors) => [...prevColors, ...newColors]);
       setUploadedImages((prevImages) => [...prevImages, ...downloadURLs]);
-      localStorage.setItem(
-        "uploadedImages",
-        JSON.stringify([...uploadedImages, ...downloadURLs])
-      );
-      localStorage.setItem(
-        "imageColors",
-        JSON.stringify([...imageColors, ...newColors])
-      );
     } catch (error) {
       console.error("An error occurred during multiple file handling:", error);
     }
@@ -135,15 +139,7 @@ const AddProducts = () => {
     setSelectedCategory(newCategory);
   };
 
-  useEffect(() => {
-    const savedImages = localStorage.getItem("uploadedImages");
-    const savedColors = localStorage.getItem("imageColors");
-
-    if (savedImages && savedColors) {
-      setUploadedImages(JSON.parse(savedImages));
-      setImageColors(JSON.parse(savedColors));
-    }
-  }, []);
+ 
 
   useEffect(() => {
     let value = price.replace(/[^\d.]/g, "");
@@ -170,6 +166,8 @@ const AddProducts = () => {
     }
   }, [selectedType]);
 
+  
+
   const validateFields = () => {
     const refs = [
       itemNameRef,
@@ -180,6 +178,7 @@ const AddProducts = () => {
       itemCategoryRef,
       itemBrandRef,
       itemQuantityRef,
+
     ];
     let formsValidated = true;
 
@@ -216,6 +215,30 @@ const AddProducts = () => {
   const itemBrandRef = useRef<HTMLInputElement>(null);
   const itemQuantityRef = useRef<HTMLInputElement>(null);
 
+  const resetForm = () => {
+    // Reset state variables
+    setSelectedCategory("");
+    setSpecs({});
+    setUploadedImages([]);
+    setImageColors([]);
+    setIsValid(true);
+    setSelectedType("Currency");
+    setOptions({});
+    setSelectedOption("USD");
+    setPrice("");
+  
+    // Reset form fields using refs
+    if (itemNameRef.current) itemNameRef.current.value = "";
+    if (itemTypeRef.current) itemTypeRef.current.value = "";
+    if (itemTypeOptionRef.current) itemTypeOptionRef.current.value = "";
+    if (itemTypePriceRef.current) itemTypePriceRef.current.value = "";
+    if (itemDescriptionRef.current) itemDescriptionRef.current.value = "";
+    if (itemCategoryRef.current) itemCategoryRef.current.value = "";
+    if (itemBrandRef.current) itemBrandRef.current.value = "";
+    if (itemQuantityRef.current) itemQuantityRef.current.value = "1";
+  };
+ 
+
   const addProduct = async (productCase: "DROP" | "SELL" | "SWAP") => {
     // Check fields value
     if (!validateFields()) return;
@@ -249,6 +272,7 @@ const AddProducts = () => {
     const quantity = itemQuantityRef.current
       ? parseInt(itemQuantityRef.current.value, 10)
       : 1;
+    
     const newProduct: ProductTypes = {
       id: "",
       case: productCase,
@@ -260,6 +284,7 @@ const AddProducts = () => {
       images,
       reviews: [],
       quantity,
+      specs,
       selectedImg: null,
     };
     console.log(images);
@@ -267,10 +292,7 @@ const AddProducts = () => {
     try {
       await addDoc(productCollectionRef, newProduct);
       console.log("Product successfully added");
-
-      // Clear Local Storage
-      localStorage.removeItem("uploadedImages");
-      localStorage.removeItem("imageColors");
+      resetForm();
     } catch (e) {
       console.error("Error adding document:", e);
     }
@@ -407,6 +429,7 @@ const AddProducts = () => {
                   value={selectedCategory}
                   ref={itemCategoryRef}
                   onChange={handleCategoryChange}
+                  onSelect={handleCategoryChanges}
                 >
                   {sortedOptions.map((option) => (
                     <option key={option.value} value={option.value}>
@@ -463,7 +486,7 @@ const AddProducts = () => {
         </div>
       </div>
       <div className="mt-12">
-        <SpecsCategories category={selectedCategory as CategoryType} />
+      <SpecsCategories category={selectedCategory} onSpecsChange={handleSpecsChange} />
       </div>
     </>
   );

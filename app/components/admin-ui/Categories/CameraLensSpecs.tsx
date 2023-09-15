@@ -1,5 +1,10 @@
 import { inputUi } from "../AddProducts";
 import { containerDisplay } from "../SpecsCategories";
+import { ItemSpecsRefProps, Specs } from "@/types";
+
+export interface CameraLensSpecsProps extends ItemSpecsRefProps {
+  onSpecsChange: (newSpecs: Specs) => void;
+}
 
 const lensSpecLabels = [
   "Product condition",
@@ -35,15 +40,35 @@ const lensSpecLabels = [
   "Manufacturer's Warranty - Labour",
 ];
 
-export const CameraLensSpecs = () => {
+export const CameraLensSpecs: React.FC<CameraLensSpecsProps> = ({
+  specs,
+  onSpecsChange,
+}) => {
+  const handleInputChange = (event: {
+    target: { name: string; value: string };
+  }) => {
+    const { name, value } = event.target;
+    const newSpecs = {
+      ...specs,
+      [name]: value,
+    };
+
+    onSpecsChange(newSpecs);
+  };
   return (
     <div className="p-4 border rounded-lg">
       <h2 className="mb-4 ">Camera Lens Specifications</h2>
       <div className={containerDisplay}>
-        {lensSpecLabels.sort().map((labelText) => (
+        {lensSpecLabels.map((labelText) => (
           <div className="flex flex-col mb-4" key={labelText}>
             <label>{labelText}:</label>
-            <input className={inputUi} type="text" />
+            <input
+              type="text"
+              name={labelText}
+              value={specs[labelText] || ""}
+              onChange={handleInputChange}
+              className={inputUi}
+            />
           </div>
         ))}
       </div>

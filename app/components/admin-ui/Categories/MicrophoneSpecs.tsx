@@ -1,8 +1,24 @@
 import React from 'react';
 import { containerDisplay } from '../SpecsCategories';
 import { inputUi } from '../AddProducts';
+import { ItemSpecsRefProps, Specs } from "@/types";
 
-export const MicrophoneSpecs = () => {
+export interface MicrophoneSpecsProps extends ItemSpecsRefProps {
+  onSpecsChange: (newSpecs: Specs) => void;
+}
+
+export const MicrophoneSpecs: React.FC<MicrophoneSpecsProps> = ({ specs, onSpecsChange }) => {
+  const handleInputChange = (event: {
+    target: { name: string; value: string };
+  }) => {
+    const { name, value } = event.target;
+    const newSpecs = {
+      ...specs,
+      [name]: value,
+    };
+
+    onSpecsChange(newSpecs);
+  };
   const microphoneFields = [
     'Brand',
     'Model Number',
@@ -55,7 +71,13 @@ export const MicrophoneSpecs = () => {
             key={index}
           >
             <label>{field}:</label>
-            <input className={inputUi} type="text" />
+            <input
+              type="text"
+              name={field}
+              value={specs[field] || ""}
+              onChange={handleInputChange}
+              className={inputUi}
+            />
           </div>
         ))}
       </div>

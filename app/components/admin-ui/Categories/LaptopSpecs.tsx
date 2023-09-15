@@ -1,7 +1,27 @@
 import { inputUi } from "../AddProducts";
 import { containerDisplay } from "../SpecsCategories";
+import { ItemSpecsRefProps, Specs } from "@/types";
 
-export const LaptopSpecs = () => {
+export interface LaptopSpecsProps extends ItemSpecsRefProps {
+  onSpecsChange: (newSpecs: Specs) => void;
+}
+
+export const LaptopSpecs: React.FC<LaptopSpecsProps> = ({
+  specs,
+  onSpecsChange,
+}) => {
+  const handleInputChange = (event: {
+    target: { name: string; value: string };
+  }) => {
+    const { name, value } = event.target;
+    const newSpecs = {
+      ...specs,
+      [name]: value,
+    };
+
+    onSpecsChange(newSpecs);
+  };
+
   const laptopSpecs = [
     "Product Condition",
     "Brand New (Yes/No)",
@@ -60,10 +80,16 @@ export const LaptopSpecs = () => {
     <div className="p-4 border rounded-lg">
       <h2 className="mb-4 ">Laptop Specifications</h2>
       <div className={containerDisplay}>
-        {laptopSpecs.sort().map((laptopSpec, index) => (
+        {laptopSpecs.map((laptopSpec, index) => (
           <div className="flex flex-col mb-4" key={index}>
             <label>{laptopSpec}:</label>
-            <input className={inputUi} type="text" />
+            <input
+              type="text"
+              name={laptopSpec}
+              value={specs[laptopSpec] || ""}
+              onChange={handleInputChange}
+              className={inputUi}
+            />
           </div>
         ))}
       </div>

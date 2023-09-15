@@ -1,8 +1,24 @@
 import React from "react";
 import { inputUi } from "../AddProducts";
 import { containerDisplay } from "../SpecsCategories";
+import { ItemSpecsRefProps, Specs } from "@/types";
 
-export const CordsSpecs = () => {
+export interface CordsSpecsProps extends ItemSpecsRefProps {
+  onSpecsChange: (newSpecs: Specs) => void;
+}
+
+export const CordsSpecs: React.FC<CordsSpecsProps> = ({ specs, onSpecsChange }) => {
+  const handleInputChange = (event: {
+    target: { name: string; value: string };
+  }) => {
+    const { name, value } = event.target;
+    const newSpecs = {
+      ...specs,
+      [name]: value,
+    };
+
+    onSpecsChange(newSpecs);
+  };
   const cordFields = [
     "Brand",
     "Model Number",
@@ -41,10 +57,16 @@ export const CordsSpecs = () => {
     <div className="p-4 border rounded-lg">
       <h2 className="mb-4">Cord Specifications</h2>
       <div className={containerDisplay}>
-        {cordFields.sort().map((field, index) => (
+        {cordFields.map((field, index) => (
           <div className={"flex flex-col mb-4"} key={index}>
             <label>{field}:</label>
-            <input className={inputUi} type="text" />
+            <input
+              type="text"
+              name={field}
+              value={specs[field] || ""}
+              onChange={handleInputChange}
+              className={inputUi}
+            />
           </div>
         ))}
       </div>

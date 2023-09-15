@@ -1,78 +1,97 @@
-import React from 'react';
-import { containerDisplay } from '../SpecsCategories';
-import { inputUi } from '../AddProducts';
+import React from "react";
+import { containerDisplay } from "../SpecsCategories";
+import { inputUi } from "../AddProducts";
+import { ItemSpecsRefProps, Specs } from "@/types";
 
-export const SmartwatchesSpecs = () => {
+export interface SmartwatchesSpecsProps extends ItemSpecsRefProps {
+  onSpecsChange: (newSpecs: Specs) => void;
+}
+
+export const SmartwatchesSpecs: React.FC<SmartwatchesSpecsProps> = ({
+  specs,
+  onSpecsChange,
+}) => {
+  const handleInputChange = (event: {
+    target: { name: string; value: string };
+  }) => {
+    const { name, value } = event.target;
+    const newSpecs = {
+      ...specs,
+      [name]: value,
+    };
+
+    onSpecsChange(newSpecs);
+  };
   const smartwatchSpecifications = [
-    'Brand',
-    'Model',
-    'Operating System',
-    'Display Type',
-    'Display Size',
-    'Resolution',
-    'Touchscreen',
-    'Processor',
-    'RAM',
-    'Storage Capacity',
-    'Connectivity',
-    'Bluetooth Version',
-    'Wi-Fi',
-    'GPS',
-    'NFC',
-    'Sensors',
-    'Battery Life',
-    'Charging Method',
-    'Water Resistance',
-    'Strap Material',
-    'Case Material',
-    'Dimensions (L x W x H)',
-    'Weight',
-    'Additional Features',
-    'Health and Fitness Tracking',
-    'Heart Rate Monitor',
-    'Sleep Tracking',
-    'Activity Tracking',
-    'Notifications',
-    'Voice Assistant',
-    'Music Playback',
-    'Mobile Payment Support',
-    'App Compatibility',
-    'Price',
-    'Availability',
-    'Warranty Information',
-    'Manufacturer Website',
-    'User Manual',
-    'Supported Apps',
-    'App Store',
-    'Interchangeable Straps',
-    'Display Protection',
-    'Microphone',
-    'Speaker',
-    'Built-in Camera',
-    'ECG Monitoring',
-    'Blood Pressure Monitoring',
-    'Fall Detection',
-    'Voice Calls',
-    'Mobile Data Support',
-    'Wireless Charging',
-    'Custom Watch Faces',
-    'Color Options',
-    'Compatibility with Smartphones',
-    'Operating Temperature Range',
-    'Display Always-On Option',
-    'Battery Saver Mode',
-    'Display Brightness',
-    'Altimeter',
-    'Barometer',
-    'Gyroscope',
-    'Compass',
-    'Waterproof Rating',
-    'Sleep Apnea Detection',
-    'UV Radiation Sensor',
-    'Emergency SOS Feature',
-    'Activity Goals Tracking',
-    'Dust Resistance',
-    'Multi-Sport Tracking',
+    "Brand",
+    "Model",
+    "Operating System",
+    "Display Type",
+    "Display Size",
+    "Resolution",
+    "Touchscreen",
+    "Processor",
+    "RAM",
+    "Storage Capacity",
+    "Connectivity",
+    "Bluetooth Version",
+    "Wi-Fi",
+    "GPS",
+    "NFC",
+    "Sensors",
+    "Battery Life",
+    "Charging Method",
+    "Water Resistance",
+    "Strap Material",
+    "Case Material",
+    "Dimensions (L x W x H)",
+    "Weight",
+    "Additional Features",
+    "Health and Fitness Tracking",
+    "Heart Rate Monitor",
+    "Sleep Tracking",
+    "Activity Tracking",
+    "Notifications",
+    "Voice Assistant",
+    "Music Playback",
+    "Mobile Payment Support",
+    "App Compatibility",
+    "Price",
+    "Availability",
+    "Warranty Information",
+    "Manufacturer Website",
+    "User Manual",
+    "Supported Apps",
+    "App Store",
+    "Interchangeable Straps",
+    "Display Protection",
+    "Microphone",
+    "Speaker",
+    "Built-in Camera",
+    "ECG Monitoring",
+    "Blood Pressure Monitoring",
+    "Fall Detection",
+    "Voice Calls",
+    "Mobile Data Support",
+    "Wireless Charging",
+    "Custom Watch Faces",
+    "Color Options",
+    "Compatibility with Smartphones",
+    "Operating Temperature Range",
+    "Display Always-On Option",
+    "Battery Saver Mode",
+    "Display Brightness",
+    "Altimeter",
+    "Barometer",
+    "Gyroscope",
+    "Compass",
+    "Waterproof Rating",
+    "Sleep Apnea Detection",
+    "UV Radiation Sensor",
+    "Emergency SOS Feature",
+    "Activity Goals Tracking",
+    "Dust Resistance",
+    "Multi-Sport Tracking",
   ];
 
   return (
@@ -82,12 +101,16 @@ export const SmartwatchesSpecs = () => {
         {smartwatchSpecifications.map((spec, index) => (
           <div className="flex flex-col mb-4" key={index}>
             <label>{spec}:</label>
-            <input className={inputUi} type="text" />
+            <input
+              type="text"
+              name={spec}
+              value={specs[spec] || ""}
+              onChange={handleInputChange}
+              className={inputUi}
+            />
           </div>
         ))}
       </div>
     </div>
   );
 };
-
- 

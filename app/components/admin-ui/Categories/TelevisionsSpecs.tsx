@@ -1,8 +1,27 @@
 import React from "react";
 import { containerDisplay } from "../SpecsCategories";
 import { inputUi } from "../AddProducts";
+import { ItemSpecsRefProps, Specs } from "@/types";
 
-export const TelevisionsSpecs = () => {
+export interface TelevisionsSpecsProps extends ItemSpecsRefProps {
+  onSpecsChange: (newSpecs: Specs) => void;
+}
+
+export const TelevisionsSpecs: React.FC<TelevisionsSpecsProps> = ({
+  specs,
+  onSpecsChange,
+}) => {
+  const handleInputChange = (event: {
+    target: { name: string; value: string };
+  }) => {
+    const { name, value } = event.target;
+    const newSpecs = {
+      ...specs,
+      [name]: value,
+    };
+
+    onSpecsChange(newSpecs);
+  };
   const televisionSpecifications = [
     "Brand",
     "Model",
@@ -71,7 +90,13 @@ export const TelevisionsSpecs = () => {
         {televisionSpecifications.map((spec, index) => (
           <div className="flex flex-col mb-4" key={index}>
             <label>{spec}:</label>
-            <input className={inputUi} type="text" />
+            <input
+              type="text"
+              name={spec}
+              value={specs[spec] || ""}
+              onChange={handleInputChange}
+              className={inputUi}
+            />
           </div>
         ))}
       </div>

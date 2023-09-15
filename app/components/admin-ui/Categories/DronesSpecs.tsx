@@ -1,8 +1,27 @@
 import React from "react";
 import { containerDisplay } from "../SpecsCategories";
 import { inputUi } from "../AddProducts";
+import { ItemSpecsRefProps, Specs } from "@/types";
 
-export const DronesSpecs = () => {
+export interface DronesSpecsProps extends ItemSpecsRefProps {
+  onSpecsChange: (newSpecs: Specs) => void;
+}
+
+export const DronesSpecs: React.FC<DronesSpecsProps> = ({
+  specs,
+  onSpecsChange,
+}) => {
+  const handleInputChange = (event: {
+    target: { name: string; value: string };
+  }) => {
+    const { name, value } = event.target;
+    const newSpecs = {
+      ...specs,
+      [name]: value,
+    };
+
+    onSpecsChange(newSpecs);
+  };
   const droneSpecifications = [
     "Model",
     "Brand",
@@ -61,7 +80,13 @@ export const DronesSpecs = () => {
         {droneSpecifications.map((spec, index) => (
           <div className="flex flex-col mb-4" key={index}>
             <label>{spec}:</label>
-            <input className={inputUi} type="text" />
+            <input
+              type="text"
+              name={spec}
+              value={specs[spec] || ""}
+              onChange={handleInputChange}
+              className={inputUi}
+            />
           </div>
         ))}
       </div>
