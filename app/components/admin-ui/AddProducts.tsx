@@ -1,6 +1,6 @@
 "use client";
 
-import { CategoryType, ProductSpecs, ProductTypes, Specs } from "@/types";
+import { CategoryType, ImageProps, ProductTypes, Specs } from "@/types";
 import { useEffect, useRef, useState } from "react";
 import { productDetails } from "../products-ui/ProductDetails";
 import { fiatCurrencies, sortedOptions, web3Tokens } from "@/lib/utils/formats";
@@ -18,7 +18,7 @@ import {
 import SpecsCategories from "./SpecsCategories";
 
 const productCollectionRef = collection(db, "products");
-const storage = getStorage(app);
+export const storage = getStorage(app);
 
 export const inputUi = "border rounded-md p-1 mt-1 text-black";
 const AddProducts = () => {
@@ -37,6 +37,35 @@ const AddProducts = () => {
   const [selectedOption, setSelectedOption] = useState("USD");
   const [price, setPrice] = useState("");
 
+  // Image Groups
+  const [imagesInGroups, setImagesInGroups] = useState<ImageProps[]>([]);
+
+  const addImageToGroup = (index: number, imageUrl: string) => {
+    const newImagesInGroups = [...imagesInGroups];
+    
+    // Create a new group if it doesn't exist
+    if (!newImagesInGroups[index]) {
+      newImagesInGroups[index] = { images: [] };
+    }
+  
+    // Add the new image
+    newImagesInGroups[index].images.push(imageUrl);
+  
+    // Check if the group has images now (it should)
+    if (newImagesInGroups[index].images.length > 0) {
+     // Log the src of the newly added image
+     console.log(`Newly added image URL: ${imageUrl}`);
+    }
+    
+    // You can even loop through all the images in the group to log their URLs
+    console.log("All images in this group:");
+    newImagesInGroups[index].images.forEach((imgUrl, imgIndex) => {
+      console.log(`Image ${imgIndex}: ${imgUrl}`);
+    });
+    
+    setImagesInGroups(newImagesInGroups);
+  };
+  
    // Specs - C
   const handleSpecsChange = (newSpecs: Specs) => {
     setSpecs(newSpecs);
@@ -107,7 +136,7 @@ const AddProducts = () => {
       );
       console.log("New Colors:", newColors); // Debugging line
 
-      // Update state and local storage
+      // Update state storage
       setImageColors((prevColors) => [...prevColors, ...newColors]);
       setUploadedImages((prevImages) => [...prevImages, ...downloadURLs]);
     } catch (error) {
@@ -248,13 +277,15 @@ const AddProducts = () => {
     const option = itemTypeOptionRef.current
       ? itemTypeOptionRef.current.value
       : "";
-    const images = uploadedImages.map((url, index) => {
-      return {
-        color: imageColors[index]?.name || "",
-        colorCode: imageColors[index]?.color || "",
-        image: url,
-      };
-    });
+      const combinedImages = uploadedImages.map((url, index) => {
+        const additionalImages = imagesInGroups[index]?.images || [];
+        return {
+          color: imageColors[index]?.name || "",
+          colorCode: imageColors[index]?.color || "",
+          image: url,
+          images: additionalImages  // This line attaches the additional images to the main image
+        };
+      });
 
     let priceValue = itemTypePriceRef.current
       ? itemTypePriceRef.current.value
@@ -281,13 +312,13 @@ const AddProducts = () => {
       type: [{ options: option, price: parseFloat(priceValue) }],
       brand,
       category,
-      images,
+      images: combinedImages,
       reviews: [],
       quantity,
       specs,
       selectedImg: null,
     };
-    console.log(images);
+   console.log(imagesInGroups)
 
     try {
       await addDoc(productCollectionRef, newProduct);
@@ -305,6 +336,8 @@ const AddProducts = () => {
           uploadedImages={uploadedImages}
           onDelete={handleDeleteImage}
           imageColors={imageColors}
+          imagesInGroups={imagesInGroups}
+          addImageToGroup={addImageToGroup}
         />
 
         <div className="flex flex-col gap-1 border rounded-xl h-full text-xs font-semibold text-stone-500 ">
@@ -322,7 +355,7 @@ const AddProducts = () => {
                 </span>
                 <div className="relative">
                   <h1 className="mb-2">ITEM IMAGE:</h1>
-                  <div className="p-2  border border-dashed  py-6 rounded-md text-center">
+                  <div className="p-2  border border-dashed py-6 rounded-md text-center hover:border-blue-500">
                     <input
                       className="hidden"
                       id="fileInput"

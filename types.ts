@@ -31,9 +31,10 @@ export interface PriceProps {
 
 
 export type ImageProps = {
-    color: string;
-    colorCode: string;
-    image: string;
+    color?: string;
+    colorCode?: string;
+    image?: string;
+    images: string[];
 }
 
 export interface ReviewProps {
@@ -73,12 +74,19 @@ export interface _InitProductsProps {
     id: string;
 }
 
+interface ImageColor {
+    name: string;
+    color: string;
+  }
+
 
 export interface ImagePreviewProps {
     uploadedImages: string[];
     onDelete: (index: number) => void;
-    imageColors: { color: string; name: string }[];
-}
+    imageColors: ImageColor[];
+    imagesInGroups: ImageProps[];
+    addImageToGroup: (index: number, imageUrl: string) => void;
+  }
 
 
 //---------------------------Category Types
