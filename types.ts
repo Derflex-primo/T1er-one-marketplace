@@ -1,6 +1,7 @@
 
 export interface ProductDetailsProps {
     product: ProductTypes;
+    cartProduct?: ProductTypes
 }
 
 export interface ProductTypes {
@@ -12,6 +13,7 @@ export interface ProductTypes {
     brand: string;
     category: string;
     images: ImageProps[];
+    vidAd?: VideoAdProps;
     reviews?: ReviewProps[];
     quantity: number;
     selectedImg?: ImageProps | null;
@@ -22,6 +24,8 @@ export interface ProductSpecs {
     itemSpecsRef?: Specs;
 }
 
+
+ 
 
 export interface PriceProps {
     options: string;
@@ -34,8 +38,14 @@ export type ImageProps = {
     color?: string;
     colorCode?: string;
     image?: string;
-    images: string[];
+    setImages: string[];
 }
+
+
+export interface VideoAdProps {
+    videoAd?: string ;
+    onDelete?: () => void;
+} 
 
 export interface ReviewProps {
 

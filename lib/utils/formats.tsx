@@ -28,7 +28,7 @@ export const options = [
   { value: "accessories", label: "Accessories" },
   { value: "microphone", label: "Microphones" },
   { value: "chips", label: "Chips" },
-  { value: "desktop", label: "Desktops" }, //-
+  { value: "desktop", label: "Desktops" },  
   { value: "tablet", label: "Tablets" },
   { value: "monitor", label: "Monitors" },
   { value: "external-hard-drives", label: "External Hard Drives" },
@@ -59,7 +59,6 @@ export const sortedOptions = [...options].sort((a, b) =>
   a.label.localeCompare(b.label)
 );
 
-
 export const fiatCurrencies = {
   USD: "United States Dollar",
   EUR: "Euro",
@@ -87,9 +86,34 @@ export const fiatCurrencies = {
   IDR: "Indonesian Rupiah",
   MYR: "Malaysian Ringgit",
   CZK: "Czech Koruna",
-  // ... total 25, extend to 50
+  DKK: "Danish Krone",
+  HUF: "Hungarian Forint",
+  CLP: "Chilean Peso",
+  PEN: "Peruvian Sol",
+  AED: "United Arab Emirates Dirham",
+  COP: "Colombian Peso",
+  THB: "Thai Baht",
+  VND: "Vietnamese Dong",
+  PKR: "Pakistani Rupee",
+  RON: "Romanian Leu",
+  NGN: "Nigerian Naira",
+  UAH: "Ukrainian Hryvnia",
+  GHS: "Ghanaian Cedi",
+  MAD: "Moroccan Dirham",
+  QAR: "Qatari Rial",
+  BDT: "Bangladeshi Taka",
+  JOD: "Jordanian Dinar",
+  UYU: "Uruguayan Peso",
+  KES: "Kenyan Shilling",
+  OMR: "Omani Rial",
+  CUP: "Cuban Peso",
+  SYP: "Syrian Pound",
+  BYN: "Belarusian Ruble",
+  DZD: "Algerian Dinar",
+  LKR: "Sri Lankan Rupee",
 };
 
+// List of 50 web3 tokens
 export const web3Tokens = {
   ETH: "Ethereum",
   BTC: "Bitcoin",
@@ -111,5 +135,34 @@ export const web3Tokens = {
   VET: "VeChain",
   WBTC: "Wrapped Bitcoin",
   TRX: "TRON",
-  // ... total 20, extend to 50
+  EOS: "EOS",
+  AAVE: "Aave",
+  SHIB: "Shiba Inu",
+  SNX: "Synthetix",
+  MKR: "Maker",
+  YFI: "yearn.finance",
+  COMP: "Compound",
+  ZIL: "Zilliqa",
+  SUSHI: "SushiSwap",
+  FTT: "FTX Token",
+  FIL: "Filecoin",
+  ICP: "Internet Computer",
+  AXS: "Axie Infinity",
+  DASH: "Dash",
+  CHZ: "Chiliz",
+  ATOM: "Cosmos",
+  QTUM: "Qtum",
+  HBAR: "Hedera Hashgraph",
+  REN: "Ren",
+  ENJ: "Enjin Coin",
+  BAT: "Basic Attention Token",
+  ZRX: "0x",
+  RSR: "Reserve Rights",
+  OMG: "OMG Network",
+  ALGO: "Algorand",
+  LRC: "Loopring",
+  KAVA: "Kava",
+  NANO: "Nano",
 };
+
+ 

@@ -1,6 +1,12 @@
 "use client";
 
-import { CategoryType, ImageProps, ProductTypes, Specs } from "@/types";
+import {
+  CategoryType,
+  ImageProps,
+  ProductTypes,
+  Specs,
+  VideoAdProps,
+} from "@/types";
 import { useEffect, useRef, useState } from "react";
 import { productDetails } from "../products-ui/ProductDetails";
 import { fiatCurrencies, sortedOptions, web3Tokens } from "@/lib/utils/formats";
@@ -16,6 +22,7 @@ import {
   uploadString,
 } from "firebase/storage";
 import SpecsCategories from "./SpecsCategories";
+import VideoAd from "./VideoAd";
 
 const productCollectionRef = collection(db, "products");
 export const storage = getStorage(app);
@@ -30,6 +37,8 @@ const AddProducts = () => {
   const [imageColors, setImageColors] = useState<
     { color: string; name: string }[]
   >([]);
+  // Video attrubutes
+  const [videoUrl, setVideoUrl] = useState<string | undefined>(undefined);
   // Check if all fields has  a value
   const [isValid, setIsValid] = useState(true);
   const [selectedType, setSelectedType] = useState("Currency");
@@ -42,44 +51,63 @@ const AddProducts = () => {
 
   const addImageToGroup = (index: number, imageUrl: string) => {
     const newImagesInGroups = [...imagesInGroups];
-    
+
     // Create a new group if it doesn't exist
     if (!newImagesInGroups[index]) {
-      newImagesInGroups[index] = { images: [] };
+      newImagesInGroups[index] = { setImages: [] };
     }
-  
+
     // Add the new image
-    newImagesInGroups[index].images.push(imageUrl);
-  
-    // Check if the group has images now (it should)
-    if (newImagesInGroups[index].images.length > 0) {
-     // Log the src of the newly added image
-     console.log(`Newly added image URL: ${imageUrl}`);
-    }
-    
-    // You can even loop through all the images in the group to log their URLs
-    console.log("All images in this group:");
-    newImagesInGroups[index].images.forEach((imgUrl, imgIndex) => {
-      console.log(`Image ${imgIndex}: ${imgUrl}`);
-    });
-    
+    newImagesInGroups[index].setImages.push(imageUrl);
+
     setImagesInGroups(newImagesInGroups);
   };
-  
-   // Specs - C
+
+  // This handles specs - C
   const handleSpecsChange = (newSpecs: Specs) => {
     setSpecs(newSpecs);
   };
 
-  const handleCategoryChanges = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleCategoryChanges = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
     const newCategory = event.target.value as CategoryType;
     setSelectedCategory(newCategory);
   };
-  
 
   const handleDeleteImage = (index: number) => {
     setUploadedImages((prevImages) => {
       return prevImages.filter((_, i) => i !== index);
+    });
+
+    setImagesInGroups((prevGroups) => {
+      return prevGroups.filter((_, i) => i !== index);
+    });
+  };
+
+  const uploadVideoToStorage = async (file: File): Promise<string> => {
+    const filename = file.name;
+    const storageRef = ref(storage, `videos/${filename}`);
+
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = async () => {
+        if (typeof reader.result === "string") {
+          try {
+            await uploadString(
+              storageRef,
+              reader.result.split(",")[1],
+              "base64"
+            );
+            const downloadURL = await getDownloadURL(storageRef);
+            resolve(downloadURL);
+          } catch (error) {
+            reject(error);
+          }
+        }
+      };
+      reader.onerror = (error) => reject(error);
     });
   };
 
@@ -109,8 +137,7 @@ const AddProducts = () => {
     });
   };
 
-  // MODIFY THIS
-
+  // Handle main img data
   const handleMultipleFiles = async (files: FileList | null): Promise<void> => {
     if (!files) {
       console.log("No files selected");
@@ -144,6 +171,11 @@ const AddProducts = () => {
     }
   };
 
+  //Handle delete vid temporary
+  const handleDeleteVideo = () => {
+    setVideoUrl(undefined);
+  };
+
   const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value.replace(/[^\d.]/g, ""); // Remove any non-digit and non-dot characters
     if (value === "") {
@@ -168,19 +200,21 @@ const AddProducts = () => {
     setSelectedCategory(newCategory);
   };
 
- 
-
   useEffect(() => {
     let value = price.replace(/[^\d.]/g, "");
     if (value === "") {
-      setPrice("");
+      if (price !== "") {
+        setPrice("");
+      }
     } else if (selectedType === "Currency") {
-      if (!isNaN(Number(value))) {
-        setPrice(parseInt(value, 10).toLocaleString());
+      const formattedPrice = parseInt(value, 10).toLocaleString();
+      if (price !== formattedPrice) {
+        setPrice(formattedPrice);
       }
     } else if (selectedType === "Web3 Tokens") {
-      if (!isNaN(Number(value))) {
-        setPrice(parseFloat(value).toFixed(4));
+      const formattedPrice = parseFloat(value).toFixed(4);
+      if (price !== formattedPrice) {
+        setPrice(formattedPrice);
       }
     }
   }, [selectedType]);
@@ -195,8 +229,6 @@ const AddProducts = () => {
     }
   }, [selectedType]);
 
-  
-
   const validateFields = () => {
     const refs = [
       itemNameRef,
@@ -207,7 +239,6 @@ const AddProducts = () => {
       itemCategoryRef,
       itemBrandRef,
       itemQuantityRef,
-
     ];
     let formsValidated = true;
 
@@ -255,7 +286,8 @@ const AddProducts = () => {
     setOptions({});
     setSelectedOption("USD");
     setPrice("");
-  
+    setVideoUrl(undefined);
+
     // Reset form fields using refs
     if (itemNameRef.current) itemNameRef.current.value = "";
     if (itemTypeRef.current) itemTypeRef.current.value = "";
@@ -266,7 +298,6 @@ const AddProducts = () => {
     if (itemBrandRef.current) itemBrandRef.current.value = "";
     if (itemQuantityRef.current) itemQuantityRef.current.value = "1";
   };
- 
 
   const addProduct = async (productCase: "DROP" | "SELL" | "SWAP") => {
     // Check fields value
@@ -277,15 +308,15 @@ const AddProducts = () => {
     const option = itemTypeOptionRef.current
       ? itemTypeOptionRef.current.value
       : "";
-      const combinedImages = uploadedImages.map((url, index) => {
-        const additionalImages = imagesInGroups[index]?.images || [];
-        return {
-          color: imageColors[index]?.name || "",
-          colorCode: imageColors[index]?.color || "",
-          image: url,
-          images: additionalImages  // This line attaches the additional images to the main image
-        };
-      });
+    const combinedImages = uploadedImages.map((url, index) => {
+      const additionalImages = imagesInGroups[index]?.setImages || [];
+      return {
+        color: imageColors[index]?.name || "",
+        colorCode: imageColors[index]?.color || "",
+        image: url,
+        setImages: additionalImages, // This line attaches the additional images to the main image
+      };
+    });
 
     let priceValue = itemTypePriceRef.current
       ? itemTypePriceRef.current.value
@@ -303,7 +334,9 @@ const AddProducts = () => {
     const quantity = itemQuantityRef.current
       ? parseInt(itemQuantityRef.current.value, 10)
       : 1;
-    
+    const videoAdProps: VideoAdProps | undefined = videoUrl
+      ? { videoAd: videoUrl }
+      : undefined;
     const newProduct: ProductTypes = {
       id: "",
       case: productCase,
@@ -313,12 +346,13 @@ const AddProducts = () => {
       brand,
       category,
       images: combinedImages,
+      vidAd: videoAdProps,
       reviews: [],
       quantity,
       specs,
       selectedImg: null,
     };
-   console.log(imagesInGroups)
+    console.log(imagesInGroups);
 
     try {
       await addDoc(productCollectionRef, newProduct);
@@ -331,7 +365,7 @@ const AddProducts = () => {
 
   return (
     <>
-      <div className={`${productDetails} mt-8`}>
+      <div className={`${productDetails}  mt-8`}>
         <ImagePreview
           uploadedImages={uploadedImages}
           onDelete={handleDeleteImage}
@@ -339,8 +373,7 @@ const AddProducts = () => {
           imagesInGroups={imagesInGroups}
           addImageToGroup={addImageToGroup}
         />
-
-        <div className="flex flex-col gap-1 border rounded-xl h-full text-xs font-semibold text-stone-500 ">
+        <div className="flex flex-col gap-1 border rounded-xl  text-xs font-semibold text-stone-500 ">
           <form className="space-y-6 p-6" action="">
             <div className="flex justify-between">
               <div className="flex flex-col space-y-2">
@@ -381,6 +414,47 @@ const AddProducts = () => {
                     >
                       Drag & Drop your image or{" "}
                       <span className="text-blue-600 hover:underline">
+                        Browse
+                      </span>
+                    </label>
+                  </div>
+                </div>
+                <div>
+                  <h2 className="mb-2">ITEM VIDEO AD:</h2>
+                  <div className="p-2 border border-dashed py-6 rounded-md text-center hover:border-indigo-500">
+                    <input
+                      className="hidden"
+                      id="videoInput"
+                      type="file"
+                      accept="video/*" // Note: The accept type is now video/*
+                      onChange={async (e) => {
+                        if (e.target.files) {
+                          const url = await uploadVideoToStorage(
+                            e.target.files[0]
+                          );
+                          setVideoUrl(url);
+                        }
+                      }}
+                      required
+                    />
+                    <label
+                      htmlFor="videoInput"
+                      className="cursor-pointer"
+                      onDrop={async (e) => {
+                        e.preventDefault();
+                        if (e.dataTransfer.files) {
+                          const url = await uploadVideoToStorage(
+                            e.dataTransfer.files[0]
+                          );
+                          setVideoUrl(url);
+                        }
+                      }}
+                      onDragOver={(e) => {
+                        e.preventDefault();
+                      }}
+                    >
+                      Drag & Drop your video or{" "}
+                      <span className="text-indigo-600 hover:underline">
                         Browse
                       </span>
                     </label>
@@ -446,12 +520,12 @@ const AddProducts = () => {
               <h1>DESCRIPTION:</h1>
               <textarea
                 name="message"
-                className={`${inputUi} w-full resize-y  max-h-40 overflow-auto`}
+                className={`${inputUi} w-full  h-full resize-y overflow-auto`}
                 required
                 ref={itemDescriptionRef}
               ></textarea>
             </div>
-            <div className="flex justify-between">
+            <div className="flex justify-between  ">
               <span>
                 <h1>CATEGORY:</h1>
                 <select
@@ -492,34 +566,37 @@ const AddProducts = () => {
               </span>
             </div>
           </form>
-          {/* IN THE FUTURE SHOW THE COLOR FLAG */}
-          <div className="max-h-p4 grid grid-cols-3 border-t text-xs text-black rounded-b-lg   overflow-hidden">
-            <button
-              disabled={!isValid}
-              className="border-r py-1 hover:bg-stone-700  hover:text-slate-50 ease-in-out delay-75"
-              onClick={() => addProduct("DROP")}
-            >
-              DROP
-            </button>
-            <button
-              disabled={!isValid}
-              className="border-r py-1 hover:bg-stone-700  hover:text-slate-50 ease-in-out delay-75"
-              onClick={() => addProduct("SELL")}
-            >
-              SELL
-            </button>
-            <button
-              disabled={!isValid}
-              className="py-1 hover:bg-stone-700 hover:text-slate-50 ease-in-out delay-75"
-              onClick={() => addProduct("SWAP")}
-            >
-              SWAP
-            </button>
-          </div>
         </div>
       </div>
       <div className="mt-12">
-      <SpecsCategories category={selectedCategory} onSpecsChange={handleSpecsChange} />
+        <SpecsCategories
+          category={selectedCategory}
+          onSpecsChange={handleSpecsChange}
+        />
+      </div>
+      <VideoAd videoAd={videoUrl} onDelete={handleDeleteVideo} />
+      <div className="mt-8 max-h-p4 grid grid-cols-3 border text-xs text-black rounded-lg   overflow-hidden">
+        <button
+          disabled={!isValid}
+          className="border-r py-1 hover:bg-stone-700  hover:text-slate-50 ease-in-out delay-75"
+          onClick={() => addProduct("DROP")}
+        >
+          DROP
+        </button>
+        <button
+          disabled={!isValid}
+          className="border-r py-1 hover:bg-stone-700  hover:text-slate-50 ease-in-out delay-75"
+          onClick={() => addProduct("SELL")}
+        >
+          SELL
+        </button>
+        <button
+          disabled={!isValid}
+          className="py-1 hover:bg-stone-700 hover:text-slate-50 ease-in-out delay-75"
+          onClick={() => addProduct("SWAP")}
+        >
+          SWAP
+        </button>
       </div>
     </>
   );

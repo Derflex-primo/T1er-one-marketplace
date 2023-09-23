@@ -60,7 +60,7 @@ const Footer = () => {
             <Link href="">Customer service</Link>
             <Link href="">Terms & Conditions</Link>
             <Link href="">Email</Link>
-            <Link href="">FAQ's</Link>
+            <Link href="">FAQ&apos;s</Link>
           </FooterList>
           <FooterList>
             <h3 className={sectionTitle}>
@@ -70,7 +70,7 @@ const Footer = () => {
             <Link href="">Laptops</Link>
             <Link href="">Desktops</Link>
             <Link href="">Smart watch</Link>
-            <Link href="">Smart tv's</Link>
+            <Link href="">Smart tv&apos;s</Link>
             <Link href="">Accesories</Link>
           </FooterList>
         </div>

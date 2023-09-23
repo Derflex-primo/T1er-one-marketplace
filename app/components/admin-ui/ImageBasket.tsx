@@ -19,13 +19,8 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [isLoadingMainImage, setLoadingMainImage] = useState(true);
   const [animateDefault, setAnimateDefault] = useState(false);
-  const [timer, setTimer] = useState<NodeJS.Timeout | null>(null);
-
+  
   useEffect(() => {
-    if (timer) {
-      clearTimeout(timer);
-    }
-
     if (uploadedImages.length > 0) {
       setLoadingMainImage(true);
       setAnimateDefault(true);
@@ -36,21 +31,23 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({
         setLoadingMainImage(false);
       }, 3000);
 
-      setTimer(newTimer);
+      return () => clearTimeout(newTimer);  
     } else {
       setLoadingMainImage(false);
       setAnimateDefault(false);
     }
-  }, [uploadedImages]);
+}, [uploadedImages]);
 
 
-  const uploadBase64ToStorage = async (base64: string, filename: string): Promise<string> => {
+  const uploadBase64ToStorage = async (
+    base64: string,
+    filename: string
+  ): Promise<string> => {
     const storageRef = ref(storage, `images/${filename}`);
     await uploadString(storageRef, base64.split(",")[1], "base64");
     const downloadURL = await getDownloadURL(storageRef);
     return downloadURL;
   };
-  
 
   const handleAddImageToGroup = async (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -62,11 +59,10 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({
       reader.onloadend = async () => {
         try {
           const base64 = String(reader.result);
-          
+
           // Upload the image to Firebase Storage and get the download URL
           const downloadURL = await uploadBase64ToStorage(base64, file.name);
-  
-          // Now use the download URL to add the image to the group
+
           addImageToGroup(index, downloadURL);
         } catch (error) {
           console.error("Error uploading image:", error);
@@ -75,23 +71,36 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({
       reader.readAsDataURL(file);
     }
   };
-  
+
+  const isSelectedImageInGroups = () => {
+    if (selectedImage === null) {
+      return false;
+    }
+
+    for (const group of imagesInGroups) {
+      if (group?.setImages.includes(selectedImage)) {
+        return false;
+      }
+    }
+    return true;
+  };
+
   return (
-    <div className="image-upload-preview  p-4 rounded shadow-lg relative">
-      <div className="h-[260px] w-full relative">
+    <div className="image-upload-preview   p-4 rounded shadow-lg relative">
+      <div className="relative h-[300px] w-full flex justify-center items-center">
         {isLoadingMainImage ? (
-          <div className="absolute inset-0 flex justify-center items-center  animate-pulse ">
+          <div className="absolute inset-0 flex justify-center items-center animate-pulse">
             <CircularProgress color="inherit" />
           </div>
         ) : selectedImage ? (
-          <div className="absolute inset-0 flex justify-center items-center">
+          <div className="relative h-[300px] w-full flex justify-center items-center">
             <Image
               src={selectedImage}
               alt="Selected Preview"
-              width={260}
-              height={260}
+              layout="fill"
+              objectFit="contain"
               quality={75}
-              className="uploaded-image rounded"
+              className="rounded"
             />
           </div>
         ) : (
@@ -110,7 +119,7 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({
           </div>
         )}
 
-        {selectedImage && (
+        {isSelectedImageInGroups() && selectedImage && (
           <div className="flex flex-col mt-4 text-xs absolute top-0 right-4">
             <div className="flex flex-col text-white bg-stone-900 p-4 rounded">
               <span>
@@ -140,12 +149,14 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({
                     className="p-2"
                     onClick={() => setSelectedImage(uploadedImageUrl)}
                   >
-                    <Image
-                      src={uploadedImageUrl}
-                      alt="Thumbnail"
-                      width={54}
-                      height={54}
-                    />
+                    <div className="h-12 w-12 relative">
+                      <Image
+                        src={uploadedImageUrl}
+                        alt="Thumbnail"
+                        layout="fill"
+                        objectFit="contain"
+                      />
+                    </div>
                   </button>
 
                   <button
@@ -161,14 +172,21 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({
                   </button>
                 </div>
                 <div className="flex flex-wrap">
-                  {imagesInGroups[index]?.images.map((img, imgIndex) => (
+                  {imagesInGroups[index]?.setImages.map((img, imgIndex) => (
                     <div className="p-2" key={imgIndex}>
-                      <Image
-                        src={img}
-                        alt="Thumbnail in group"
-                        width={54}
-                        height={54}
-                      />
+                      <button
+                        onClick={() => setSelectedImage(img)}
+                        className="p-2"
+                      >
+                        <div className="h-12 w-12 relative">
+                          <Image
+                            src={img}
+                            alt="Thumbnail in group"
+                            layout="fill"
+                            objectFit="contain"
+                          />
+                        </div>
+                      </button>
                     </div>
                   ))}
                 </div>

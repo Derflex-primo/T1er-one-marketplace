@@ -43,7 +43,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
     >
       <div>
         <div className="aspect-square overflow-hidden relative w-full">
-          {data.images && (
+        {data.images && data.images[0] && data.images[0].image && (
             <Image
               src={data.images[0].image}
               fill

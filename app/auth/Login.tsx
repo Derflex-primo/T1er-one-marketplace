@@ -49,7 +49,7 @@ const LogInPage: React.FC<LogInPageProps> = (props) => {
     });
 
     return () => unsubscribe();
-  }, [auth]);
+  }, []);
 
   const signInWithGoogle = async () => {
     setAuthing(true);
@@ -141,11 +141,7 @@ const LogInPage: React.FC<LogInPageProps> = (props) => {
               textAlign: "center",
             }}
           >
-            <span>
-              {" "}
-              If you don't have a wallet, you can either select a provider and
-              create one.
-            </span>{" "}
+            <span> {" "} If you don&apos;t have a wallet, ... </span>
             <span className="text-sky-500">Learn more</span>
           </Typography>
           <Typography component="div" sx={{ px: 3 }}>

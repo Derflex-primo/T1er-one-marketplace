@@ -1,7 +1,5 @@
 "use client";
 
-
-
 // RE - DO PRODUCT DETAILS - ui
 
 import { Rating } from "@mui/material";
@@ -14,12 +12,7 @@ import Button from "./Button";
 import ProductImage from "./ProductImage";
 import { useCart } from "@/hooks/useCart";
 import { useRouter } from "next/navigation";
-import {
-  ProductTypes,
-  ProductDetailsProps,
-  ImageProps,
-} from "@/types";
-import { formatUSDWithComma } from "@/lib/utils/formats";
+import { ProductTypes, ProductDetailsProps, ImageProps } from "@/types";
 
 const Horizontal = () => {
   return <hr className="w-[100%] my-2" />;
@@ -39,14 +32,13 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
     category: product.category,
     brand: product.brand,
     images: product.images,
-    selectedImg: product.images[0] || null,  
-    quantity: 1, 
+    selectedImg: product.images[0] || null,
+    quantity: 1,
     type: product.type,
     reviews: product.reviews,
   });
 
   const router = useRouter();
-
 
   useEffect(() => {
     setIsProductInCart(false);
@@ -59,7 +51,14 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
         setIsProductInCart(true);
       }
     }
-  }, [cartProducts]);
+  }, [cartProducts, product.id]);
+
+  const formatWithComma = (number?: number) => {
+    if (number === undefined || number === null) {
+      return "$0"; // or some default value
+    }
+    return new Intl.NumberFormat("en-US").format(number);
+  };
 
   const handleColorSelect = useCallback(
     (value: ImageProps) => {
@@ -67,7 +66,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
         return { ...prev, selectedImg: value };
       });
     },
-    [cartProduct.images]
+    []
   );
 
   const toggleDescription = () => {
@@ -93,7 +92,6 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
       <ProductImage
         cartProduct={cartProduct}
         product={product}
-        handleColorSelect={handleColorSelect}
       />
       <div className="flex flex-col gap-1 text-sm">
         <span className="text-2xl font-medium text-stone-800">
@@ -102,22 +100,15 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
 
         <span className="flex flex-wrap justify-between items-center">
           <span className="flex space-x-4 items-center">
-            <span className="text-base  text-black ">
-              {formatUSDWithComma(product.type[0].price)}
+            <span className="flex text-base space-x-2 text-black ">
+              <h1 className="text-green-500">{product.type[0].options}</h1>
+              <h1>{formatWithComma(product.type[0].price)}</h1>
             </span>
-            <span className="bg-green-300 px-1">Save 30%</span>
+            <span className="bg-rose-600 text-white font-semibold px-1">
+              Save 30%
+            </span>
           </span>
-          <span>
-            <div className="flex justify-between space-x-2 items-center sm:flex-row-reverse md:flex-row">
-              <Rating sx={{ fontSize: "1rem" }} readOnly />
-              <span className={productRating}>
-                reviews{" "}
-                <strong className="text-rose-500">
-                  {product.reviews?.length}
-                </strong>
-              </span>
-            </div>
-          </span>
+          <span></span>
         </span>
         <Horizontal />
         <div>
@@ -192,6 +183,16 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
             </div>
           </>
         )}
+
+        {/* <div className="flex justify-between space-x-2 items-center sm:flex-row-reverse md:flex-row">
+              <Rating sx={{ fontSize: "1rem" }} readOnly />
+              <span className={productRating}>
+                reviews{" "}
+                <strong className="text-rose-500">
+                  {product.reviews?.length}
+                </strong>
+              </span>
+        </div>*/}
       </div>
     </div>
   );
