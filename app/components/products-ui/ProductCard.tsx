@@ -11,11 +11,13 @@ interface ProductCardProps {
 }
 
 const productImage =
-  "w-full h-full object-contain p-4 transform translate-4 transition-transform duration-300 hover:scale-90 hover:cursor-pointer ";
+  "w-full h-full object-contain p-3 duration-300 hover:p-4 hover:cursor-pointer ease-in-out delay-75";
 export const productRating =
   "bg-stone-100 text-stone-500 text-xs font-semibold  px-2.5 py-0.5 rounded dark:bg-stone-200 dark:text-stone-500  ";
 const productCotainer =
-  "col-span-1 cursor-pointer border-[1px] shadow-lg bg-white rounded-lg";
+  "col-span-1 cursor-pointer border-[1px] shadow-lg bg-white rounded-lg hover:animate-pulse";
+
+export const productsWrap = "grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 mb:grid-cols-5 xl:grid-cols-5 2xl:grid-cols-6 gap-8";
 
 const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
   const [windowWidth, setWindowWidth] = useState<number>(0);
@@ -39,7 +41,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
   return (
     <div
       onClick={() => router.push(`/product/${data.id}`)}
-      className={productCotainer}
+      className={`${productCotainer}`}
     >
       <div>
         <div className="aspect-square overflow-hidden relative w-full">

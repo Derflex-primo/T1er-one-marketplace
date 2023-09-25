@@ -4,7 +4,7 @@ import {
   CategoryType,
   ImageProps,
   ProductTypes,
-  Specs,
+  SpecsProps,
   VideoAdProps,
 } from "@/types";
 import { useEffect, useRef, useState } from "react";
@@ -31,7 +31,7 @@ export const inputUi = "border rounded-md p-1 mt-1 text-black";
 const AddProducts = () => {
   // Handle Category
   const [selectedCategory, setSelectedCategory] = useState<string>(""); // To keep track of selected category
-  const [specs, setSpecs] = useState<Specs>({});
+  const [specs, setSpecs] = useState<SpecsProps>({});
   // Image attributes
   const [uploadedImages, setUploadedImages] = useState<string[]>([]);
   const [imageColors, setImageColors] = useState<
@@ -64,7 +64,7 @@ const AddProducts = () => {
   };
 
   // This handles specs - C
-  const handleSpecsChange = (newSpecs: Specs) => {
+  const handleSpecsChange = (newSpecs: SpecsProps) => {
     setSpecs(newSpecs);
   };
 

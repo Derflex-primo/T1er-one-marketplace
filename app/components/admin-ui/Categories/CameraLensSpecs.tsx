@@ -1,9 +1,9 @@
 import { inputUi } from "../AddProducts";
 import { containerDisplay } from "../SpecsCategories";
-import { ItemSpecsRefProps, Specs } from "@/types";
+import { ItemSpecsRefProps, SpecsProps } from "@/types";
 
 export interface CameraLensSpecsProps extends ItemSpecsRefProps {
-  onSpecsChange: (newSpecs: Specs) => void;
+  onSpecsChange: (newSpecs: SpecsProps) => void;
 }
 
 const lensSpecLabels = [

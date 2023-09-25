@@ -1,10 +1,10 @@
 import React from "react";
 import { inputUi } from "../AddProducts";
 import { containerDisplay } from "../SpecsCategories";
-import { ItemSpecsRefProps, Specs } from "@/types";
+import { ItemSpecsRefProps, SpecsProps } from "@/types";
 
 export interface WirelessHeadphonesSpecsProps extends ItemSpecsRefProps {
-  onSpecsChange: (newSpecs: Specs) => void;
+  onSpecsChange: (newSpecs: SpecsProps) => void;
 }
 export const WirelessHeadphonesSpecs: React.FC<
   WirelessHeadphonesSpecsProps

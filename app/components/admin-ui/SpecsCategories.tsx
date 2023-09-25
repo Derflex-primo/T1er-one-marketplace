@@ -34,15 +34,15 @@ import { TelevisionsSpecs } from "./Categories/TelevisionsSpecs";
 import { VirtualRealitySpecs } from "./Categories/VirtualRealitySpecs";
 import { WiredHeadphonesSpecs } from "./Categories/WiredHeadphonesSpecs";
 import { WirelessHeadphonesSpecs } from "./Categories/WirelessHeadphonesSpecs";
-import { Specs, SpecsCategoriesProps } from "@/types";
+import { SpecsProps, SpecsCategoriesProps } from "@/types";
 
 
 export const containerDisplay = "text-xs font-semibold text-stone-500 grid grid-cols-1 md:grid-cols-4 gap-2"
 
 const SpecsCategories: React.FC<SpecsCategoriesProps> = ({ category , onSpecsChange }) => {
-  const [specs, setSpecs] = useState<Specs>({});
+  const [specs, setSpecs] = useState<SpecsProps>({});
 
-  const handleSpecsChange = (newSpecs: Specs) => {
+  const handleSpecsChange = (newSpecs: SpecsProps) => {
     setSpecs(newSpecs);
     onSpecsChange(newSpecs);
   };

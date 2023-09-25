@@ -19,7 +19,7 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [isLoadingMainImage, setLoadingMainImage] = useState(true);
   const [animateDefault, setAnimateDefault] = useState(false);
-  
+
   useEffect(() => {
     if (uploadedImages.length > 0) {
       setLoadingMainImage(true);
@@ -31,13 +31,12 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({
         setLoadingMainImage(false);
       }, 3000);
 
-      return () => clearTimeout(newTimer);  
+      return () => clearTimeout(newTimer);
     } else {
       setLoadingMainImage(false);
       setAnimateDefault(false);
     }
-}, [uploadedImages]);
-
+  }, [uploadedImages]);
 
   const uploadBase64ToStorage = async (
     base64: string,
@@ -97,10 +96,10 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({
             <Image
               src={selectedImage}
               alt="Selected Preview"
-              layout="fill"
-              objectFit="contain"
+              fill
+              sizes="(max-width: 640px) 100vw, 1200px"
               quality={75}
-              className="rounded"
+              className="rounded object-contain"
             />
           </div>
         ) : (
@@ -153,8 +152,9 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({
                       <Image
                         src={uploadedImageUrl}
                         alt="Thumbnail"
-                        layout="fill"
-                        objectFit="contain"
+                        fill
+                        className="object-contain"
+                        sizes="3rem"
                       />
                     </div>
                   </button>
@@ -182,8 +182,9 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({
                           <Image
                             src={img}
                             alt="Thumbnail in group"
-                            layout="fill"
-                            objectFit="contain"
+                            fill
+                            className="object-contain"
+                            sizes="3rem"
                           />
                         </div>
                       </button>

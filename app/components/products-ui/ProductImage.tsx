@@ -1,10 +1,10 @@
 "use client";
 
-// Add Video on Bigger View
 import { ProductDetailsProps } from "@/types";
 import Image from "next/image";
-import { BiPlay } from "react-icons/bi";
+import { BiHide, BiPlay } from "react-icons/bi";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 const ProductImage: React.FC<ProductDetailsProps> = ({
   cartProduct,
@@ -13,9 +13,13 @@ const ProductImage: React.FC<ProductDetailsProps> = ({
   const [selectedMainImage, setSelectedMainImage] = useState<
     string | undefined
   >(cartProduct?.selectedImg?.image);
+  const [selectVideoPlay, setSelectVideoPlay] = useState<boolean>(false);
+  const [isVideoSelected, setIsVideoSelected] = useState<boolean>(false);
 
   const handleClick = (imageUrl: string) => {
     setSelectedMainImage(imageUrl);
+    setSelectVideoPlay(false);
+    setIsVideoSelected(false);
   };
 
   const selectedImg = cartProduct?.selectedImg;
@@ -30,32 +34,40 @@ const ProductImage: React.FC<ProductDetailsProps> = ({
 
   return (
     <div className="grid grid-cols-6 gap-2 h-full max-h-[500px] min-h-[300px] sm:min-h-[400px]">
-      <div className="flex flex-col items-center justify-center rounded-lg gap-3 cursor-pointer border h-full max-h-[500px] min-h-[300px] sm:min-h-[400px]  ">
-        <div className="relative w-[80%] h-16 aspect-square  ">
+      <div className="flex flex-col items-center justify-center rounded-lg gap-3 cursor-pointer h-full max-h-[500px] min-h-[300px] sm:min-h-[400px]  ">
+        <div className="relative w-[80%] h-16 aspect-square border rounded-lg ">
           <Image
             src={cartProduct?.selectedImg?.image || ""}
             alt={`Set Image ${cartProduct?.selectedImg?.color}`}
-            layout="fill"
+            fill
+            sizes="(max-width: 768px) 80vw, (max-width: 1200px) 40vw, 26.4vw"
             className={`object-contain ${
+              !isVideoSelected &&
               selectedMainImage === cartProduct?.selectedImg?.image
                 ? "border-[1.5px] border-stone-500 rounded-lg p-1 "
                 : "border-none p-2"
-            } `}
+            }`}
             onClick={() => handleClick(cartProduct?.selectedImg?.image || "")}
+            priority
           />
         </div>
+
         {selectedImg?.setImages?.map((imageUrl: string, index: number) => (
           <div
             key={index}
-            className="relative w-[80%] h-16 aspect-square   "
-            onClick={() => handleClick(imageUrl)}
+            className="relative w-[80%] h-16 aspect-square border rounded-lg"
+            onClick={() => {
+              handleClick(imageUrl);
+              setIsVideoSelected(false);
+            }}
           >
             <Image
               src={imageUrl || ""}
               alt={`Set Image ${index}`}
-              layout="fill"
-              className={`object-contain  ${
-                selectedMainImage === imageUrl
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              className={`object-contain ${
+                selectedMainImage === imageUrl && !isVideoSelected
                   ? "border-[1.5px] border-stone-500 rounded-lg p-1"
                   : "border-none p-2"
               }`}
@@ -63,19 +75,56 @@ const ProductImage: React.FC<ProductDetailsProps> = ({
           </div>
         ))}
 
-        <div className="relative w-[80%] h-16 aspect-square border rounded-lg flex justify-center items-center">
-          <BiPlay  size={28} />
+        <div
+          onClick={() => {
+            if (product.vidAd?.videoAd && product.vidAd.videoAd.trim() !== "") {
+              if (selectVideoPlay) {
+                setSelectVideoPlay(false);
+                setIsVideoSelected(false);
+              } else {
+                setSelectVideoPlay(true);
+                setIsVideoSelected(true);
+              }
+            } else {
+              toast.error("This product does not have a video ad available.");
+            }
+          }}
+          className={`relative w-[80%] h-16 aspect-square ${
+            isVideoSelected ? "border-[1.5px] border-stone-500" : "border"
+          } rounded-lg flex justify-center items-center ${
+            product.vidAd?.videoAd && product.vidAd.videoAd.trim() !== ""
+              ? selectVideoPlay
+                ? "hover:text-rose-500"
+                : "hover:text-black"
+              : "hover:text-rose-500"
+          }`}
+        >
+          <div className="flex justify-center items-center h-8 w-8">
+            {selectVideoPlay ? (
+              <BiHide size={28} className="text-rose-500" />
+            ) : (
+              <BiPlay size={28} />
+            )}
+          </div>
         </div>
       </div>
       <div className="relative col-span-5 aspect-square">
-        <Image
-          fill
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          quality={100}
-          src={selectedMainImage || cartProduct?.selectedImg?.image || ""}
-          alt={cartProduct?.name || ""}
-          className="w-full h-full object-contain max-h-[500px] min-h-[300px] sm:min-h-[400px]"
-        />
+        {selectVideoPlay ? (
+          <div className="bg-black aspect-square rounded-lg overflow-hidden shadow-lg">
+            <video controls autoPlay className="w-full h-full object-cover">
+              <source src={product.vidAd?.videoAd} type="video/mp4" />
+            </video>
+          </div>
+        ) : (
+          <Image
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            quality={100}
+            src={selectedMainImage || cartProduct?.selectedImg?.image || ""}
+            alt={cartProduct?.name || ""}
+            className="w-full h-full object-contain max-h-[500px] min-h-[300px] sm:min-h-[400px]"
+          />
+        )}
       </div>
     </div>
   );

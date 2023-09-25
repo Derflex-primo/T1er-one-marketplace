@@ -13,11 +13,12 @@ import ProductImage from "./ProductImage";
 import { useCart } from "@/hooks/useCart";
 import { useRouter } from "next/navigation";
 import { ProductTypes, ProductDetailsProps, ImageProps } from "@/types";
+import Specs from "./Specs";
 
 const Horizontal = () => {
   return <hr className="w-[100%] my-2" />;
 };
-export const colorCategories = "font-medium text-stone-600";
+export const colorCategories = "font-medium text-stone-600 cursor-default";
 export const productDetails = "grid grid-cols-1 md:grid-cols-2 gap-12";
 
 const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
@@ -60,14 +61,11 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
     return new Intl.NumberFormat("en-US").format(number);
   };
 
-  const handleColorSelect = useCallback(
-    (value: ImageProps) => {
-      setCartProduct((prev) => {
-        return { ...prev, selectedImg: value };
-      });
-    },
-    []
-  );
+  const handleColorSelect = useCallback((value: ImageProps) => {
+    setCartProduct((prev) => {
+      return { ...prev, selectedImg: value };
+    });
+  }, []);
 
   const toggleDescription = () => {
     setExpanded(!expanded);
@@ -89,10 +87,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
 
   return (
     <div className={productDetails}>
-      <ProductImage
-        cartProduct={cartProduct}
-        product={product}
-      />
+      <ProductImage cartProduct={cartProduct} product={product} />
       <div className="flex flex-col gap-1 text-sm">
         <span className="text-2xl font-medium text-stone-800">
           {product.name}
@@ -129,6 +124,13 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
           </span>
           <span className={colorCategories}>
             Brand | <span className="text-black">{product.brand}</span>
+          </span>
+          <span>
+            <span>
+              {product.specs ? (
+                <Specs product={product.specs} categoryItem={product.category} />
+              ) : null}
+            </span>
           </span>
           <span
             className={`

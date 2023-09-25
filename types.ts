@@ -21,7 +21,7 @@ export interface ProductTypes {
 }
 
 export interface ProductSpecs {
-    itemSpecsRef?: Specs;
+    [key: string]: string;
 }
 
 
@@ -105,18 +105,18 @@ export type CategoryType = "smartPhones" | "laptops" | "cameras" | "camera-lens"
 
 export interface SpecsCategoriesProps {
   category: CategoryType | string;
-  onSpecsChange: (specs: Specs) => void;
+  onSpecsChange: (specs: SpecsProps) => void;
 }
 
 
-export interface Specs {
+export interface SpecsProps {
     [key: string]: string;
 }
 
 
 export interface ItemSpecsRefProps {
-    specs: Specs;   
-    onSpecsChange: (newSpecs: Specs) => void;  
+    specs: SpecsProps;   
+    onSpecsChange: (newSpecs: SpecsProps) => void;  
   }
   
 

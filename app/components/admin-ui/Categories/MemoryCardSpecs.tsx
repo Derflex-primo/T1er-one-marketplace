@@ -1,10 +1,10 @@
 import React from "react";
 import { containerDisplay } from "../SpecsCategories";
 import { inputUi } from "../AddProducts";
-import { ItemSpecsRefProps, Specs } from "@/types";
+import { ItemSpecsRefProps, SpecsProps } from "@/types";
 
 export interface MemoryCardSpecsProps extends ItemSpecsRefProps {
-  onSpecsChange: (newSpecs: Specs) => void;
+  onSpecsChange: (newSpecs: SpecsProps) => void;
 }
 
 export const MemoryCardSpecs: React.FC<MemoryCardSpecsProps> = ({
