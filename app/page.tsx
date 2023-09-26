@@ -17,7 +17,7 @@ const Page = () => {
         <HomeBanner />
         <div className={productsWrap}>
           {isLoading ? (
-            Array(5).fill(undefined).map((_, index) => <ProductCardSkeleton key={index} />)
+            Array(5).fill(0).map((_, index) => <ProductCardSkeleton key={index} />)
           ) : products.length > 0 ? (
             products.map((product) => (
               <ProductCard key={product.id} data={product} />

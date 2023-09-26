@@ -34,11 +34,30 @@ export const CartContextProvider = (props: Props) => {
   );
   const [cartTotalAmount, setCartTotalAmount] = useState(0);
 
-  useEffect(() => {
+  const initializeCart = () => {
     const cartItems: any = localStorage.getItem("tierOneItems");
     const effectCartProducts: ProductTypes[] | null = JSON.parse(cartItems);
     setCartProducts(effectCartProducts);
+  }
+
+  useEffect(() => {
+    initializeCart();
   }, []);
+
+  useEffect(() => {
+    if (cartProducts) {
+      let totalAmount = 0;
+      let totalQty = 0;
+
+      cartProducts.forEach(item => {
+        totalAmount += item.type[0].price * item.quantity;
+        totalQty += item.quantity;
+      });
+
+      setCartTotalQty(totalQty);
+      setCartTotalAmount(totalAmount);
+    }
+  }, [cartProducts]);
 
   useEffect(() => {
     const getTotals = () => {
@@ -71,6 +90,8 @@ export const CartContextProvider = (props: Props) => {
       } else {
         updatedCart = [product];
       }
+      console.log("handleAddProductToType is called");
+
       toast.success("Product added to cart");
       localStorage.setItem("tierOneItems", JSON.stringify(updatedCart)); // Change this to db
       return updatedCart;

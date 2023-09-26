@@ -14,4 +14,4 @@ import { CartContextProvider } from "@/hooks/useCart";
    )
  }
  
- export default CartProvider
+ export default CartProvider;

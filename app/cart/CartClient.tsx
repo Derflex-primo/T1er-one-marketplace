@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from 'react';
+import React from 'react';
 import { useCart } from "@/hooks/useCart";
 import Link from "next/link";
 import { MdArrowBack, MdOutlineRemoveShoppingCart } from "react-icons/md";

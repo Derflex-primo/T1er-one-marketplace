@@ -13,7 +13,6 @@ import { useRouter } from "next/navigation";
 import { ProductTypes, ProductDetailsProps, ImageProps } from "@/types";
 import Specs from "./Specs";
 
-
 export const Horizontal = () => {
   return <hr className="w-[100%] my-2" />;
 };
@@ -21,10 +20,9 @@ export const colorCategories = "font-medium text-stone-600 cursor-default";
 export const productDetails = "grid grid-cols-1 md:grid-cols-2 gap-12";
 
 const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
-  const { handleAddProductToType, cartProducts } = useCart(); //handles add to cart from CartContextProvider
+  const { handleAddProductToType, cartProducts , handleRemoveProductToType} = useCart(); //handles add to cart from CartContextProvider
   const [isProductInCart, setIsProductInCart] = useState(false);
   const [expanded, setExpanded] = useState(false);
-  const { handleRemoveProductToType } = useCart();
   const [cartProduct, setCartProduct] = useState<ProductTypes>({
     id: product.id,
     name: product.name,
@@ -61,7 +59,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
     return "$" + new Intl.NumberFormat("en-US").format(number);
   };
 
-  const discountedPrice =   product.type[0].price * 0.7; // Temporarry discount
+  const discountedPrice = product.type[0].price * 0.7; // Temporarry discount
 
   const handleColorSelect = useCallback((value: ImageProps) => {
     setCartProduct((prev) => {
@@ -76,17 +74,17 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
   const handleQtyIncrease = useCallback(() => {
     if (cartProduct.quantity === 99) return;
     setCartProduct((prev) => {
-      return { ...prev, quantity: ++prev.quantity };
+      return { ...prev, quantity: prev.quantity + 1 };
     });
   }, [cartProduct]);
-
+  
   const handleQtyDecrease = useCallback(() => {
     if (cartProduct.quantity === 1) return;
     setCartProduct((prev) => {
-      return { ...prev, quantity: --prev.quantity };
+      return { ...prev, quantity: prev.quantity - 1 };
     });
   }, [cartProduct]);
-
+  
   return (
     <div className={productDetails}>
       <ProductImage cartProduct={cartProduct} product={product} />
@@ -166,13 +164,13 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
 
         {isProductInCart ? (
           <div className="flex gap-1 ">
-            <button className="md:max-w-[200px] sm:w-full ">
+            <div className="md:max-w-[200px] sm:w-full ">
               <Button
                 label="View Cart"
                 outline={true}
                 onClick={() => router.push("/cart")}
               />
-            </button>
+            </div>
             <button
               onClick={() => handleRemoveProductToType(product)}
               className="flex justify-center items-center rounded-lg  bg-stone-800 hover:bg-stone-700 border w-12"
@@ -199,7 +197,11 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
             <div className="md:max-w-[200px] sm:w-full mt-4">
               <Button
                 label="Add to cart"
-                onClick={() => handleAddProductToType(cartProduct)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  handleAddProductToType(cartProduct);
+                }}
               />
             </div>
           </>

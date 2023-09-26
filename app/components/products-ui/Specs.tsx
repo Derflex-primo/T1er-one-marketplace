@@ -87,14 +87,14 @@ const Specs: React.FC<_Specs> = ({ product, categoryItem }) => {
               alignItems: "baseline",
               flexDirection: "row",
               textAlign: "start",
-              fontWeight: 600,
+              fontWeight: 1000,
               marginLeft: "24px",
               pt: "18px",
               pb: "14px",
             }}
           >
             <span
-              className={`text-stone-500 text-sm capitalize pr-2 items-center ${michroma.className}`}
+              className={`text-stone-500 text-sm   capitalize pr-2 items-center ${michroma.className}`}
             >
               {categoryItem}
             </span>
