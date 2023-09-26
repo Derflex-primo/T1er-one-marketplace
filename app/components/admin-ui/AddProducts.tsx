@@ -203,25 +203,27 @@ const AddProducts = () => {
     const newCategory = e.target.value;
     setSelectedCategory(newCategory);
   };
+ 
+  // To prevent loop
+  const priceRef = useRef(price);
 
   useEffect(() => {
-    let value = price.replace(/[^\d.]/g, "");
+    priceRef.current = price;
+  }, [price]);
+
+
+  useEffect(() => {
+    let value = priceRef.current.replace(/[^\d.]/g, "");
     if (value === "") {
-      if (price !== "") {
-        setPrice("");
-      }
+      setPrice(prevPrice => prevPrice !== "" ? "" : prevPrice);
     } else if (selectedType === "Currency") {
       const formattedPrice = parseInt(value, 10).toLocaleString();
-      if (price !== formattedPrice) {
-        setPrice(formattedPrice);
-      }
+      setPrice(prevPrice => prevPrice !== formattedPrice ? formattedPrice : prevPrice);
     } else if (selectedType === "Web3 Tokens") {
       const formattedPrice = parseFloat(value).toFixed(4);
-      if (price !== formattedPrice) {
-        setPrice(formattedPrice);
-      }
+      setPrice(prevPrice => prevPrice !== formattedPrice ? formattedPrice : prevPrice);
     }
-  }, [selectedType]);
+  }, [selectedType]);  
 
   useEffect(() => {
     if (selectedType === "Currency") {

@@ -2,17 +2,27 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { collection, getDocs } from "firebase/firestore";
 import { ProductTypes } from "@/types";
-import validatedEnv from "../utils/env";
+import dotenv from 'dotenv';
+
+dotenv.config({ path: '.env.development' });
+
+const FIREBASE_API_KEY = process.env.NEXT_PUBLIC_FIREBASE_API_KEY;
+const FIREBASE_AUTH_DOMAIN = process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN;
+const FIREBASE_PROJECT_ID = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID;
+const FIREBASE_STORAGE_BUCKET = process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET;
+const FIREBASE_MESSAGING_SENDER_ID = process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID;
+const FIREBASE_APP_ID = process.env.NEXT_PUBLIC_FIREBASE_APP_ID;
+const FIREBASE_MEASUREMENT_ID = process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID;
 
 export const config = {
   firebaseConfig: {
-    apiKey: validatedEnv.NEXT_PUBLIC_FIREBASE_API_KEY,
-    authDomain: validatedEnv.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-    projectId: validatedEnv.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-    storageBucket: validatedEnv.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-    messagingSenderId: validatedEnv.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-    appId: validatedEnv.NEXT_PUBLIC_FIREBASE_APP_ID,
-    measurementId: validatedEnv.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
+    apiKey: FIREBASE_API_KEY,
+    authDomain: FIREBASE_AUTH_DOMAIN,
+    projectId: FIREBASE_PROJECT_ID,
+    storageBucket: FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: FIREBASE_MESSAGING_SENDER_ID,
+    appId: FIREBASE_APP_ID,
+    measurementId: FIREBASE_MEASUREMENT_ID
   }
 };
 
