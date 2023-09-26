@@ -23,12 +23,16 @@ import {
 } from "firebase/storage";
 import SpecsCategories from "./SpecsCategories";
 import VideoAd from "./VideoAd";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+const AUTHORIZED_EMAIL = process.env.NEXT_PUBLIC_AUTHORIZED_EMAIL;
 
 const productCollectionRef = collection(db, "products");
 export const storage = getStorage(app);
 
 export const inputUi = "border rounded-md p-1 mt-1 text-black";
 const AddProducts = () => {
+  // Auth check admin
+  const [isAuthorized, setIsAuthorized] = useState(false);
   // Handle Category
   const [selectedCategory, setSelectedCategory] = useState<string>(""); // To keep track of selected category
   const [specs, setSpecs] = useState<SpecsProps>({});
@@ -229,6 +233,17 @@ const AddProducts = () => {
     }
   }, [selectedType]);
 
+  useEffect(() => {
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+      if (user && user.email === AUTHORIZED_EMAIL) {
+        setIsAuthorized(true);
+      } else {
+        setIsAuthorized(false);
+      }
+    });
+  }, []);
+
   const validateFields = () => {
     const refs = [
       itemNameRef,
@@ -300,6 +315,10 @@ const AddProducts = () => {
   };
 
   const addProduct = async (productCase: "DROP" | "SELL" | "SWAP") => {
+    if (!isAuthorized) {
+      toast("You are not authorized to add products.");
+      return;
+    }
     // Check fields value
     if (!validateFields()) return;
     // Extract values from ref.current

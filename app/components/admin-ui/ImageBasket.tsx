@@ -114,6 +114,7 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({
               width={400}
               height={400}
               priority
+              className="w-1/2 h-auto"
             />
           </div>
         )}

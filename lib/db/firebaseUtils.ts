@@ -1,27 +1,26 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
-
+import { collection, getDocs } from "firebase/firestore";
+import { ProductTypes } from "@/types";
+import validatedEnv from "../utils/env";
 
 export const config = {
   firebaseConfig: {
-      apiKey: "AIzaSyBjQzf93tOTrbcEEqtbtkKAz4-MolEvJOc",
-      authDomain: "tier-one-4edec.firebaseapp.com",
-      projectId: "tier-one-4edec",
-      storageBucket: "tier-one-4edec.appspot.com",
-      messagingSenderId: "462473217152",
-      appId: "1:462473217152:web:865dab835f5a0038b91265",
-      measurementId: "G-RD9VQCV8J6"
-  },
-}
+    apiKey: validatedEnv.NEXT_PUBLIC_FIREBASE_API_KEY,
+    authDomain: validatedEnv.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+    projectId: validatedEnv.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+    storageBucket: validatedEnv.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: validatedEnv.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+    appId: validatedEnv.NEXT_PUBLIC_FIREBASE_APP_ID,
+    measurementId: validatedEnv.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
+  }
+};
+
 
 
 export const app = initializeApp(config.firebaseConfig);
 // Initilized Firestore
 export const db = getFirestore(app);
-
-import { collection, getDocs } from "firebase/firestore";
-import { ProductTypes } from "@/types";
-
 export const getProductsFromFirebase = async (): Promise<ProductTypes[]> => {
   try {
     const productCollectionRef = collection(db, "products");

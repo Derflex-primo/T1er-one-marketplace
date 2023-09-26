@@ -13,7 +13,7 @@ interface SetQuantityProps {
 }
 
 const buttonStyle =
-  "border-[1.5px] border-stone-200 px-2  p-2 text-stone-700 ";
+  "border  border-stone-200 px-2  p-2 text-stone-700 ";
 
 const SetQuantity: React.FC<SetQuantityProps> = ({
   cartProduct,
@@ -22,19 +22,19 @@ const SetQuantity: React.FC<SetQuantityProps> = ({
   handleQtyDecrease,
 }) => {
   return (
-    <div className="flex gap-8 items-center">
+    <div className="flex gap-7 items-center">
       {cartCounter ? null : <div className={colorCategories}>Quantity:</div>}
       <div className="flex gap-[.4px] items-center text-base">
         <button
           onClick={handleQtyDecrease}
-          className={`${buttonStyle} relative rounded-l-lg  hover:bg-stone-600 hover:text-white transition ease-in-out delay-100`}
+          className={`${buttonStyle} relative rounded-l-lg  hover:bg-stone-800 hover:text-white transition ease-in-out delay-100`}
         >
           <AiOutlineMinus size={16} />
         </button>
-        <div className={`border-[1.5px] px-2 py-1 md:px-4 `}>{cartProduct.quantity}</div>
+        <div className={`border  px-2 py-1 md:px-4 `}>{cartProduct.quantity}</div>
         <button
           onClick={handleQtyIncrease}
-          className={`${buttonStyle}relative rounded-r-lg hover:bg-stone-600 hover:text-white transition ease-in-out delay-100`}
+          className={`${buttonStyle}relative rounded-r-lg hover:bg-stone-800 hover:text-white transition ease-in-out delay-100`}
         >
            <AiOutlinePlus size={16} />
         </button>

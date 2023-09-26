@@ -6,6 +6,7 @@ import { getProductsFromFirebase } from '@/lib/db/firebaseUtils';
 
 export type ProductContextType = {
   products: ProductTypes[],
+  isLoading: boolean
 };
 
 export const ProductContext = createContext<ProductContextType | null>(null);
@@ -16,6 +17,7 @@ interface Props {
 
 export const ProductContextProvider: React.FC<Props> = (props) => {
   const [products, setProducts] = useState<ProductTypes[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,6 +26,8 @@ export const ProductContextProvider: React.FC<Props> = (props) => {
         setProducts(productsFromFirebase);
       } catch (error) {
         console.log(error);
+      } finally{
+        setIsLoading(false)
       }
     };
     fetchData();
@@ -31,6 +35,7 @@ export const ProductContextProvider: React.FC<Props> = (props) => {
 
   const value = {
     products,
+    isLoading
   };
 
   return <ProductContext.Provider value={value} {...props} />;

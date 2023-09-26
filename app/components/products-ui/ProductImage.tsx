@@ -34,8 +34,8 @@ const ProductImage: React.FC<ProductDetailsProps> = ({
 
   return (
     <div className="grid grid-cols-6 gap-2 h-full max-h-[500px] min-h-[300px] sm:min-h-[400px]">
-      <div className="flex flex-col items-center justify-center rounded-lg gap-3 cursor-pointer h-full max-h-[500px] min-h-[300px] sm:min-h-[400px]  ">
-        <div className="relative w-[80%] h-16 aspect-square border rounded-lg ">
+      <div className="col-span-1 overflow-y-auto max-h-[500px] items-center  space-y-3">
+        <div className="relative w-[80%] h-16 aspect-square border rounded-lg cursor-pointer ">
           <Image
             src={cartProduct?.selectedImg?.image || ""}
             alt={`Set Image ${cartProduct?.selectedImg?.color}`}
@@ -55,7 +55,7 @@ const ProductImage: React.FC<ProductDetailsProps> = ({
         {selectedImg?.setImages?.map((imageUrl: string, index: number) => (
           <div
             key={index}
-            className="relative w-[80%] h-16 aspect-square border rounded-lg"
+            className="relative w-[80%] h-16 aspect-square border rounded-lg cursor-pointer"
             onClick={() => {
               handleClick(imageUrl);
               setIsVideoSelected(false);
@@ -99,7 +99,7 @@ const ProductImage: React.FC<ProductDetailsProps> = ({
               : "hover:text-rose-500"
           }`}
         >
-          <div className="flex justify-center items-center h-8 w-8">
+          <div className="flex justify-center items-center h-8 w-8 cursor-pointer">
             {selectVideoPlay ? (
               <BiHide size={28} className="text-rose-500" />
             ) : (
@@ -122,7 +122,7 @@ const ProductImage: React.FC<ProductDetailsProps> = ({
             quality={100}
             src={selectedMainImage || cartProduct?.selectedImg?.image || ""}
             alt={cartProduct?.name || ""}
-            className="w-full h-full object-contain max-h-[500px] min-h-[300px] sm:min-h-[400px]"
+            className="w-full h-full object-contain max-h-[500px] min-h-[300px] sm:min-h-[400px] "
           />
         )}
       </div>

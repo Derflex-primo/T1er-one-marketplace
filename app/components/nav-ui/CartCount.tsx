@@ -17,7 +17,7 @@ const CartCount = () => {
             absolute 
             top-[-5px] 
             right-[-6px]
-            bg-stone-600
+            bg-stone-800
             text-white
             h-4
             w-4

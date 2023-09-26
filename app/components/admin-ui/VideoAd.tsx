@@ -19,13 +19,14 @@ const VideoAd: React.FC<VideoAdProps> = ({ videoAd, onDelete }) => {
           </button>
         </div>
       ) : (
-        <div className="pt-8">
+        <div className="flex justify-center pt-8">
           <Image
             src="/images/videoAd.svg"
             alt="default undraw video upload"
             width={360}
             height={360}
             priority
+            className="w-1/2 h-auto"
           />
         </div>
       )}

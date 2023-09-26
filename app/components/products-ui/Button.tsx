@@ -45,11 +45,11 @@ const Button:React.FC<ButtonProps> = ({
    focus:ring-4 
    focus:outline-none 
    focus:ring-stone-300 
-   dark:bg-stone-600 
+   dark:bg-stone-800 
    dark:hover:bg-stone-700
    transition ease-in-out delay-100
    dark:focus:ring-stone-800
-   ${outline? "dark:bg-stone-400" : "bg-stone-700"}
+   ${outline? "dark:bg-stone-400" : "bg-stone-800"}
    ${outline? "text-stone-100" : "text-white"}
    ${small? "text-sm font-light" : "text-md "}
    ${small? "py-1 px-2" : "py-3 px-4"}

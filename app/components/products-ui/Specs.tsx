@@ -123,7 +123,7 @@ const Specs: React.FC<_Specs> = ({ product, categoryItem }) => {
           </Button>
 
           <Typography component="div">
-            <div className="mb-[22px] pt-4 grid grid-cols-2 gap-4 max-h-[650px] overflow-y-auto border-t-2 ">
+            <div className="mb-[22px] pt-4 grid grid-cols-2 gap-4 max-h-[650px] overflow-y-auto border-t border ">
               {sortedProductEntries.map(([key, value]) => (
                 <div className="flex flex-col pl-[25px] text-xs" key={key}>
                   <span className="font-semibold">{key}</span>

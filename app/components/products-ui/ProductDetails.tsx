@@ -1,11 +1,9 @@
 "use client";
 
-// RE - DO PRODUCT DETAILS - ui
-
 import { Rating } from "@mui/material";
 import { productRating } from "./ProductCard";
 import React, { useCallback, useEffect, useState } from "react";
-import { MdCheckCircle } from "react-icons/md";
+import { BiUndo } from "react-icons/bi";
 import SetColors from "./SetColors";
 import SetQuantity from "./SetQuantity";
 import Button from "./Button";
@@ -15,7 +13,8 @@ import { useRouter } from "next/navigation";
 import { ProductTypes, ProductDetailsProps, ImageProps } from "@/types";
 import Specs from "./Specs";
 
-const Horizontal = () => {
+
+export const Horizontal = () => {
   return <hr className="w-[100%] my-2" />;
 };
 export const colorCategories = "font-medium text-stone-600 cursor-default";
@@ -25,6 +24,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
   const { handleAddProductToType, cartProducts } = useCart(); //handles add to cart from CartContextProvider
   const [isProductInCart, setIsProductInCart] = useState(false);
   const [expanded, setExpanded] = useState(false);
+  const { handleRemoveProductToType } = useCart();
   const [cartProduct, setCartProduct] = useState<ProductTypes>({
     id: product.id,
     name: product.name,
@@ -58,8 +58,10 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
     if (number === undefined || number === null) {
       return "$0"; // or some default value
     }
-    return new Intl.NumberFormat("en-US").format(number);
+    return "$" + new Intl.NumberFormat("en-US").format(number);
   };
+
+  const discountedPrice =   product.type[0].price * 0.7; // Temporarry discount
 
   const handleColorSelect = useCallback((value: ImageProps) => {
     setCartProduct((prev) => {
@@ -95,16 +97,30 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
 
         <span className="flex flex-wrap justify-between items-center">
           <span className="flex space-x-4 items-center">
-            <span className="flex text-base space-x-2 text-black ">
-              <h1 className="text-green-500">{product.type[0].options}</h1>
-              <h1>{formatWithComma(product.type[0].price)}</h1>
+            <span className="flex text-base space-x-2 text-black">
+              <h1>{formatWithComma(discountedPrice)}</h1>
+              <h1 className="line-through text-stone-400">
+                {formatWithComma(product.type[0].price)}
+              </h1>
             </span>
+
             <span className="bg-rose-600 text-white font-semibold px-1">
               Save 30%
             </span>
           </span>
-          <span></span>
+          <div className="flex justify-between mt-2 space-x-2 items-center sm:flex-row-reverse md:flex-row">
+            <span className={productRating}>
+              reviews{" "}
+              <strong className="text-rose-500">
+                {product.reviews?.length}
+              </strong>
+            </span>
+            {product.reviews?.length === 0 ? null : (
+              <Rating sx={{ fontSize: "1rem" }} readOnly />
+            )}
+          </div>
         </span>
+
         <Horizontal />
         <div>
           <p className="text-stone-500 text-justify">
@@ -118,7 +134,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
           )}
         </div>
         <Horizontal />
-        <div className="flex space-x-10 mb-6">
+        <div className="flex space-x-6 mb-6">
           <span className={colorCategories}>
             Category | <span className="text-black">{product.category}</span>
           </span>
@@ -128,7 +144,10 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
           <span>
             <span>
               {product.specs ? (
-                <Specs product={product.specs} categoryItem={product.category} />
+                <Specs
+                  product={product.specs}
+                  categoryItem={product.category}
+                />
               ) : null}
             </span>
           </span>
@@ -146,21 +165,21 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
         </div>
 
         {isProductInCart ? (
-          <>
-            <p className="flex items-center gap-1 text-stone-500">
-              <MdCheckCircle size={18} className="text-sky-500" />
-              <span>Product added to your cart</span>
-            </p>
-            <div>
-              <button className="md:max-w-[200px] sm:w-full mt-4">
-                <Button
-                  label="View Cart"
-                  outline={true}
-                  onClick={() => router.push("/cart")}
-                />
-              </button>
-            </div>
-          </>
+          <div className="flex gap-1 ">
+            <button className="md:max-w-[200px] sm:w-full ">
+              <Button
+                label="View Cart"
+                outline={true}
+                onClick={() => router.push("/cart")}
+              />
+            </button>
+            <button
+              onClick={() => handleRemoveProductToType(product)}
+              className="flex justify-center items-center rounded-lg  bg-stone-800 hover:bg-stone-700 border w-12"
+            >
+              <BiUndo size={18} className="text-white" /> {/* REDO BUTTON */}
+            </button>
+          </div>
         ) : (
           <>
             <div>
@@ -185,16 +204,6 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
             </div>
           </>
         )}
-
-        {/* <div className="flex justify-between space-x-2 items-center sm:flex-row-reverse md:flex-row">
-              <Rating sx={{ fontSize: "1rem" }} readOnly />
-              <span className={productRating}>
-                reviews{" "}
-                <strong className="text-rose-500">
-                  {product.reviews?.length}
-                </strong>
-              </span>
-        </div>*/}
       </div>
     </div>
   );
