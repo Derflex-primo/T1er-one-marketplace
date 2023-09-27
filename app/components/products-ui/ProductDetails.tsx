@@ -134,7 +134,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
         <Horizontal />
         <div className="flex space-x-6 mb-6">
           <span className={colorCategories}>
-            Category | <span className="text-black">{product.category}</span>
+            Category | <span className="text-black capitalize">{product.category}</span>
           </span>
           <span className={colorCategories}>
             Brand | <span className="text-black">{product.brand}</span>

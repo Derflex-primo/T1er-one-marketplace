@@ -4,6 +4,12 @@ export interface ProductDetailsProps {
     cartProduct?: ProductTypes
 }
 
+
+export type ProductMapType = {
+    [key: string]: ProductTypes
+  };
+  
+
 export interface ProductTypes {
     id: string;
     case?: "DROP" | "SELL" | "SWAP";
@@ -101,7 +107,7 @@ export interface ImagePreviewProps {
 
 //---------------------------Category Types
 
-export type CategoryType = "smartPhones" | "laptops" | "cameras" | "camera-lens" | "wired-headphones" | "wireless-headphones" | "cords" | "accessories" | "microphone" | "chips" | "desktop" | "tablet" | "monitor" | "external-hard-drives" | "memory-cards" | "routers" | "modems" | "network-switches" | "printer" | "scanner" | "gaming-consoles" | "gaming-accessories" | "software" | "office-furniture" | "server-equipment" | "diy-electronics" | "drones" | "virtual-reality" | "smartwatches" | "fitness-trackers" | "e-readers" | "projectors" | "televisions" | "car-tech" | "home-automation";
+export type CategoryType = "smart phones" | "laptops" | "cameras" | "camera lens" | "wired headphones" | "wireless headphones" | "cords" | "accessories" | "microphone" | "chips" | "desktop" | "tablet" | "monitor" | "external hard drives" | "memory cards" | "routers" | "modems" | "network switches" | "printer" | "scanner" | "gaming consoles" | "gaming accessories" | "software" | "office furniture" | "server equipment" | "diy electronics" | "drones" | "virtual reality" | "smartwatches" | "fitness trackers" | "e readers" | "projectors" | "televisions" | "car tech" | "home automation";
 
 export interface SpecsCategoriesProps {
   category: CategoryType | string;

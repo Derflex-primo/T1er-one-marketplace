@@ -23,6 +23,7 @@ const ProductImage: React.FC<ProductDetailsProps> = ({
   };
 
   const selectedImg = cartProduct?.selectedImg;
+ 
 
   useEffect(() => {
     if (cartProduct?.selectedImg) {
@@ -47,8 +48,9 @@ const ProductImage: React.FC<ProductDetailsProps> = ({
                 ? "border-[1.5px] border-stone-500 rounded-lg p-1 "
                 : "border-none p-2"
             }`}
+            quality={75}
             onClick={() => handleClick(cartProduct?.selectedImg?.image || "")}
-            priority
+            priority={false}
           />
         </div>
 
@@ -65,12 +67,14 @@ const ProductImage: React.FC<ProductDetailsProps> = ({
               src={imageUrl || ""}
               alt={`Set Image ${index}`}
               fill
+              quality={75}
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               className={`object-contain ${
                 selectedMainImage === imageUrl && !isVideoSelected
                   ? "border-[1.5px] border-stone-500 rounded-lg p-1"
                   : "border-none p-2"
               }`}
+              priority={false} 
             />
           </div>
         ))}
@@ -123,6 +127,8 @@ const ProductImage: React.FC<ProductDetailsProps> = ({
             src={selectedMainImage || cartProduct?.selectedImg?.image || ""}
             alt={cartProduct?.name || ""}
             className="w-full h-full object-contain max-h-[500px] min-h-[300px] sm:min-h-[400px] "
+            priority={false} 
+            loading="lazy"
           />
         )}
       </div>

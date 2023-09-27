@@ -38,8 +38,9 @@ const SetColors: React.FC<SetColorsProps> = ({
                       alt={image.color || ""}
                       fill
                       className="object-contain"
-                      quality={100}
+                      quality={75}
                       sizes="40px"
+                      priority={false} 
                     />
                     {cartProduct.selectedImg?.image === image.image && (
                       <span className="absolute top-[-6px] right-[-1px]">

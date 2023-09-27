@@ -56,7 +56,7 @@ const NavBar = () => {
           </div>
         </Container>
       </div>
-      NavBar
+      This marketplace is in development : TierOne.copyrights2023 
     </div>
   );
 };

@@ -50,15 +50,15 @@ const SpecsCategories: React.FC<SpecsCategoriesProps> = ({ category , onSpecsCha
   switch (category) {
     case 'cameras':
       return <CameraSpecs specs={specs} onSpecsChange={handleSpecsChange} />;
-    case 'camera-lens':
+    case 'camera lens':
       return <CameraLensSpecs specs={specs} onSpecsChange={handleSpecsChange} />;
     case 'laptops':
       return <LaptopSpecs specs={specs} onSpecsChange={handleSpecsChange} />;
-    case 'smartPhones':
+    case 'smart phones':
       return <SmartphoneSpecs specs={specs} onSpecsChange={handleSpecsChange} />;
-    case 'wired-headphones':
+    case 'wired headphones':
       return <WiredHeadphonesSpecs specs={specs} onSpecsChange={handleSpecsChange} />;
-    case 'wireless-headphones':
+    case 'wireless headphones':
       return <WirelessHeadphonesSpecs specs={specs} onSpecsChange={handleSpecsChange} />;
     case 'cords':
       return <CordsSpecs specs={specs} onSpecsChange={handleSpecsChange} />;
@@ -69,53 +69,53 @@ const SpecsCategories: React.FC<SpecsCategoriesProps> = ({ category , onSpecsCha
     case 'chips':
       return <ChipsSpecs specs={specs} onSpecsChange={handleSpecsChange} />;
     case 'desktop':
-      return <DesktopSpecs specs={specs} onSpecsChange={handleSpecsChange} />;  
+      return <DesktopSpecs specs={specs} onSpecsChange={handleSpecsChange} />;
     case 'tablet':
-      return <TabletSpecs specs={specs} onSpecsChange={handleSpecsChange} />;  
+      return <TabletSpecs specs={specs} onSpecsChange={handleSpecsChange} />;
     case 'monitor':
-      return <MonitorSpecs specs={specs} onSpecsChange={handleSpecsChange} />;  
-    case 'external-hard-drives':
-      return <ExternalHardDriveSpecs specs={specs} onSpecsChange={handleSpecsChange} />; 
-    case 'memory-cards':
-      return <MemoryCardSpecs specs={specs} onSpecsChange={handleSpecsChange} />; 
+      return <MonitorSpecs specs={specs} onSpecsChange={handleSpecsChange} />;
+    case 'external hard drives':
+      return <ExternalHardDriveSpecs specs={specs} onSpecsChange={handleSpecsChange} />;
+    case 'memory cards':
+      return <MemoryCardSpecs specs={specs} onSpecsChange={handleSpecsChange} />;
     case 'routers':
-      return <RouterSpecs specs={specs} onSpecsChange={handleSpecsChange} />; 
+      return <RouterSpecs specs={specs} onSpecsChange={handleSpecsChange} />;
     case 'modems':
-      return <ModemSpecs specs={specs} onSpecsChange={handleSpecsChange} />;  
-    case 'network-switches':
-      return <NetworkSwitchSpecs specs={specs} onSpecsChange={handleSpecsChange} />;  
+      return <ModemSpecs specs={specs} onSpecsChange={handleSpecsChange} />;
+    case 'network switches':
+      return <NetworkSwitchSpecs specs={specs} onSpecsChange={handleSpecsChange} />;
     case 'printer':
-      return <PrinterSpecs specs={specs} onSpecsChange={handleSpecsChange}  />;  
+      return <PrinterSpecs specs={specs} onSpecsChange={handleSpecsChange} />;
     case 'scanner':
-      return <ScannerSpecs specs={specs} onSpecsChange={handleSpecsChange} />;  
-    case 'gaming-consoles':
-      return <GamingConsoleSpecs specs={specs} onSpecsChange={handleSpecsChange} />;  
-    case 'gaming-accessories':
-      return <GamingAccessoriesSpecs specs={specs} onSpecsChange={handleSpecsChange} />;  
+      return <ScannerSpecs specs={specs} onSpecsChange={handleSpecsChange} />;
+    case 'gaming consoles':
+      return <GamingConsoleSpecs specs={specs} onSpecsChange={handleSpecsChange} />;
+    case 'gaming accessories':
+      return <GamingAccessoriesSpecs specs={specs} onSpecsChange={handleSpecsChange} />;
     case 'software':
-      return <SoftwareSpecs specs={specs} onSpecsChange={handleSpecsChange} />;  
-    case 'server-equipment':
-      return <ServerEquipmentSpecs specs={specs} onSpecsChange={handleSpecsChange}  />;  
-    case 'diy-electronics':
-      return <DIYElectronicsSpecs specs={specs} onSpecsChange={handleSpecsChange}  />; 
+      return <SoftwareSpecs specs={specs} onSpecsChange={handleSpecsChange} />;
+    case 'server equipment':
+      return <ServerEquipmentSpecs specs={specs} onSpecsChange={handleSpecsChange} />;
+    case 'diy electronics':
+      return <DIYElectronicsSpecs specs={specs} onSpecsChange={handleSpecsChange} />;
     case 'drones':
-      return <DronesSpecs specs={specs} onSpecsChange={handleSpecsChange} />;  
-    case 'virtual-reality':
-      return <VirtualRealitySpecs specs={specs} onSpecsChange={handleSpecsChange} />;  
+      return <DronesSpecs specs={specs} onSpecsChange={handleSpecsChange} />;
+    case 'virtual reality':
+      return <VirtualRealitySpecs specs={specs} onSpecsChange={handleSpecsChange} />;
     case 'smartwatches':
-      return <SmartwatchesSpecs specs={specs} onSpecsChange={handleSpecsChange} />;  
-    case 'fitness-trackers':
-      return <FitnessTrackersSpecs specs={specs} onSpecsChange={handleSpecsChange} />;  
-    case 'e-readers':
-      return <EReadersSpecs specs={specs} onSpecsChange={handleSpecsChange} />;  
+      return <SmartwatchesSpecs specs={specs} onSpecsChange={handleSpecsChange} />;
+    case 'fitness trackers':
+      return <FitnessTrackersSpecs specs={specs} onSpecsChange={handleSpecsChange} />;
+    case 'e readers':
+      return <EReadersSpecs specs={specs} onSpecsChange={handleSpecsChange} />;
     case 'projectors':
-      return <ProjectorsSpecs specs={specs} onSpecsChange={handleSpecsChange} />;  
+      return <ProjectorsSpecs specs={specs} onSpecsChange={handleSpecsChange} />;
     case 'televisions':
-      return <TelevisionsSpecs specs={specs} onSpecsChange={handleSpecsChange} />;  
-    case 'car-tech':
-      return <CarTechSpecs specs={specs} onSpecsChange={handleSpecsChange} />;  
-    case 'home-automation':
-      return <HomeAutomationSpecs  specs={specs} onSpecsChange={handleSpecsChange} />;  
+      return <TelevisionsSpecs specs={specs} onSpecsChange={handleSpecsChange} />;
+    case 'car tech':
+      return <CarTechSpecs specs={specs} onSpecsChange={handleSpecsChange} />;
+    case 'home automation':
+      return <HomeAutomationSpecs specs={specs} onSpecsChange={handleSpecsChange} />;
     default:
       return <DefaultSpecs />;
   }

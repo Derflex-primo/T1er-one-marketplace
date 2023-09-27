@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useMemo } from 'react';
 import { ProductTypes } from "@/types";
 import { getProductsFromFirebase } from '@/lib/db/firebaseUtils';
 
@@ -17,26 +17,28 @@ interface Props {
 
 export const ProductContextProvider: React.FC<Props> = (props) => {
   const [products, setProducts] = useState<ProductTypes[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [isLoading, setIsLoading] = useState<boolean>(false); // initial false
 
   useEffect(() => {
     const fetchData = async () => {
+      setIsLoading(true); // set to true when starting fetch
       try {
         const productsFromFirebase = await getProductsFromFirebase();
         setProducts(productsFromFirebase);
       } catch (error) {
         console.log(error);
+
       } finally{
-        setIsLoading(false)
+        setIsLoading(false);
       }
     };
     fetchData();
   }, []);
 
-  const value = {
+  const value = useMemo(() => ({ 
     products,
-    isLoading
-  };
+    isLoading 
+  }), [products, isLoading]);
 
   return <ProductContext.Provider value={value} {...props} />;
 };
@@ -48,4 +50,3 @@ export const useProducts = () => {
   }
   return context;
 };
-
