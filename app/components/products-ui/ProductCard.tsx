@@ -53,6 +53,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               alt={data.name}
               className={productImage}
+              priority
             />
           )}
         </div>

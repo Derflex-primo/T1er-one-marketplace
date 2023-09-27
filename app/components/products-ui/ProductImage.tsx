@@ -6,6 +6,8 @@ import { BiHide, BiPlay } from "react-icons/bi";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
+// Add Loading state in main image view
+
 const ProductImage: React.FC<ProductDetailsProps> = ({
   cartProduct,
   product,
@@ -15,8 +17,10 @@ const ProductImage: React.FC<ProductDetailsProps> = ({
   >(cartProduct?.selectedImg?.image);
   const [selectVideoPlay, setSelectVideoPlay] = useState<boolean>(false);
   const [isVideoSelected, setIsVideoSelected] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const handleClick = (imageUrl: string) => {
+    setIsLoading(true)
     setSelectedMainImage(imageUrl);
     setSelectVideoPlay(false);
     setIsVideoSelected(false);
@@ -26,6 +30,7 @@ const ProductImage: React.FC<ProductDetailsProps> = ({
  
 
   useEffect(() => {
+    setIsLoading(true)
     if (cartProduct?.selectedImg) {
       setSelectedMainImage(cartProduct.selectedImg.image);
     } else {
@@ -49,6 +54,7 @@ const ProductImage: React.FC<ProductDetailsProps> = ({
                 : "border-none p-2"
             }`}
             quality={75}
+            onLoad={() => setIsLoading(false)}
             onClick={() => handleClick(cartProduct?.selectedImg?.image || "")}
             priority={false}
           />
@@ -75,6 +81,7 @@ const ProductImage: React.FC<ProductDetailsProps> = ({
                   : "border-none p-2"
               }`}
               priority={false} 
+              onLoad={() => setIsLoading(false)}
             />
           </div>
         ))}
@@ -126,9 +133,10 @@ const ProductImage: React.FC<ProductDetailsProps> = ({
             quality={100}
             src={selectedMainImage || cartProduct?.selectedImg?.image || ""}
             alt={cartProduct?.name || ""}
-            className="w-full h-full object-contain max-h-[500px] min-h-[300px] sm:min-h-[400px] "
+            className={`w-full h-full object-contain max-h-[500px] min-h-[300px] sm:min-h-[400px] transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
             priority={false} 
             loading="lazy"
+            onLoad={() => setIsLoading(false)}
           />
         )}
       </div>
