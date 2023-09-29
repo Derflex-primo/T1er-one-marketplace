@@ -3,13 +3,14 @@
 import { ProductDetailsProps } from "@/types";
 import Image from "next/image";
 import { BiHide, BiPlay } from "react-icons/bi";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import { Button, Typography } from "@mui/material";
 import { styleSpecs } from "./Specs";
 import { IoCloseSharp } from "react-icons/io5";
+import "@/app/globals.css";
 
 // Add Loading state in main image view
 
@@ -27,6 +28,26 @@ const ProductImage: React.FC<ProductDetailsProps> = ({
   const [isVideoSelected, setIsVideoSelected] = useState<boolean>(false);
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+
+  const zoomedImageRef = useRef<HTMLImageElement>(null);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!zoomedImageRef.current) return;
+
+    const { left, top, width, height } =
+      e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - left) / width) * 100;
+    const y = ((e.clientY - top) / height) * 100;
+
+    zoomedImageRef.current.style.transformOrigin = `${x}% ${y}%`;
+    zoomedImageRef.current.classList.add("scale-150");
+    zoomedImageRef.current.style.visibility = "visible";
+  };
+
+  const handleMouseOut = () => {
+    if (!zoomedImageRef.current) return;
+    zoomedImageRef.current.classList.remove("scale-150");
+  };
 
   const handleClick = (imageUrl: string) => {
     setIsLoading(true);
@@ -124,59 +145,84 @@ const ProductImage: React.FC<ProductDetailsProps> = ({
               id="modal-modal-image"
               sx={{
                 display: "flex",
-                alignItems: "baseline",
-                flexDirection: "row",
-                textAlign: "start",
-                fontWeight: 1000,
-                marginLeft: "24px",
+                justifyContent: "center",
+                alignItems: "center",
                 pt: "18px",
                 pb: "14px",
               }}
             >
-              <div className="relative h-[500px] w-[500px]"> 
-              <Image
-                src={selectedModalImage || ""}
-                alt="Selected Image"
-                fill
-                className="object-contain"
-              />
+              <div
+                className=" image-container relative h-[500px] w-[500px]  overflow-hidden hover:cursor-zoom-in"
+                onMouseMove={handleMouseMove}
+                onMouseOut={handleMouseOut}
+              >
+                <Image
+                  src={selectedModalImage || ""}
+                  alt="Selected Image"
+                  fill
+                  priority={false}
+                  sizes="(max-width: 768px) 500px, 500px"
+                  className="object-contain"
+                  ref={zoomedImageRef}
+                />
               </div>
             </Typography>
             <Button
-            sx={{
-              position: "absolute",
-              top: 0,
-              right: 0,
-              minWidth: "auto",
-              paddingRight: "12px",
-              paddingTop: "10px",
-              "&:hover": {
-                backgroundColor: "transparent",
-                opacity: 0.8,
-              },
-            }}
-            onClick={handleClose}
-          >
-            <IoCloseSharp
-              className="text-black hover:text-red-500 "
-              size={19}
-            />
-          </Button>
+              sx={{
+                position: "absolute",
+                top: 0,
+                right: 0,
+                minWidth: "auto",
+                paddingRight: "12px",
+                paddingTop: "10px",
+                "&:hover": {
+                  backgroundColor: "transparent",
+                  opacity: 0.8,
+                },
+              }}
+              onClick={handleClose}
+            >
+              <IoCloseSharp
+                className="text-black hover:text-red-500 "
+                size={19}
+              />
+            </Button>
+            <Button // PRODUCT IMAGES / CUSTOMER IMAGES
+              sx={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                minWidth: "auto",
+                paddingRight: "12px",
+                paddingTop: "10px",
+                "&:hover": {
+                  backgroundColor: "transparent",
+                  opacity: 0.8,
+                },
+              }}
+            ></Button>
             <Typography
               component="div"
               className="flex justify-center space-x-4"
-              style={{ 
+              style={{
                 overflowX: "auto",
                 marginBottom: "24px",
-                marginTop: "24px"
+                marginTop: "24px",
               }}
             >
               {selectedImg?.setImages.map((url: string, i: number) => (
-                <div className="relative h-16 w-16 " key={i}>
+                <div
+                  className={`relative h-16 w-16 border p-2 ${
+                    selectedModalImage === url ? "border-sky-500" : "border"
+                  }`}
+                  key={i}
+                >
                   <Image
                     src={url || ""}
                     alt={`More images ${i}`}
                     fill
+                    priority={false}
+                    sizes="64px"
                     className="object-contain cursor-pointer"
                     onClick={() => setSelectedModalImage(url)}
                   />

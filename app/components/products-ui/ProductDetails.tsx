@@ -144,7 +144,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
               {product.specs ? (
                 <Specs
                   product={product.specs}
-                  categoryItem={product.name}
+                  categoryItem={product.category}
                 />
               ) : null}
             </span>
