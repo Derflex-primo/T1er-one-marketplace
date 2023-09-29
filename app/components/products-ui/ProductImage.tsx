@@ -5,6 +5,11 @@ import Image from "next/image";
 import { BiHide, BiPlay } from "react-icons/bi";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import Modal from "@mui/material/Modal";
+import Box from "@mui/material/Box";
+import { Button, Typography } from "@mui/material";
+import { styleSpecs } from "./Specs";
+import { IoCloseSharp } from "react-icons/io5";
 
 // Add Loading state in main image view
 
@@ -16,21 +21,28 @@ const ProductImage: React.FC<ProductDetailsProps> = ({
     string | undefined
   >(cartProduct?.selectedImg?.image);
   const [selectVideoPlay, setSelectVideoPlay] = useState<boolean>(false);
+  const [selectedModalImage, setSelectedModalImage] = useState<
+    string | undefined
+  >(undefined);
   const [isVideoSelected, setIsVideoSelected] = useState<boolean>(false);
+  const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   const handleClick = (imageUrl: string) => {
-    setIsLoading(true)
+    setIsLoading(true);
     setSelectedMainImage(imageUrl);
+    setSelectedModalImage(imageUrl);
     setSelectVideoPlay(false);
     setIsVideoSelected(false);
   };
 
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   const selectedImg = cartProduct?.selectedImg;
- 
 
   useEffect(() => {
-    setIsLoading(true)
+    setIsLoading(true);
     if (cartProduct?.selectedImg) {
       setSelectedMainImage(cartProduct.selectedImg.image);
     } else {
@@ -38,9 +50,15 @@ const ProductImage: React.FC<ProductDetailsProps> = ({
     }
   }, [cartProduct?.selectedImg]);
 
+  useEffect(() => {
+    if (selectedImg?.setImages && selectedImg.setImages.length > 0) {
+      setSelectedModalImage(selectedImg.setImages[0]);
+    }
+  }, [selectedImg]);
+
   return (
     <div className="grid grid-cols-6 gap-2 h-full max-h-[500px] min-h-[300px] sm:min-h-[400px]">
-      <div className="col-span-1 overflow-y-auto max-h-[500px] items-center  space-y-3">
+      <div className="col-span-1 pt-6 overflow-y-auto max-h-[500px] items-center  space-y-3">
         <div className="relative w-[80%] h-16 aspect-square border rounded-lg cursor-pointer ">
           <Image
             src={cartProduct?.selectedImg?.image || ""}
@@ -50,8 +68,8 @@ const ProductImage: React.FC<ProductDetailsProps> = ({
             className={`object-contain ${
               !isVideoSelected &&
               selectedMainImage === cartProduct?.selectedImg?.image
-                ? "border-[1.5px] border-stone-500 rounded-lg p-1 "
-                : "border-none p-2"
+                ? "border-[1.5px] border-stone-500 rounded-lg p-1"
+                : "border-none p-2 "
             }`}
             quality={75}
             onLoad={() => setIsLoading(false)}
@@ -60,31 +78,113 @@ const ProductImage: React.FC<ProductDetailsProps> = ({
           />
         </div>
 
-        {selectedImg?.setImages?.map((imageUrl: string, index: number) => (
-          <div
-            key={index}
-            className="relative w-[80%] h-16 aspect-square border rounded-lg cursor-pointer"
-            onClick={() => {
-              handleClick(imageUrl);
-              setIsVideoSelected(false);
+        {selectedImg?.setImages
+          ?.slice(0, 3)
+          .map((imageUrl: string, index: number) => (
+            <div
+              key={index}
+              className="relative w-[80%] h-16 aspect-square border rounded-lg cursor-pointer overflow-hidden"
+              onClick={() => {
+                handleClick(imageUrl);
+                setIsVideoSelected(false);
+              }}
+            >
+              <Image
+                src={imageUrl || ""}
+                alt={`Set Image ${index}`}
+                fill
+                quality={75}
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                className={`object-contain ${
+                  selectedMainImage === imageUrl && !isVideoSelected
+                    ? "border-[1.5px] border-stone-500 rounded-lg p-1"
+                    : "border-none p-2 "
+                }`}
+                priority={false}
+                onLoad={() => setIsLoading(false)}
+              />
+            </div>
+          ))}
+        <button
+          className={`relative w-[80%] text-xs h-16 aspect-square border rounded-lg cursor-pointer hover:underline underline-offset-2  `}
+          onClick={handleOpen}
+        >
+          {selectedImg?.setImages?.length || 0} more
+        </button>
+
+        <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-image"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={styleSpecs}>
+            <Typography
+              component="div"
+              id="modal-modal-image"
+              sx={{
+                display: "flex",
+                alignItems: "baseline",
+                flexDirection: "row",
+                textAlign: "start",
+                fontWeight: 1000,
+                marginLeft: "24px",
+                pt: "18px",
+                pb: "14px",
+              }}
+            >
+              <div className="relative h-[500px] w-[500px]"> 
+              <Image
+                src={selectedModalImage || ""}
+                alt="Selected Image"
+                fill
+                className="object-contain"
+              />
+              </div>
+            </Typography>
+            <Button
+            sx={{
+              position: "absolute",
+              top: 0,
+              right: 0,
+              minWidth: "auto",
+              paddingRight: "12px",
+              paddingTop: "10px",
+              "&:hover": {
+                backgroundColor: "transparent",
+                opacity: 0.8,
+              },
             }}
+            onClick={handleClose}
           >
-            <Image
-              src={imageUrl || ""}
-              alt={`Set Image ${index}`}
-              fill
-              quality={75}
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              className={`object-contain ${
-                selectedMainImage === imageUrl && !isVideoSelected
-                  ? "border-[1.5px] border-stone-500 rounded-lg p-1"
-                  : "border-none p-2"
-              }`}
-              priority={false} 
-              onLoad={() => setIsLoading(false)}
+            <IoCloseSharp
+              className="text-black hover:text-red-500 "
+              size={19}
             />
-          </div>
-        ))}
+          </Button>
+            <Typography
+              component="div"
+              className="flex justify-center space-x-4"
+              style={{ 
+                overflowX: "auto",
+                marginBottom: "24px",
+                marginTop: "24px"
+              }}
+            >
+              {selectedImg?.setImages.map((url: string, i: number) => (
+                <div className="relative h-16 w-16 " key={i}>
+                  <Image
+                    src={url || ""}
+                    alt={`More images ${i}`}
+                    fill
+                    className="object-contain cursor-pointer"
+                    onClick={() => setSelectedModalImage(url)}
+                  />
+                </div>
+              ))}
+            </Typography>
+          </Box>
+        </Modal>
 
         <div
           onClick={() => {
@@ -133,8 +233,10 @@ const ProductImage: React.FC<ProductDetailsProps> = ({
             quality={100}
             src={selectedMainImage || cartProduct?.selectedImg?.image || ""}
             alt={cartProduct?.name || ""}
-            className={`w-full h-full object-contain max-h-[500px] min-h-[300px] sm:min-h-[400px] transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
-            priority={false} 
+            className={`w-full h-full object-contain max-h-[500px] min-h-[300px] sm:min-h-[400px] transition-opacity duration-300 ${
+              isLoading ? "opacity-0" : "opacity-100"
+            }`}
+            priority={false}
             loading="lazy"
             onLoad={() => setIsLoading(false)}
           />

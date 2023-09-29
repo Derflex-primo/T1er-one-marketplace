@@ -19,7 +19,10 @@ interface _Specs {
 
 const michroma = Michroma({ subsets: ["latin"], weight: "400" });
 
-const styleSpecs = {
+export const styleSpecs = {
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
   position: "absolute" as "absolute",
   top: "48%",
   left: "50%",
