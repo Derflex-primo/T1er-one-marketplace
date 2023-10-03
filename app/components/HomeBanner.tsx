@@ -57,7 +57,7 @@ const HomeBanner = () => {
         <div className="flex flex-row space-x-4 items-center">
           <div className="flex flex-row items-center relative   bg-gradient-to-r from-rose-900 to-rose-700">
             <span className="p-2 text-lg text-white rounded-sm font-semibold relative z-10">
-              Today's Hot Deals <span className="pl-2 text-xs text-stone-900 font-mono">{currentDate}</span>
+              Today&apos;s Hot Deals <span className="pl-2 text-xs text-stone-900 font-mono">{currentDate}</span>
             </span>
             <div className="-mr-2 w-4 h-full absolute right-0 top-0 bg-rose-700 transform -skew-x-12"></div>
           </div>
