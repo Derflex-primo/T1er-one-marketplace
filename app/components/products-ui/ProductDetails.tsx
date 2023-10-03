@@ -134,7 +134,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
             </button>
           )}
         </div>
-        <div className="border rounded-xl p-4 mt-2 mb-6 grid grid-cols-1 md:grid-cols-2 lg:grid-template-columns repeat(4, min-content) gap-6 items-center">
+        <div className="border rounded-xl p-2 mt-2 mb-6 grid grid-cols-1 md:grid-cols-2 lg:grid-template-columns repeat(4, min-content) gap-2 items-center">
           <span className="flex bg-stone-100 rounded-lg p-2 space-x-2 items-center font-semibold">
             <span className={colorCategories}>Category</span>
             <span className="text-black text-xs capitalize cursor-default">
