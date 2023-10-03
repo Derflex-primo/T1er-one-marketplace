@@ -80,7 +80,7 @@ const ProductImage: React.FC<ProductDetailsProps> = ({
   return (
     <div className="grid grid-cols-6 gap-2 h-full max-h-[500px] min-h-[300px] sm:min-h-[400px]">
       <div className="col-span-1 pt-6 overflow-y-auto max-h-[500px] items-center  space-y-3">
-        <div className="relative w-[80%] h-16 aspect-square border rounded-lg cursor-pointer ">
+        <div className="relative w-[70%] h-16 aspect-square border rounded-lg cursor-pointer ">
           <Image
             src={cartProduct?.selectedImg?.image || ""}
             alt={`Set Image ${cartProduct?.selectedImg?.color}`}
@@ -104,7 +104,7 @@ const ProductImage: React.FC<ProductDetailsProps> = ({
           .map((imageUrl: string, index: number) => (
             <div
               key={index}
-              className="relative w-[80%] h-16 aspect-square border rounded-lg cursor-pointer overflow-hidden"
+              className="relative w-[70%] h-16 aspect-square border rounded-lg cursor-pointer overflow-hidden"
               onClick={() => {
                 handleClick(imageUrl);
                 setIsVideoSelected(false);
@@ -127,7 +127,7 @@ const ProductImage: React.FC<ProductDetailsProps> = ({
             </div>
           ))}
         <button
-          className={`relative w-[80%] text-xs h-16 aspect-square border rounded-lg cursor-pointer hover:underline underline-offset-2  `}
+          className={`relative w-[70%] text-xs h-16 aspect-square border rounded-lg cursor-pointer hover:underline underline-offset-2  `}
           onClick={handleOpen}
         >
           {selectedImg?.setImages?.length || 0} more
@@ -246,7 +246,7 @@ const ProductImage: React.FC<ProductDetailsProps> = ({
               toast.error("This product does not have a video ad available.");
             }
           }}
-          className={`relative w-[80%] h-16 aspect-square ${
+          className={`relative w-[70%] h-16 aspect-square ${
             isVideoSelected ? "border-[1.5px] border-stone-500" : "border"
           } rounded-lg flex justify-center items-center ${
             product.vidAd?.videoAd && product.vidAd.videoAd.trim() !== ""

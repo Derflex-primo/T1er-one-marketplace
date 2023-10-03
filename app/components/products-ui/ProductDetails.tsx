@@ -18,7 +18,7 @@ export const Horizontal = () => {
 };
 export const colorCategories =
   "font-medium text-xs text-stone-600 cursor-default";
-export const productDetails = "grid grid-cols-1 md:grid-cols-2 gap-12";
+export const productDetails = "mt-4 grid grid-cols-1 md:grid-cols-2 gap-12";
 
 const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
   const { handleAddProductToType, cartProducts, handleRemoveProductToType } =

@@ -31,7 +31,7 @@ const Product = ({ params }: { params: IParams }) => {
   }
 
   return (
-    <div className="p-8">
+    <div>
       <Container>
         <ProductDetails product={product} />
         {product.reviews && product.reviews.length > 0 && (

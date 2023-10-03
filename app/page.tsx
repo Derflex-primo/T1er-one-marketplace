@@ -14,7 +14,7 @@ const Page = () => {
   const { products, isLoading } = useProducts();
   
   return (
-    <div className="p-8">
+    <div>
       <Container>
         <MemoizedHomeBanner />
         <div className={productsWrap}>
