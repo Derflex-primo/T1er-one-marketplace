@@ -20,7 +20,7 @@ interface _Specs {
 const michroma = Michroma({ subsets: ["latin"], weight: "400" });
 
 export const styleSpecs = {
-  alignItems: 'center',
+  alignItems: "center",
   position: "absolute" as "absolute",
   top: "48%",
   left: "50%",
@@ -64,13 +64,15 @@ const Specs: React.FC<_Specs> = ({ product, categoryItem }) => {
 
   return (
     <div>
-      <span className={colorCategories}>Specs | </span>
-      <button
-        onClick={handleOpen}
-        className="font-medium text-blue-500 hover:underline underline-offset-2"
-      >
-        Browse
-      </button>
+      <div className="flex bg-stone-100 rounded-lg p-2  space-x-2 items-center font-semibold hover:bg-[#] ">
+        <span className={colorCategories}>Specs </span>
+        <button
+          onClick={handleOpen}
+          className="font-semibold text-xs flex flex-start text-blue-500 hover:underline underline-offset-2"
+        >
+          Browse
+        </button>
+      </div>
 
       <Modal
         open={open}
@@ -129,7 +131,12 @@ const Specs: React.FC<_Specs> = ({ product, categoryItem }) => {
                 <div className="flex flex-col pl-[25px] text-xs" key={key}>
                   <span className="font-semibold">{key}</span>
                   {isLink(value) ? (
-                    <a href={value} target="_blank" className="text-sky-500" rel="noopener noreferrer">
+                    <a
+                      href={value}
+                      target="_blank"
+                      className="text-sky-500"
+                      rel="noopener noreferrer"
+                    >
                       {value}
                     </a>
                   ) : (

@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import { colorCategories } from "./ProductDetails";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import { ProductTypes } from "@/types";
 
@@ -22,8 +21,8 @@ const SetQuantity: React.FC<SetQuantityProps> = ({
   handleQtyDecrease,
 }) => {
   return (
-    <div className="flex gap-7 items-center">
-      {cartCounter ? null : <div className={colorCategories}>Quantity:</div>}
+    <div className="flex gap-9 items-center">
+      {cartCounter ? null : <div className={`font-medium text-xs text-stone-600 cursor-default`}>Quantity:</div>}
       <div className="flex gap-[.4px] items-center text-base">
         <button
           onClick={handleQtyDecrease}
