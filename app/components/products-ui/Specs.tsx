@@ -120,7 +120,7 @@ const Specs: React.FC<_Specs> = ({ product, categoryItem }) => {
             onClick={handleClose}
           >
             <IoCloseSharp
-              className="text-black hover:text-red-500 "
+              className="text-black"
               size={19}
             />
           </Button>

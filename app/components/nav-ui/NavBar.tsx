@@ -9,13 +9,18 @@ import Drop from "../dropTrade-ui/Drop";
 import Trade from "../dropTrade-ui/Trade";
 import { SlMenu } from "react-icons/sl";
 import { AiOutlinePushpin } from "react-icons/ai";
-import { IoSearch } from "react-icons/io5";
+import { IoCloseSharp, IoSearch } from "react-icons/io5";
 import { BsThreeDotsVertical } from "react-icons/bs";
+import Modal from "@mui/material/Modal";
+import Box from "@mui/material/Box";
+
+// Finish Browse
 
 const michroma = Michroma({ subsets: ["latin"], weight: ["400"] });
 
 const NavBar = () => {
   const [scrolled, setScrolled] = useState(false);
+  const [isBrowse, setIsBrowse] = useState(false);
 
   function throttle(
     func: (...args: any[]) => void,
@@ -98,16 +103,16 @@ const NavBar = () => {
             </div>
             <div className="flex flex-grow relative ml-10 mx-4 md:block">
               <IoSearch className="absolute left-3 text-black top-1/2 transform -translate-y-1/2" />
-              
+
               <div className="cursor-pointer shadow-xs text-stone-900 absolute p-2 rounded-lg bg-stone-200 right-3 top-1/2 transform -translate-y-1/2">
-              <BsThreeDotsVertical size={14} />
+                <BsThreeDotsVertical size={14} />
               </div>
               <label htmlFor="searchProducts" className="sr-only">
                 Search Products
               </label>
               <input
                 id="searchProducts"
-                className="text-black w-full pl-10 py-3 border rounded-xl md:block placeholder-stone-800  focus:outline-none focus:ring-[0.6px] focus:ring-stone-900"  
+                className="text-black w-full pl-10 py-3 border rounded-xl md:block placeholder-stone-800  focus:outline-none focus:ring-[0.6px] focus:ring-stone-900"
                 type="text"
                 placeholder="Search for products, Shops, Accounts"
               />
@@ -121,9 +126,13 @@ const NavBar = () => {
         <Container>
           <div className="flex flex-row  py-2 justify-between">
             <div className="flex flex-row gap-8  ">
-              <span className="flex flex-row  items-center space-x-2">
-                <SlMenu size={18} />
+              <span
+                onClick={() => setIsBrowse(!isBrowse)}
+                className="cursor-pointer flex flex-row  items-center space-x-2"
+              >
+                {isBrowse ? <IoCloseSharp size={18} /> : <SlMenu size={18} />}
                 <span className="text-sm font-semibold">Browse</span>
+                 
               </span>
               <Link href={""} className="text-sm font-semibold">
                 Monthly Deals

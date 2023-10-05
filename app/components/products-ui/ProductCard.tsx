@@ -19,7 +19,7 @@ const productCotainer =
   "col-span-1 cursor-pointer border-[1px] shadow-sm bg-white rounded-lg hover:animate-pulse";
 
 export const productsWrap =
-  "grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 mb:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-6 gap-4";
+  "grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 mb:grid-cols-8 xl:grid-cols-8 2xl:grid-cols-10 gap-4";
 
 const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
   const [windowWidth, setWindowWidth] = useState<number>(0);
@@ -65,7 +65,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
             {windowWidth < 640 ? "+30%" : "Save 30%"}
           </span>
         </div>
-        <div className="flex justify-between mx-2 my-2 flex-col md:flex-row text-center ">
+        <div className="flex justify-between items-center mx-2 my-2 flex-col md:flex-row text-center ">
           <Rating
             sx={{ fontSize: "0.8rem" }}
             value={productShowRating}
