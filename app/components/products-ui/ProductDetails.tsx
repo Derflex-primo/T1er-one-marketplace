@@ -135,14 +135,14 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
           )}
         </div>
         <div className="border rounded-xl p-2 mt-2 mb-6 grid grid-cols-4 md:grid-cols-2 lg:grid-template-columns repeat(4, min-content) gap-2 items-center">
-          <span className="flex bg-stone-100 rounded-lg p-2 space-x-2 items-center font-semibold">
-            <span className={colorCategories}>Category</span>
+          <span className="flex border bg-stone-100 rounded-lg p-2 space-x-2 items-center font-semibold">
+            <span className={colorCategories}>Category:</span>
             <span className="text-black text-xs capitalize cursor-default">
               {product.category}
             </span>
           </span>
-          <span className="flex  bg-stone-100 rounded-lg p-2  space-x-2 items-center font-semibold">
-            <span className={colorCategories}>Brand</span>
+          <span className="flex border  bg-stone-100 rounded-lg p-2  space-x-2 items-center font-semibold">
+            <span className={colorCategories}>Brand:</span>
             <span className="text-black text-xs font-semibold cursor-default">
               {product.brand}
             </span>
@@ -152,8 +152,8 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
               <Specs product={product.specs} categoryItem={product.category} />
             ) : null}
           </span>
-          <span className="flex  bg-stone-100 rounded-lg p-2  space-x-2 items-center font-semibold">
-            <span className={colorCategories}>Status</span>
+          <span className="flex border bg-stone-100 rounded-lg p-2  space-x-2 items-center font-semibold">
+            <span className={colorCategories}>Status:</span>
             <span
               className={`
             ${

@@ -9,36 +9,25 @@ const CartCount = () => {
 
   const [scrolled, setScrolled] = useState(false);
 
-  function throttle(func: (...args: any[]) => void, wait: number): (...args: any[]) => void {
-    let timeout: ReturnType<typeof setTimeout> | null = null;
-  
-    return function(...args: any[]) {
-      if (!timeout) {
-        timeout = setTimeout(() => {
-          func(...args);
-          timeout = null;
-        }, wait);
-      }
-    };
-  }
-  
+  const changedBackground = () => {
+    if (window.scrollY >= 1) {
+      setScrolled(true);
+    } else {
+      setScrolled(false);
+    }
+  };
+
   useEffect(() => {
-    const handleScroll = throttle(() => {
-      const isScrolled = window.scrollY > 10;
-      if (isScrolled !== scrolled) {
-        setScrolled(isScrolled);
-      }
-    }, 100);  // throttle to run once every 100ms
-  
-    document.addEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", changedBackground);
+
     return () => {
-      document.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("scroll", changedBackground);
     };
-  }, [scrolled]);
+  }, []);
 
   return (
     <div className="relative cursor-pointer" onClick={() => router.push("/cart")}>
-      <div className={`text-3xl ${scrolled ? 'text-white' : ''} transition-all ease-in-out duration-75`}>
+      <div className={`text-3xl ${scrolled ? 'text-white' : ''} `}>
         <PiShoppingBagOpenThin />
       </div>
       {cartTotalQty > 0 && ( // Show the span only if cartTotalQty > 0

@@ -64,8 +64,8 @@ const Specs: React.FC<_Specs> = ({ product, categoryItem }) => {
 
   return (
     <div>
-      <div className="flex  bg-stone-100 rounded-lg p-2  space-x-4 items-center font-semibold hover:bg-[#] ">
-        <span className={colorCategories}>Specs </span>
+      <div className="flex  bg-stone-100 border rounded-lg p-2  space-x-4 items-center font-semibold hover:bg-[#] ">
+        <span className={colorCategories}>Specs: </span>
         <button
           onClick={handleOpen}
           className="font-semibold text-xs flex flex-start text-blue-500 hover:underline underline-offset-2"

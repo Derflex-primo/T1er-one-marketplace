@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { Michroma } from "next/font/google";
 import Container from "../Container";
@@ -13,6 +13,7 @@ import { IoCloseSharp, IoSearch } from "react-icons/io5";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 
 // Finish Browse
 
@@ -20,54 +21,58 @@ const michroma = Michroma({ subsets: ["latin"], weight: ["400"] });
 
 const NavBar = () => {
   const [scrolled, setScrolled] = useState(false);
-  const [isBrowse, setIsBrowse] = useState(false);
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
-  function throttle(
-    func: (...args: any[]) => void,
-    wait: number
-  ): (...args: any[]) => void {
-    let timeout: ReturnType<typeof setTimeout> | null = null;
-
-    return function (...args: any[]) {
-      if (!timeout) {
-        timeout = setTimeout(() => {
-          func(...args);
-          timeout = null;
-        }, wait);
-      }
-    };
-  }
+  const changedBackground = () => {
+    if (window.scrollY >= 1) {
+      setScrolled(true);
+    } else {
+      setScrolled(false);
+    }
+  };
 
   useEffect(() => {
-    const handleScroll = throttle(() => {
-      const isScrolled = window.scrollY > 10;
-      if (isScrolled !== scrolled) {
-        setScrolled(isScrolled);
-      }
-    }, 100); // throttle to run once every 100ms
+    window.addEventListener("scroll", changedBackground);
 
-    document.addEventListener("scroll", handleScroll);
     return () => {
-      document.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("scroll", changedBackground);
     };
-  }, [scrolled]);
+  }, []);
+
+  const browseRef = useRef<HTMLDivElement | null>(null);
+
+  const style = {
+    position: "absolute" as "absolute",
+    top:
+      (browseRef.current
+        ? browseRef.current.offsetTop + browseRef.current.offsetHeight
+        : 0) + 12,
+    left: browseRef.current ? browseRef.current.offsetLeft : 0,
+    width: 168,
+    bgcolor: "background.paper",
+    boxShadow: 24,
+    border: "2px",
+    borderRadius: "12px",
+    overflow: "hidden",
+    outline: "none",
+    "& .MuiTypography-root": {
+      fontSize: "14px",
+    },
+  };
 
   return (
     <div
       className={`
-        sticky
-        top-0
-        w-full
-        z-30
-        shadow-sm
-        bg-[#f5f7f7]-200
-        ${
-          scrolled
-            ? "bg-gradient-to-r from-rose-700 to-stone-900 text-white"
-            : ""
-        }
-        transition-colors duration-75
-      `}
+    sticky 
+    top-0 
+    w-full 
+    z-30 
+    shadow-sm 
+    ${scrolled ? "bg-gradient-to-r from-black  text-white" : ""}
+    transition-colors duration-300
+  `}
     >
       <div className={`py-4 ${scrolled ? "" : "border-b-[1px]"}`}>
         <Container>
@@ -102,9 +107,18 @@ const NavBar = () => {
               </div>
             </div>
             <div className="flex flex-grow relative ml-10 mx-4 md:block">
-              <IoSearch className="absolute left-3 text-black top-1/2 transform -translate-y-1/2" />
+              <IoSearch
+                className={`absolute left-3 top-1/2 transform -translate-y-1/2 ${
+                  scrolled ? "text-white" : "text-black"
+                }`}
+              />
 
-              <div className="cursor-pointer shadow-xs text-stone-900 absolute p-2 rounded-lg bg-stone-200 right-3 top-1/2 transform -translate-y-1/2">
+              <div
+                className={`cursor-pointer shadow-xs text-stone-900 absolute p-2 rounded-lg bg-stone-300 right-3 top-1/2 transform -translate-y-1/2 ${
+                  scrolled ? " backdrop-blur-md bg-white bg-opacity-20 text-white" : ""
+                }
+              `}
+              >
                 <BsThreeDotsVertical size={14} />
               </div>
               <label htmlFor="searchProducts" className="sr-only">
@@ -112,7 +126,14 @@ const NavBar = () => {
               </label>
               <input
                 id="searchProducts"
-                className="text-black w-full pl-10 py-3 border rounded-xl md:block placeholder-stone-800  focus:outline-none focus:ring-[0.6px] focus:ring-stone-900"
+                className={`
+                w-full pl-10 py-3 border rounded-xl md:block focus:outline-none focus:ring-[0.6px] focus:ring-stone-900
+                 ${
+                   scrolled
+                     ? "text-white   backdrop-blur-md bg-white bg-opacity-20"
+                     : "text-black placeholder-stone-800"
+                 }
+                `}
                 type="text"
                 placeholder="Search for products, Shops, Accounts"
               />
@@ -126,14 +147,57 @@ const NavBar = () => {
         <Container>
           <div className="flex flex-row  py-2 justify-between">
             <div className="flex flex-row gap-8  ">
-              <span
-                onClick={() => setIsBrowse(!isBrowse)}
-                className="cursor-pointer flex flex-row  items-center space-x-2"
+              <div
+                ref={browseRef}
+                onClick={() => {
+                  if (open) {
+                    handleClose();
+                  } else {
+                    handleOpen();
+                  }
+                }}
+                className={`cursor-pointer z-96 flex flex-row items-center space-x-2 ${
+                  open ? "select-none" : ""
+                }`}
               >
-                {isBrowse ? <IoCloseSharp size={18} /> : <SlMenu size={18} />}
+                {open ? <IoCloseSharp size={18} /> : <SlMenu size={18} />}
                 <span className="text-sm font-semibold">Browse</span>
-                 
-              </span>
+              </div>
+
+              <Modal
+                open={open}
+                onClose={handleClose}
+                slotProps={{
+                  backdrop: { style: { backgroundColor: "transparent" } },
+                }}
+                aria-labelledby="modal-modal-browse"
+                aria-describedby="modal-modal-items"
+              >
+                <Box sx={style}>
+                  <Typography component="div" id="modal-modal-browse">
+                    <div className="p-4 cursor-pointer hover:bg-stone-100 overflow-hidden">
+                      Deals
+                    </div>
+                  </Typography>
+                  <Typography component="div">
+                    <hr />
+                  </Typography>
+                  <Typography component="div" id="modal-modal-browse">
+                    <div className="p-4 cursor-pointer hover:bg-stone-100">
+                      Stores
+                    </div>
+                  </Typography>
+                  <Typography component="div">
+                    <hr />
+                  </Typography>
+                  <Typography component="div" id="modal-modal-browse">
+                    <div className="p-4 cursor-pointer hover:bg-stone-100 overflow-hidden">
+                      Brands
+                    </div>
+                  </Typography>
+                </Box>
+              </Modal>
+
               <Link href={""} className="text-sm font-semibold">
                 Monthly Deals
               </Link>

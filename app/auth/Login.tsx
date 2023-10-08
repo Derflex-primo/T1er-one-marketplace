@@ -78,36 +78,28 @@ const LogInPage: React.FC<LogInPageProps> = (props) => {
 
   const [scrolled, setScrolled] = useState(false);
 
-  function throttle(func: (...args: any[]) => void, wait: number): (...args: any[]) => void {
-    let timeout: ReturnType<typeof setTimeout> | null = null;
-  
-    return function(...args: any[]) {
-      if (!timeout) {
-        timeout = setTimeout(() => {
-          func(...args);
-          timeout = null;
-        }, wait);
-      }
-    };
-  }
-  
+  const changedBackground = () => {
+    if (window.scrollY >= 1) {
+      setScrolled(true);
+    } else {
+      setScrolled(false);
+    }
+  };
+
   useEffect(() => {
-    const handleScroll = throttle(() => {
-      const isScrolled = window.scrollY > 10;
-      if (isScrolled !== scrolled) {
-        setScrolled(isScrolled);
-      }
-    }, 100);  // throttle to run once every 100ms
-  
-    document.addEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", changedBackground);
+
     return () => {
-      document.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("scroll", changedBackground);
     };
-  }, [scrolled]);
-  
+  }, []);
 
   return (
-    <div className={`flex items-center gap-4 ${scrolled ? 'text-white' : ''}transition-all ease-in-out duration-75 `}>
+    <div
+      className={`flex items-center gap-4 ${
+        scrolled ? "text-white" : ""
+      } `}
+    >
       <div className="flex items-center  ">
         <span className="flex items-center space-x-4 border-[1.4px] rounded-l-xl pr-3 py-3 px-4 hover:border-slate-400   ">
           <MdWallet size={24} />
@@ -121,7 +113,9 @@ const LogInPage: React.FC<LogInPageProps> = (props) => {
         </span>
         <span
           onClick={() => handleSignOut()}
-          className={`cursor-pointer border-[1.4px] border-l-none rounded-r-xl py-[9px] px-3 hover:border-slate-400 ${scrolled ? 'text-white' : ''} transition-all ease-in-out duration-75`}
+          className={`cursor-pointer border-[1.4px] border-l-none rounded-r-xl py-[9px] px-3 hover:border-slate-400 ${
+            scrolled ? "text-white" : ""
+          } transition-all ease-in-out duration-75`}
         >
           {currentUser && currentUser.photoURL ? (
             <Image
@@ -171,10 +165,10 @@ const LogInPage: React.FC<LogInPageProps> = (props) => {
               textAlign: "center",
             }}
           >
-            <span> {" "} If you don&apos;t have a wallet, ... </span>
+            <span> If you don&apos;t have a wallet, ... </span>
             <span className="text-sky-500">Learn more</span>
           </Typography>
-          <Typography component="div"  >
+          <Typography component="div">
             <hr />
           </Typography>
           <Typography component="div">

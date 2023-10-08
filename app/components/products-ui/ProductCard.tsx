@@ -16,10 +16,10 @@ const productImage =
 export const productRating =
   "bg-stone-100 text-stone-500 text-xs font-semibold  px-2.5 py-0.5 rounded dark:bg-stone-200 dark:text-stone-500 cursor-not-allowed ";
 const productCotainer =
-  "col-span-1 cursor-pointer border-[1px] shadow-sm bg-white rounded-lg hover:animate-pulse";
+  "col-span-1 cursor-pointer border-[1px] shadow-sm bg-white rounded-lg hover:";
 
 export const productsWrap =
-  "grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 mb:grid-cols-8 xl:grid-cols-8 2xl:grid-cols-10 gap-4";
+  "grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-8 mb:grid-cols-4 xl:grid-cols-7 2xl:grid-cols-10 gap-4";
 
 const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
   const [windowWidth, setWindowWidth] = useState<number>(0);
