@@ -55,11 +55,11 @@ const HomeBanner = () => {
       </div>
       <div className="flex flex-row justify-between mb-3  items-center border border-stone-300 rounded-r-lg ">
         <div className="flex flex-row space-x-4 items-center">
-          <div className="flex flex-row items-center relative   bg-gradient-to-r from-rose-900 to-rose-700">
+          <div className="flex flex-row items-center relative   bg-gradient-to-r bg-rose-600">
             <span className="p-2 text-lg text-white rounded-sm font-semibold relative z-10">
               Today&apos;s Hot Deals <span className="pl-2 text-xs text-stone-900 font-mono">{currentDate}</span>
             </span>
-            <div className="-mr-2 w-4 h-full absolute right-0 top-0 bg-rose-700 transform -skew-x-12"></div>
+            <div className="-mr-2 w-4 h-full absolute right-0 top-0 bg-rose-600 transform -skew-x-12"></div>
           </div>
         </div>
         <div className="flex flex-row ">

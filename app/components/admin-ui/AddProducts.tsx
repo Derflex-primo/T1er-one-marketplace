@@ -1,5 +1,8 @@
 "use client";
 
+
+// ADD SHOPS AND DEALS | 30%
+
 import {
   CategoryType,
   ImageProps,

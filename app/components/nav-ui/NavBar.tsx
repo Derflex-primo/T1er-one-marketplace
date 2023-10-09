@@ -14,15 +14,24 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import { useProducts } from "@/hooks/useProducts";
 
 // Finish Browse
 
 const michroma = Michroma({ subsets: ["latin"], weight: ["400"] });
 
 const NavBar = () => {
+  const { products } = useProducts();
+
+  const uniqueBrands = Array.from(
+    new Set(products.map((product) => product.brand))
+  );
+
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [openBrowse, setOpenBrowse] = useState(false);
   const handleOpen = () => setOpen(true);
+  const handleOpenBrowse = () => setOpenBrowse(true);
   const handleClose = () => setOpen(false);
 
   const changedBackground = () => {
@@ -62,6 +71,25 @@ const NavBar = () => {
     },
   };
 
+  const styleBox = {
+    position: "absolute" as "absolute",
+    top:
+      (browseRef.current
+        ? browseRef.current.offsetTop + browseRef.current.offsetHeight
+        : 0) + 12,
+    left: browseRef.current ? browseRef.current.offsetLeft + 180 : 180,
+    width: 168,
+    bgcolor: "background.paper",
+    boxShadow: 24,
+    border: "2px",
+    borderRadius: "12px",
+    overflow: "hidden",
+    outline: "none",
+    "& .MuiTypography-root": {
+      fontSize: "14px",
+    },
+  };
+
   return (
     <div
       className={`
@@ -70,7 +98,7 @@ const NavBar = () => {
     w-full 
     z-30 
     shadow-sm 
-    ${scrolled ? "bg-gradient-to-r from-black  text-white" : ""}
+    ${scrolled ? "bg-gradient-to-r  bg-rose-700 text-white" : ""}
     transition-colors duration-300
   `}
     >
@@ -115,7 +143,9 @@ const NavBar = () => {
 
               <div
                 className={`cursor-pointer shadow-xs text-stone-900 absolute p-2 rounded-lg bg-stone-300 right-3 top-1/2 transform -translate-y-1/2 ${
-                  scrolled ? " backdrop-blur-md bg-white bg-opacity-20 text-white" : ""
+                  scrolled
+                    ? " backdrop-blur-md bg-white bg-opacity-20 text-white"
+                    : ""
                 }
               `}
               >
@@ -127,11 +157,11 @@ const NavBar = () => {
               <input
                 id="searchProducts"
                 className={`
-                w-full pl-10 py-3 border rounded-xl md:block focus:outline-none focus:ring-[0.6px] focus:ring-stone-900
+                w-full pl-10 py-3 border rounded-xl md:block focus:outline-none focus:ring-[0.6px] 
                  ${
                    scrolled
-                     ? "text-white   backdrop-blur-md bg-white bg-opacity-20"
-                     : "text-black placeholder-stone-800"
+                     ? "text-white   backdrop-blur-md bg-white bg-opacity-20 focus:ring-white"
+                     : "text-black placeholder-stone-800 focus:ring-stone-900"
                  }
                 `}
                 type="text"
@@ -184,17 +214,61 @@ const NavBar = () => {
                   </Typography>
                   <Typography component="div" id="modal-modal-browse">
                     <div className="p-4 cursor-pointer hover:bg-stone-100">
-                      Stores
+                      Shops
                     </div>
                   </Typography>
                   <Typography component="div">
                     <hr />
                   </Typography>
                   <Typography component="div" id="modal-modal-browse">
-                    <div className="p-4 cursor-pointer hover:bg-stone-100 overflow-hidden">
+                    <div
+                      onClick={handleOpenBrowse}
+                      className="p-4 cursor-pointer hover:bg-stone-100 overflow-hidden"
+                    >
                       Brands
                     </div>
                   </Typography>
+                  <Typography component="div">
+                    <hr />
+                  </Typography>
+                  <Typography component="div" id="modal-modal-browse">
+                    <div
+                      onClick={handleOpenBrowse}
+                      className="p-4 cursor-pointer hover:bg-stone-100 overflow-hidden"
+                    >
+                     Categories
+                    </div>
+                  </Typography>
+                </Box>
+              </Modal>
+              <Modal
+                open={openBrowse} // State to control the Brands modal
+                onClose={() => setOpenBrowse(false)}
+                slotProps={{
+                  backdrop: { style: { backgroundColor: "transparent" } },
+                }}
+                aria-labelledby="modal-modal-brandsFeatured"
+                aria-describedby="modal-modal-brandItems"
+              >
+                <Box sx={styleBox}>
+                  {uniqueBrands.map((brand) => (
+                    <>
+                      <Typography
+                        component="div"
+                        id="modal-modal-brandsFeatured"
+                      >
+                        <div
+                          key={brand}
+                          className="p-4 cursor-pointer hover:bg-stone-100 overflow-hidden"
+                        >
+                          {brand}
+                        </div>
+                      </Typography>
+                      <Typography component="div">
+                        <hr />
+                      </Typography>
+                    </>
+                  ))}
                 </Box>
               </Modal>
 
@@ -206,9 +280,6 @@ const NavBar = () => {
               </Link>
               <Link href={""} className="text-sm font-semibold">
                 Top rated
-              </Link>
-              <Link href={""} className="text-sm font-semibold">
-                Shops
               </Link>
               <Link href={""} className="text-sm font-semibold">
                 New Arrivals
