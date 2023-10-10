@@ -1,7 +1,6 @@
 "use client";
 
-
-// ADD SHOPS AND DEALS | 30%
+// ADD SHOPS AND DEALS | 30% | WHO ADD ITEMS WILL TAKE THE EMAIL. AND NAME
 
 import {
   CategoryType,
@@ -12,7 +11,13 @@ import {
 } from "@/types";
 import { useEffect, useRef, useState } from "react";
 import { productDetails } from "../products-ui/ProductDetails";
-import { fiatCurrencies, sortedOptions, web3Tokens } from "@/lib/utils/formats";
+import {
+  fiatCurrencies,
+  gadgetDealTypes,
+  logisticsPartnersPH,
+  sortedOptions,
+  web3Tokens,
+} from "@/lib/utils/formats";
 import { addDoc, collection } from "firebase/firestore";
 import { db, app } from "@/lib/db/firebaseUtils";
 import { analyzeImageColor } from "@/lib/analysis/image-color";
@@ -206,7 +211,7 @@ const AddProducts = () => {
     const newCategory = e.target.value;
     setSelectedCategory(newCategory);
   };
- 
+
   // To prevent loop
   const priceRef = useRef(price);
 
@@ -214,19 +219,22 @@ const AddProducts = () => {
     priceRef.current = price;
   }, [price]);
 
-
   useEffect(() => {
     let value = priceRef.current.replace(/[^\d.]/g, "");
     if (value === "") {
-      setPrice(prevPrice => prevPrice !== "" ? "" : prevPrice);
+      setPrice((prevPrice) => (prevPrice !== "" ? "" : prevPrice));
     } else if (selectedType === "Currency") {
       const formattedPrice = parseInt(value, 10).toLocaleString();
-      setPrice(prevPrice => prevPrice !== formattedPrice ? formattedPrice : prevPrice);
+      setPrice((prevPrice) =>
+        prevPrice !== formattedPrice ? formattedPrice : prevPrice
+      );
     } else if (selectedType === "Web3 Tokens") {
       const formattedPrice = parseFloat(value).toFixed(4);
-      setPrice(prevPrice => prevPrice !== formattedPrice ? formattedPrice : prevPrice);
+      setPrice((prevPrice) =>
+        prevPrice !== formattedPrice ? formattedPrice : prevPrice
+      );
     }
-  }, [selectedType]);  
+  }, [selectedType]);
 
   useEffect(() => {
     if (selectedType === "Currency") {
@@ -549,7 +557,7 @@ const AddProducts = () => {
                 ref={itemDescriptionRef}
               ></textarea>
             </div>
-            <div className="flex justify-between  ">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-2 gap-x-4 items-start">
               <span>
                 <h1>CATEGORY:</h1>
                 <select
@@ -570,6 +578,15 @@ const AddProducts = () => {
                 </select>
               </span>
               <span>
+                <h1>STORE NAME:</h1>
+                <input
+                  className={inputUi}
+                  type="text"
+                  required
+                  ref={itemBrandRef}
+                />
+              </span>
+              <span>
                 <h1>BRAND:</h1>
                 <input
                   className={inputUi}
@@ -577,6 +594,23 @@ const AddProducts = () => {
                   required
                   ref={itemBrandRef}
                 />
+              </span>
+              <span>
+                <h1>DEALS:</h1>
+                <select
+                  className={`${inputUi}  text-black text-[12px]`}
+                  name="deals"
+                  id="deals"
+                >
+                  <option value="" disabled selected>
+                    Select a deal
+                  </option>
+                  {gadgetDealTypes.map((deal) => (
+                    <option key={deal.value} value={deal.value}>
+                      {deal.label}
+                    </option>
+                  ))}
+                </select>
               </span>
               <span>
                 <h1>QUANTITY:</h1>
@@ -587,6 +621,23 @@ const AddProducts = () => {
                   required
                   ref={itemQuantityRef}
                 />
+              </span>
+              <span>
+                <h1>LOGISTICS PARTNERS:</h1>
+                <select
+                  className={`${inputUi}  text-black text-[12px]`}
+                  name="logisticsPartners"
+                  id="logisticsPartners"
+                >
+                  <option value="" disabled selected>
+                    Select a partner
+                  </option>
+                  {logisticsPartnersPH.map((partner) => (
+                    <option key={partner.value} value={partner.value}>
+                      {partner.label}
+                    </option>
+                  ))}
+                </select>
               </span>
             </div>
           </form>

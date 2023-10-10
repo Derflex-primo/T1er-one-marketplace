@@ -166,3 +166,28 @@ export const web3Tokens = {
 };
 
  
+
+// DEAlS
+
+export const gadgetDealTypes = [
+  { value: 'early-bird', label: 'Early Bird Discount' },
+  { value: 'trade-in', label: 'Trade-In Offer' },
+  { value: 'bundle', label: 'Bundle Deal' },
+  { value: 'launch-special', label: 'Launch Special' },
+  { value: 'student-discount', label: 'Student Discount' },
+  { value: 'refurbished-discount', label: 'Refurbished Discount' },
+  { value: 'seasonal-sale', label: 'Seasonal Sale' },
+];
+
+
+// ADD ALL LOGISTIS PER COUNTRY
+
+export const logisticsPartnersPH = [
+  { value: 'lbc', label: 'LBC Express' },
+  { value: 'jnt', label: 'J&T Express' },
+  { value: 'jrs', label: 'JRS Express' },
+  { value: '2go', label: '2GO Express' },
+  { value: 'xpost', label: 'Xpost (Ninja Van)' },
+  { value: 'grabexpress', label: 'GrabExpress' },
+  { value: 'mr-speedy', label: 'Mr. Speedy' },
+];

@@ -21,11 +21,21 @@ import { useProducts } from "@/hooks/useProducts";
 const michroma = Michroma({ subsets: ["latin"], weight: ["400"] });
 
 const NavBar = () => {
+  const [browseType, setBrowseType] = useState<string | null>(null);
   const { products } = useProducts();
 
   const uniqueBrands = Array.from(
     new Set(products.map((product) => product.brand))
   );
+
+  const uniqueCategories = Array.from(
+    new Set(products.map((product) => product.category))
+  );
+
+  const handleBrowseClick = (type: string) => {
+    setBrowseType(type);
+    handleOpenBrowse();
+  };
 
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
@@ -205,7 +215,7 @@ const NavBar = () => {
               >
                 <Box sx={style}>
                   <Typography component="div" id="modal-modal-browse">
-                    <div className="p-4 cursor-pointer hover:bg-stone-100 overflow-hidden">
+                    <div className="p-4 text-xs cursor-pointer hover:bg-stone-100 overflow-hidden">
                       Deals
                     </div>
                   </Typography>
@@ -213,7 +223,7 @@ const NavBar = () => {
                     <hr />
                   </Typography>
                   <Typography component="div" id="modal-modal-browse">
-                    <div className="p-4 cursor-pointer hover:bg-stone-100">
+                    <div className="p-4  text-xs cursor-pointer hover:bg-stone-100">
                       Shops
                     </div>
                   </Typography>
@@ -222,8 +232,8 @@ const NavBar = () => {
                   </Typography>
                   <Typography component="div" id="modal-modal-browse">
                     <div
-                      onClick={handleOpenBrowse}
-                      className="p-4 cursor-pointer hover:bg-stone-100 overflow-hidden"
+                      onClick={() => handleBrowseClick("Brands")}
+                      className="p-4  text-xs cursor-pointer hover:bg-stone-100 overflow-hidden"
                     >
                       Brands
                     </div>
@@ -233,16 +243,16 @@ const NavBar = () => {
                   </Typography>
                   <Typography component="div" id="modal-modal-browse">
                     <div
-                      onClick={handleOpenBrowse}
-                      className="p-4 cursor-pointer hover:bg-stone-100 overflow-hidden"
+                      onClick={() => handleBrowseClick("Categories")}
+                      className="p-4  text-xs cursor-pointer hover:bg-stone-100 overflow-hidden"
                     >
-                     Categories
+                      Categories
                     </div>
                   </Typography>
                 </Box>
               </Modal>
               <Modal
-                open={openBrowse} // State to control the Brands modal
+                open={openBrowse}
                 onClose={() => setOpenBrowse(false)}
                 slotProps={{
                   backdrop: { style: { backgroundColor: "transparent" } },
@@ -250,26 +260,61 @@ const NavBar = () => {
                 aria-labelledby="modal-modal-brandsFeatured"
                 aria-describedby="modal-modal-brandItems"
               >
-                <Box sx={styleBox}>
-                  {uniqueBrands.map((brand) => (
-                    <>
-                      <Typography
-                        component="div"
-                        id="modal-modal-brandsFeatured"
-                      >
-                        <div
-                          key={brand}
-                          className="p-4 cursor-pointer hover:bg-stone-100 overflow-hidden"
+                {browseType === "Brands" ? (
+                  <Box sx={styleBox}>
+                    {uniqueBrands.map((brand) => (
+                      <>
+                        <Typography
+                          component="div"
+                          id="modal-modal-brandsFeatured"
                         >
-                          {brand}
-                        </div>
-                      </Typography>
-                      <Typography component="div">
-                        <hr />
-                      </Typography>
-                    </>
-                  ))}
-                </Box>
+                          <Link href={"/browse"}>
+                          <div
+                            key={brand}
+                            onClick={() => {
+                              setOpenBrowse(false);
+                              setOpen(false);
+                            }}
+                            className="p-4  text-xs cursor-pointer hover:bg-stone-100 overflow-hidden"
+                          >
+                            {brand}
+                          </div>
+                          </Link>
+                        </Typography>
+                        <Typography component="div">
+                          <hr />
+                        </Typography>
+                      </>
+                    ))}
+                  </Box>
+                ) : (
+                  <Box sx={styleBox}>
+                    {uniqueCategories.map((category) => (
+                      <>
+                        <Typography
+                          component="div"
+                          id="modal-modal-brandsFeatured"
+                        >
+                          <Link href={"/browse"}>
+                            <div
+                              key={category}
+                              onClick={() => {
+                                setOpenBrowse(false);
+                                setOpen(false);
+                              }}
+                              className="p-4  text-xs cursor-pointer hover:bg-stone-100 overflow-hidden"
+                            >
+                              {category}
+                            </div>
+                          </Link>
+                        </Typography>
+                        <Typography component="div">
+                          <hr />
+                        </Typography>
+                      </>
+                    ))}
+                  </Box>
+                )}
               </Modal>
 
               <Link href={""} className="text-sm font-semibold">
