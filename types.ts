@@ -24,12 +24,15 @@ export interface ProductTypes {
     quantity: number;
     selectedImg?: ImageProps | null;
     specs?: ProductSpecs;
+    deal?: string;
+    logistics?: string;
+    store?: StoreProps
+    addedBy?: UserAuthProps | null;
 }
 
 export interface ProductSpecs {
     [key: string]: string;
 }
-
 
  
 
@@ -61,21 +64,26 @@ export interface ReviewProps {
     rating: number;
     comment: string;
     createdDate: string;
-    user: UserProps;
+    user: UserAuthProps;
 }
 
-export interface UserProps {
+export interface UserAuthProps {
     id: string;
     name: string;
     email: string;
     emailVerified: null | string;   
     image: string;
-    hashedPassword: null | string; 
-    createdAt: string;
+    phoneNumber: string;
+    addedTime: string;
     updatedAt: string;
     role: string;
 }
 
+
+export interface StoreProps {
+    storeName: string
+    storeAddress: string;
+}
 
 
 

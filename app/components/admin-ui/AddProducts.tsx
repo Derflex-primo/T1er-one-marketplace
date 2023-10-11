@@ -7,6 +7,8 @@ import {
   ImageProps,
   ProductTypes,
   SpecsProps,
+  StoreProps,
+  UserAuthProps,
   VideoAdProps,
 } from "@/types";
 import { useEffect, useRef, useState } from "react";
@@ -32,14 +34,17 @@ import {
 import SpecsCategories from "./SpecsCategories";
 import VideoAd from "./VideoAd";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-const AUTHORIZED_EMAIL = process.env.NEXT_PUBLIC_AUTHORIZED_EMAIL;
-
+const AUTHORIZED_EMAIL_ADMIN = process.env.NEXT_PUBLIC_AUTHORIZED_EMAIL_ADMIN;
+const AUTHORIZED_EMAIL_USER = process.env.NEXT_PUBLIC_AUTHORIZED_EMAIL_USER;
 const productCollectionRef = collection(db, "products");
 export const storage = getStorage(app);
 
 export const inputUi = "border rounded-md p-1 mt-1 text-black";
 const AddProducts = () => {
-  // Auth check admin
+  // Auth check admin or user
+  const [addedBy, setAddedBy] = useState<UserAuthProps | null>(null);
+  const [role, setRole] = useState<"admin" | "user" | null>(null);
+  type UserRole = "admin" | "user" | null;
   const [isAuthorized, setIsAuthorized] = useState(false);
   // Handle Category
   const [selectedCategory, setSelectedCategory] = useState<string>(""); // To keep track of selected category
@@ -57,6 +62,16 @@ const AddProducts = () => {
   const [options, setOptions] = useState({});
   const [selectedOption, setSelectedOption] = useState("USD");
   const [price, setPrice] = useState("");
+
+  //DEALS AND LOGISTICS
+  const [selectedDeal, setSelectedDeal] = useState<string>("");
+  const [selectedLogistics, setSelectedLogistics] = useState<string>("");
+
+  // STORE NAME
+  const [store, setStore] = useState<StoreProps>({
+    storeName: "",
+    storeAddress: "",
+  });
 
   // Image Groups
   const [imagesInGroups, setImagesInGroups] = useState<ImageProps[]>([]);
@@ -207,6 +222,26 @@ const AddProducts = () => {
     }
   };
 
+  //DEALS AND LOGISTICS
+
+  const handleDealChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedDeal(e.target.value);
+  };
+
+  const handleLogisticsChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedLogistics(e.target.value);
+  };
+
+  // STORE NAME & ADDRESS
+
+  const handleStoreNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setStore((prev) => ({ ...prev, storeName: e.target.value }));
+  };
+
+  const handleStoreAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setStore((prev) => ({ ...prev, storeAddress: e.target.value }));
+  };
+
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newCategory = e.target.value;
     setSelectedCategory(newCategory);
@@ -246,13 +281,48 @@ const AddProducts = () => {
     }
   }, [selectedType]);
 
+  // EMAIL AUTH OPERATIONS
+
   useEffect(() => {
     const auth = getAuth();
+
     onAuthStateChanged(auth, (user) => {
-      if (user && user.email === AUTHORIZED_EMAIL) {
-        setIsAuthorized(true);
+      if (user) {
+        let role: UserRole;
+
+        // Check the role based on email
+        if (user.email === AUTHORIZED_EMAIL_ADMIN) {
+          setIsAuthorized(true);
+          role = "admin";
+        } else if (user.email === AUTHORIZED_EMAIL_USER) {
+          setIsAuthorized(true);
+          role = "user";
+        } else {
+          setIsAuthorized(false);
+          role = null;
+        }
+
+        setRole(role);
+
+        // Capture user details if the role is valid (either user or admin)
+        if (role) {
+          const userDetails = {
+            id: user.uid,
+            name: user.displayName || "",
+            email: user.email || "",
+            emailVerified: user.emailVerified ? new Date().toISOString() : null,
+            image: user.photoURL || "",
+            phoneNumber: user.phoneNumber || "",
+            addedTime: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+            role: role,
+          };
+
+          setAddedBy(userDetails);
+        }
       } else {
         setIsAuthorized(false);
+        setRole(null);
       }
     });
   }, []);
@@ -267,6 +337,11 @@ const AddProducts = () => {
       itemCategoryRef,
       itemBrandRef,
       itemQuantityRef,
+      dealRef,
+      itemImagesRef,
+      logisticsRef,
+      storeAddressRef,
+      storeNameRef,
     ];
     let formsValidated = true;
 
@@ -290,6 +365,26 @@ const AddProducts = () => {
       toast("Please fill all the required fields.");
     }
 
+    if (!dealRef.current?.value) {
+      toast("Please select a deal.");
+      return false;
+    }
+
+    if (!logisticsRef.current?.value) {
+      toast("Please select a logistics partner.");
+      return false;
+    }
+
+    if (!storeNameRef.current?.value) {
+      toast("Please add your store");
+      return false;
+    }
+
+    if (!storeNameRef.current?.value || !storeAddressRef.current?.value) {
+      toast("Please provide both store name and address.");
+      return false;
+    }
+
     return formsValidated;
   };
 
@@ -302,6 +397,10 @@ const AddProducts = () => {
   const itemCategoryRef = useRef<HTMLSelectElement>(null);
   const itemBrandRef = useRef<HTMLInputElement>(null);
   const itemQuantityRef = useRef<HTMLInputElement>(null);
+  const dealRef = useRef<HTMLSelectElement>(null);
+  const logisticsRef = useRef<HTMLSelectElement>(null);
+  const storeNameRef = useRef<HTMLInputElement>(null);
+  const storeAddressRef = useRef<HTMLInputElement>(null);
 
   const resetForm = () => {
     // Reset state variables
@@ -315,6 +414,12 @@ const AddProducts = () => {
     setSelectedOption("USD");
     setPrice("");
     setVideoUrl(undefined);
+    setSelectedDeal("");
+    setSelectedLogistics("");
+    setStore({
+      storeName: "",
+      storeAddress: "",
+    });
 
     // Reset form fields using refs
     if (itemNameRef.current) itemNameRef.current.value = "";
@@ -325,6 +430,10 @@ const AddProducts = () => {
     if (itemCategoryRef.current) itemCategoryRef.current.value = "";
     if (itemBrandRef.current) itemBrandRef.current.value = "";
     if (itemQuantityRef.current) itemQuantityRef.current.value = "1";
+    if (dealRef.current) dealRef.current.value = "";
+    if (logisticsRef.current) logisticsRef.current.value = "";
+    if (storeNameRef.current) storeNameRef.current.value = "";
+    if (storeAddressRef.current) storeAddressRef.current.value = "";
   };
 
   const addProduct = async (productCase: "DROP" | "SELL" | "SWAP") => {
@@ -332,6 +441,17 @@ const AddProducts = () => {
       toast("You are not authorized to add products.");
       return;
     }
+
+    if (role === "user") {
+      // implement any restrictions or modifications for a regular user here.
+      toast("You have user permissions.");
+      // restrict users from adding a product:
+      // return;
+    } else if (role === "admin") {
+      // Implement any specific logic for admin here if needed.
+      toast("You have admin permissions.");
+    }
+
     // Check fields value
     if (!validateFields()) return;
     // Extract values from ref.current
@@ -383,6 +503,10 @@ const AddProducts = () => {
       quantity,
       specs,
       selectedImg: null,
+      deal: selectedDeal,
+      logistics: selectedLogistics,
+      store: store,
+      addedBy: addedBy,
     };
     console.log(imagesInGroups);
 
@@ -552,10 +676,31 @@ const AddProducts = () => {
               <h1>DESCRIPTION:</h1>
               <textarea
                 name="message"
-                className={`${inputUi} w-full  h-full resize-y overflow-auto`}
+                className={`${inputUi} w-full mb-2  h-full resize-y overflow-auto`}
                 required
                 ref={itemDescriptionRef}
               ></textarea>
+              <span>
+                <h1>STORE ADDRESS:</h1>
+                <input
+                  type="text"
+                  required
+                  className={`${inputUi} mb-2 w-full`}
+                  value={store.storeAddress}
+                  onChange={handleStoreAddressChange}
+                  ref={storeAddressRef}
+                />
+              </span>
+              <span>
+                <h1>STORE NAME:</h1>
+                <input
+                  onChange={handleStoreNameChange}
+                  className={inputUi}
+                  type="text"
+                  required
+                  ref={storeNameRef}
+                />
+              </span>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-2 gap-x-4 items-start">
               <span>
@@ -578,15 +723,6 @@ const AddProducts = () => {
                 </select>
               </span>
               <span>
-                <h1>STORE NAME:</h1>
-                <input
-                  className={inputUi}
-                  type="text"
-                  required
-                  ref={itemBrandRef}
-                />
-              </span>
-              <span>
                 <h1>BRAND:</h1>
                 <input
                   className={inputUi}
@@ -598,9 +734,11 @@ const AddProducts = () => {
               <span>
                 <h1>DEALS:</h1>
                 <select
-                  className={`${inputUi}  text-black text-[12px]`}
+                  ref={dealRef}
+                  className={`${inputUi} text-black text-[12px]`}
                   name="deals"
                   id="deals"
+                  onChange={handleDealChange}
                 >
                   <option value="" disabled selected>
                     Select a deal
@@ -623,14 +761,16 @@ const AddProducts = () => {
                 />
               </span>
               <span>
-                <h1>LOGISTICS PARTNERS:</h1>
+                <h1>LOGISTICS:</h1>
                 <select
-                  className={`${inputUi}  text-black text-[12px]`}
-                  name="logisticsPartners"
-                  id="logisticsPartners"
+                  ref={logisticsRef}
+                  className={`${inputUi} text-black text-[12px]`}
+                  name="logistics"
+                  id="logistics"
+                  onChange={handleLogisticsChange}
                 >
                   <option value="" disabled selected>
-                    Select a partner
+                    Select a logistics partner
                   </option>
                   {logisticsPartnersPH.map((partner) => (
                     <option key={partner.value} value={partner.value}>
