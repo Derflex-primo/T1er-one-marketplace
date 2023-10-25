@@ -191,3 +191,19 @@ export const logisticsPartnersPH = [
   { value: 'grabexpress', label: 'GrabExpress' },
   { value: 'mr-speedy', label: 'Mr. Speedy' },
 ];
+
+
+
+/// Browse logic
+
+export default function splitWord(category: string) {
+  const result = category.replace(/([a-z])([A-Z])/g, '$1 $2');
+    // Convert the second word to lowercase
+    const words = result.split(" ");
+    if (words.length > 1) {
+        words[1] = words[1].toLowerCase();
+        return words.join(" ");
+    }
+    return result;
+
+}

@@ -2,6 +2,7 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { collection, getDocs } from "firebase/firestore";
 import { ProductTypes } from "@/types";
+import { query, where } from "firebase/firestore";
 import dotenv from 'dotenv';
 
 dotenv.config({ path: '.env.development' });
@@ -45,5 +46,31 @@ export const getProductsFromFirebase = async (): Promise<ProductTypes[]> => {
   } catch (error) {
     console.error("Failed to fetch products: ", error);
     throw new Error("Failed to fetch products");
+  }
+};
+
+
+
+
+
+export const getProductsFromFirebaseByBrand = async (brand: string): Promise<ProductTypes[]> => {
+  try {
+    const productCollectionRef = collection(db, "products");
+    
+    // Query the collection to filter by brand
+    const q = query(productCollectionRef, where("brand", "==", brand));
+    
+    const response = await getDocs(q);
+    
+    return response.docs.map((doc) => {
+      const productData = doc.data() as ProductTypes;
+      return {
+        ...productData, // Spread the properties of productData directly
+        id: doc.id,
+      };
+    });
+  } catch (error) {
+    console.error("Failed to fetch products by brand: ", error);
+    throw new Error("Failed to fetch products by brand");
   }
 };

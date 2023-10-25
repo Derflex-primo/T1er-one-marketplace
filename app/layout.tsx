@@ -1,7 +1,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Michroma, Roboto } from "next/font/google";
-import NavBar from "./components/nav-ui/NavBar";
+import NavBar from "./components/nav-ui/page";
 import Footer from "./components/footer-ui/Footer";
 import CartProvider from "@/providers/CartProvider";
 import { Toaster } from "react-hot-toast";
@@ -9,10 +9,6 @@ import { initializeApp } from "firebase/app";
 import AuthRouteProvider from "@/providers/AuthRouteProvider";
 import ProductProvider from "@/providers/ProductProvider";
 import { config } from "@/lib/db/firebaseUtils";
-
-
-
-
 
 export const Firebase = initializeApp(config.firebaseConfig);
 
@@ -48,21 +44,21 @@ export default function RootLayout({
             error: {
               style: {
                 background: "rgb(68 64 60)",
-                color: "#fff"
+                color: "#fff",
               },
             },
           }}
         />
-      <ProductProvider>
-        <AuthRouteProvider >
-        <CartProvider>
-          <div className="flex flex-col min-h-screen">
-            <NavBar />
-            <main className="flex-grow bg-[#5f7f7]-100">{children}</main>
-            <Footer />
-          </div>
-        </CartProvider>
-        </AuthRouteProvider>
+        <ProductProvider>
+          <AuthRouteProvider>
+            <CartProvider>
+              <div className="flex flex-col min-h-screen">
+                <NavBar />
+                <main className="flex-grow bg-[#5f7f7]-100">{children}</main>
+                <Footer />
+              </div>
+            </CartProvider>
+          </AuthRouteProvider>
         </ProductProvider>
       </body>
     </html>

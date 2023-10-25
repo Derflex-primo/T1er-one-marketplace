@@ -137,3 +137,10 @@ export interface ItemSpecsRefProps {
 export interface ItemSpecsRef {
     getSpecs: () => Record<string, string>;
 }
+
+
+// Browse logic types
+
+export interface BrowseProps {
+    products: ProductTypes[];
+}

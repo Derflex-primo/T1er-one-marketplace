@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, SetStateAction } from "react";
 import Link from "next/link";
 import { Michroma } from "next/font/google";
 import Container from "../Container";
@@ -15,22 +15,20 @@ import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { useProducts } from "@/hooks/useProducts";
-
-// Finish Browse
+import { useRouter } from "next/navigation";
+import splitWord from "@/lib/utils/formats";
 
 const michroma = Michroma({ subsets: ["latin"], weight: ["400"] });
 
 const NavBar = () => {
   const [browseType, setBrowseType] = useState<string | null>(null);
-  const { products } = useProducts();
 
-  const uniqueBrands = Array.from(
-    new Set(products.map((product) => product.brand))
-  );
+  const { products } = useProducts(); // use this for brands
 
-  const uniqueCategories = Array.from(
-    new Set(products.map((product) => product.category))
-  );
+  const router = useRouter();
+
+  const uniqueCategories = Array.from(new Set(products.map((p) => p.category)));
+  const uniqueBrands = Array.from(new Set(products.map((p) => p.brand)));
 
   const handleBrowseClick = (type: string) => {
     setBrowseType(type);
@@ -268,18 +266,18 @@ const NavBar = () => {
                           component="div"
                           id="modal-modal-brandsFeatured"
                         >
-                          <Link href={"/browse"}>
-                          <div
-                            key={brand}
-                            onClick={() => {
-                              setOpenBrowse(false);
-                              setOpen(false);
-                            }}
-                            className="p-4  text-xs cursor-pointer hover:bg-stone-100 overflow-hidden"
-                          >
-                            {brand}
+                          <div onClick={() => router.push(`/product/${brand}`)}>
+                            <div
+                              key={brand}
+                              onClick={() => {
+                                setOpenBrowse(false);
+                                setOpen(false);
+                              }}
+                              className="p-4  text-xs cursor-pointer hover:bg-stone-100 overflow-hidden"
+                            >
+                              {splitWord(brand)}
+                            </div>
                           </div>
-                          </Link>
                         </Typography>
                         <Typography component="div">
                           <hr />
@@ -289,13 +287,13 @@ const NavBar = () => {
                   </Box>
                 ) : (
                   <Box sx={styleBox}>
-                    {uniqueCategories.map((category) => (
+                    {uniqueCategories.sort().map((category) => (
                       <>
                         <Typography
                           component="div"
                           id="modal-modal-brandsFeatured"
                         >
-                          <Link href={"/browse"}>
+                          <div onClick={() => router.push(`/product/${category}`)}>
                             <div
                               key={category}
                               onClick={() => {
@@ -304,9 +302,9 @@ const NavBar = () => {
                               }}
                               className="p-4  text-xs cursor-pointer hover:bg-stone-100 overflow-hidden"
                             >
-                              {category}
+                              {splitWord(category)}
                             </div>
-                          </Link>
+                          </div>
                         </Typography>
                         <Typography component="div">
                           <hr />

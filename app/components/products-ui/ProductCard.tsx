@@ -42,7 +42,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
 
   return (
     <div
-      onClick={() => router.push(`/product/${data.id}`)}
+      onClick={() => router.push(`/products/${data.id}`)}
       className={`${productCotainer}`}
     >
       <div className="">

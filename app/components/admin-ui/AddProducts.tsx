@@ -1,6 +1,6 @@
 "use client";
 
-// ADD SHOPS AND DEALS | 30% | WHO ADD ITEMS WILL TAKE THE EMAIL. AND NAME
+//  FIX AUTH 
 
 import {
   CategoryType,
