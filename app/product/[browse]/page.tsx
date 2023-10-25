@@ -7,11 +7,10 @@ import { usePathname } from "next/navigation";
 
 const Browse = () => {
   const pathname = usePathname();
+  const { products } = useProducts();
   const identifier = pathname.split("/")[2].trim();
 
   if (!identifier) return null;
-
-  const { products } = useProducts();
   const filteredProductsBy_Brand = products.filter(
     (product) => product.brand === identifier
   );
