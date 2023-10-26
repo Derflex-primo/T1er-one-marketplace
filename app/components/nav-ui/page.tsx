@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, SetStateAction } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { Michroma } from "next/font/google";
 import Container from "../Container";
@@ -15,7 +15,6 @@ import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { useProducts } from "@/hooks/useProducts";
-import { useRouter } from "next/navigation";
 import splitWord from "@/lib/utils/formats";
 
 const michroma = Michroma({ subsets: ["latin"], weight: ["400"] });
@@ -25,10 +24,10 @@ const NavBar = () => {
 
   const { products } = useProducts(); // use this for brands
 
-  const router = useRouter();
 
   const uniqueCategories = Array.from(new Set(products.map((p) => p.category)));
   const uniqueBrands = Array.from(new Set(products.map((p) => p.brand)));
+  
 
   const handleBrowseClick = (type: string) => {
     setBrowseType(type);
@@ -121,6 +120,7 @@ const NavBar = () => {
         md:gap-0
         "
           >
+
             <div className="flex items-center md:hidden">
               <Link
                 href="/"
@@ -266,7 +266,7 @@ const NavBar = () => {
                           component="div"
                           id="modal-modal-brandsFeatured"
                         >
-                          <div onClick={() => router.push(`/product/${brand}`)}>
+                          <Link  href={`/product/${brand}`}>
                             <div
                               key={brand}
                               onClick={() => {
@@ -277,7 +277,7 @@ const NavBar = () => {
                             >
                               {splitWord(brand)}
                             </div>
-                          </div>
+                          </Link>
                         </Typography>
                         <Typography component="div">
                           <hr />
@@ -293,7 +293,9 @@ const NavBar = () => {
                           component="div"
                           id="modal-modal-brandsFeatured"
                         >
-                          <div onClick={() => router.push(`/product/${category}`)}>
+                          <Link
+                             href={`/product/${category}`}
+                          >
                             <div
                               key={category}
                               onClick={() => {
@@ -304,7 +306,7 @@ const NavBar = () => {
                             >
                               {splitWord(category)}
                             </div>
-                          </div>
+                          </Link>
                         </Typography>
                         <Typography component="div">
                           <hr />

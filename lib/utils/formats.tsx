@@ -3,6 +3,14 @@ export const formatStr = (str?: string) => {
   if (str.length < 12) return str;
   return str.substring(0, 12) + "...";
 };
+
+export const formatBrowseStr = (str?: string) => {
+  if (!str) return ""; // Return an empty string if `str` is undefined or null
+  if (str.length < 26) return str;
+  return str.substring(0, 26) + "...";
+};
+
+
 export const formatUSDWithComma = (number?: number) => {
   if (number === undefined || number === null) {
     return "$0"; // or some default value

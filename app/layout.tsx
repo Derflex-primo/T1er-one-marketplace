@@ -9,6 +9,7 @@ import { initializeApp } from "firebase/app";
 import AuthRouteProvider from "@/providers/AuthRouteProvider";
 import ProductProvider from "@/providers/ProductProvider";
 import { config } from "@/lib/db/firebaseUtils";
+import NextTopLoader from "nextjs-toploader";
 
 export const Firebase = initializeApp(config.firebaseConfig);
 
@@ -53,6 +54,7 @@ export default function RootLayout({
           <AuthRouteProvider>
             <CartProvider>
               <div className="flex flex-col min-h-screen">
+                <NextTopLoader color="#fc0335" showSpinner={false} />
                 <NavBar />
                 <main className="flex-grow bg-[#5f7f7]-100">{children}</main>
                 <Footer />
