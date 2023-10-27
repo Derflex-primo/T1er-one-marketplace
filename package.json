@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "NODE_OPTIONS='--max-old-space-size=4096' next dev",
+    "dev": "NODE_OPTIONS='--max-old-space-size=8096' next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -28,6 +28,7 @@
     "eslint-config-next": "13.4.12",
     "firebase": "^9.6.8",
     "lodash": "^4.17.21",
+    "micro": "^10.0.1",
     "moment": "^2.29.4",
     "next": "^13.4.5",
     "nextjs-toploader": "^1.5.3",

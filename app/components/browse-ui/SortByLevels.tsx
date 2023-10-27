@@ -27,7 +27,7 @@ const SortByLevels = () => {
         setOpen(open);
         setIsClicked(true);
       }}>
-        <DropdownMenu.Trigger className={`flex flex-row items-center px-4 py-3 border rounded-xl dark:ring-stone-50 outline-none ${isClicked && !open ? "dark:border-stone-900" : ""}`}>
+        <DropdownMenu.Trigger className={`flex flex-row items-center  z-30 px-4 py-3 border rounded-xl dark:ring-stone-50 outline-none ${isClicked && !open ? "dark:border-stone-900" : ""}`}>
           <span className="text-stone-900 ">{sortSelection}</span>
           <FiChevronDown
             className={`h-5 w-5 text-stone-900 transition-transform ${open ? "rotate-180" : ""}`}
@@ -36,7 +36,7 @@ const SortByLevels = () => {
         <DropdownMenu.Content
           align="end"
           sideOffset={12}
-          className="cursor-pointer overflow-hidden rounded-[8px] border-[1px]  md:w-44 "
+          className="cursor-pointer bg-white  z-30 overflow-hidden rounded-[8px] border-[1px] border-b-none  md:w-44 "
         >
           {Object.keys(options).map((key) => (
             <DropdownMenu.Item

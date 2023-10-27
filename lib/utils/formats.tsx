@@ -10,7 +10,6 @@ export const formatBrowseStr = (str?: string) => {
   return str.substring(0, 26) + "...";
 };
 
-
 export const formatUSDWithComma = (number?: number) => {
   if (number === undefined || number === null) {
     return "$0"; // or some default value
@@ -36,7 +35,7 @@ export const options = [
   { value: "accessories", label: "Accessories" },
   { value: "microphone", label: "Microphones" },
   { value: "chips", label: "Chips" },
-  { value: "desktop", label: "Desktops" },  
+  { value: "desktop", label: "Desktops" },
   { value: "tablet", label: "Tablets" },
   { value: "monitor", label: "Monitors" },
   { value: "external hard drives", label: "External Hard Drives" },
@@ -61,7 +60,6 @@ export const options = [
   { value: "car tech", label: "Car Tech" },
   { value: "home automation", label: "Home Automation" },
 ];
-
 
 export const sortedOptions = [...options].sort((a, b) =>
   a.label.localeCompare(b.label)
@@ -173,45 +171,161 @@ export const web3Tokens = {
   NANO: "Nano",
 };
 
- 
-
 // DEAlS
 
 export const gadgetDealTypes = [
-  { value: 'early-bird', label: 'Early Bird Discount' },
-  { value: 'trade-in', label: 'Trade-In Offer' },
-  { value: 'bundle', label: 'Bundle Deal' },
-  { value: 'launch-special', label: 'Launch Special' },
-  { value: 'student-discount', label: 'Student Discount' },
-  { value: 'refurbished-discount', label: 'Refurbished Discount' },
-  { value: 'seasonal-sale', label: 'Seasonal Sale' },
+  { value: "early-bird", label: "Early Bird Discount" },
+  { value: "trade-in", label: "Trade-In Offer" },
+  { value: "bundle", label: "Bundle Deal" },
+  { value: "launch-special", label: "Launch Special" },
+  { value: "student-discount", label: "Student Discount" },
+  { value: "refurbished-discount", label: "Refurbished Discount" },
+  { value: "seasonal-sale", label: "Seasonal Sale" },
 ];
-
 
 // ADD ALL LOGISTIS PER COUNTRY
 
 export const logisticsPartnersPH = [
-  { value: 'lbc', label: 'LBC Express' },
-  { value: 'jnt', label: 'J&T Express' },
-  { value: 'jrs', label: 'JRS Express' },
-  { value: '2go', label: '2GO Express' },
-  { value: 'xpost', label: 'Xpost (Ninja Van)' },
-  { value: 'grabexpress', label: 'GrabExpress' },
-  { value: 'mr-speedy', label: 'Mr. Speedy' },
+  { value: "lbc", label: "LBC Express" },
+  { value: "jnt", label: "J&T Express" },
+  { value: "jrs", label: "JRS Express" },
+  { value: "2go", label: "2GO Express" },
+  { value: "xpost", label: "Xpost (Ninja Van)" },
+  { value: "grabexpress", label: "GrabExpress" },
+  { value: "mr-speedy", label: "Mr. Speedy" },
 ];
-
-
 
 /// Browse logic
 
 export default function splitWord(category: string) {
-  const result = category.replace(/([a-z])([A-Z])/g, '$1 $2');
-    // Convert the second word to lowercase
-    const words = result.split(" ");
-    if (words.length > 1) {
-        words[1] = words[1].toLowerCase();
-        return words.join(" ");
-    }
-    return result;
-
+  const result = category.replace(/([a-z])([A-Z])/g, "$1 $2");
+  // Convert the second word to lowercase
+  const words = result.split(" ");
+  if (words.length > 1) {
+    words[1] = words[1].toLowerCase();
+    return words.join(" ");
+  }
+  return result;
 }
+
+export const discountOptions = [
+  "All Discounts",
+  "10% off",
+  "20% off", 
+  "30% off",
+  "40% off",
+  "50% off",
+  "60% off",
+];
+
+export const storageCapacity = [
+  "32GB",
+  "64GB",
+  "128GB",
+  "256GB",
+  "512GB",
+  "1TB and above",
+];
+
+export const connectivityOptions = [
+  "Bluetooth",
+  "Wi-Fi",
+  "NFC",
+  "USB",
+  "LTE/5G",
+  "Ethernet",
+  "Satellite Communication",
+  "Infrared (IR)",
+  "HDMI",
+  "DisplayPort",
+  "Audio Jack",
+  "SD Card Slot",
+  "SIM Card Slot",
+  "GPS and GLONASS",
+  "Zigbee and Z-wave",
+  "MQTT (for IoT devices)",
+];
+
+export const displayTechnologies = [
+  "LCD",
+  "TFT-LCD",
+  "IPS-LCD",
+  "TN",
+  "LED",
+  "OLED",
+  "AMOLED",
+  "Super AMOLED",
+  "QLED",
+  "Mini-LED",
+  "Plasma",
+  "E-Ink",
+  "MicroLED",
+  "Retina Display",
+  "HDR",
+];
+
+export const screenRefreshRates = [
+  "60Hz",
+  "75Hz",
+  "90Hz",
+  "120Hz",
+  "144Hz",
+  "165Hz",
+  "240Hz",
+  "360Hz",
+];
+
+export const ramCapacities = [
+  "2GB",
+  "4GB",
+  "6GB",
+  "8GB",
+  "12GB",
+  "16GB",
+  "32GB",
+  "64GB",
+  "128GB",
+];
+
+export const operatingSystems = [
+  "Windows",
+  "macOS",
+  "Linux",
+  "Android",
+  "iOS",
+  "Chrome OS",
+  "Ubuntu",
+  "Fedora",
+  "Debian",
+  "FreeBSD",
+  "Solaris",
+];
+
+const currentYear = new Date().getFullYear();
+export const releaseYears = Array.from(
+  { length: 10 },
+  (_, idx) => currentYear - idx
+);
+
+export const customerRatings = [
+  "5 stars",
+  "4 stars & up",
+  "3 stars & up",
+  "2 stars & up",
+  "1 star & up",
+];
+
+export const processorCores = [
+  "Single Core",
+  "Dual Core",
+  "Quad Core",
+  "Hexa Core",
+  "Octa Core",
+  "Deca Core",
+  "12 Cores",
+  "16 Cores",
+  "24 Cores",
+  "32 Cores",
+  "64 Cores"
+];
+

@@ -103,7 +103,7 @@ const NavBar = () => {
     sticky 
     top-0 
     w-full 
-    z-30 
+    z-40 
     shadow-sm 
     ${scrolled ? "bg-gradient-to-r  bg-rose-700 text-white" : ""}
     transition-colors duration-300
