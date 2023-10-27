@@ -1,9 +1,9 @@
 import { BrowseProps } from "@/types";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Container from "../Container";
-import SortByLevels from "./SortByLevels";
+import SortByLevels, { Options } from "./SortByLevels";
 import Image from "next/image";
-import {
+import splitWord, {
   connectivityOptions,
   customerRatings,
   discountOptions,
@@ -24,6 +24,12 @@ import { IoCloseSharp } from "react-icons/io5";
 import { GrUpdate } from "react-icons/gr";
 
 const Brand: React.FC<BrowseProps> = ({ products }) => {
+  const [sortCriteria, setSortCriteria] = useState<Options>("Price High to low");
+  const [isLoading, setIsLoading] = useState(false);
+  const [lastButtonPress, setLastButtonPress] = useState<Date | null>(null);
+  const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
+  const [updatedTimeStr, setUpdatedTimeStr] =
+    useState<string>("Updated just now");
   const [openFilter, setOpenFilter] = useState<{ [key: string]: boolean }>({});
   const [selectedFilters, setSelectedFilters] = useState<{
     discount?: string;
@@ -34,9 +40,9 @@ const Brand: React.FC<BrowseProps> = ({ products }) => {
     refreshRate?: string;
     ram?: string;
     os?: string;
-    releaseYear?: string;
-    rating?: string;
     cores?: string;
+    rating?: string;
+    releaseYear?: string;
   }>({});
 
   const handleOptionClick = (type: string, value: string) => {
@@ -51,12 +57,149 @@ const Brand: React.FC<BrowseProps> = ({ products }) => {
     });
   };
 
+  const updateProducts = () => {
+    if (
+      lastButtonPress &&
+      new Date().getTime() - lastButtonPress.getTime() < 10000
+    ) {
+      // Prevents update if it's been less than 10 seconds since the last button press
+      return;
+    }
+  
+    setIsLoading(true);
+    setUpdatedTimeStr("Updated just now"); // Set the text immediately when the user clicks the update
+  
+    // Simulate a loading delay. You can replace this with your actual product update logic.
+    setTimeout(() => {
+      setIsLoading(false);
+      setLastUpdated(new Date());
+      setLastButtonPress(new Date());
+    }, 2000); // Assuming a 2-second loading time
+  };
+
+  const isButtonDisabled = lastButtonPress && new Date().getTime() - lastButtonPress.getTime() < 10000;
+  
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (lastUpdated) {
+        const diffInSeconds =
+          (new Date().getTime() - lastUpdated.getTime()) / 1000;
+        if (diffInSeconds < 60) {
+          // Less than 1 minute
+          setUpdatedTimeStr(`Updated ${Math.floor(diffInSeconds)} seconds ago`);
+        } else if (diffInSeconds < 3600) {
+          // Less than 1 hour but more than 1 minute
+          const minutes = Math.floor(diffInSeconds / 60);
+          setUpdatedTimeStr(`Updated ${minutes} minute${minutes > 1 ? 's' : ''} ago`);
+        } else {
+          setUpdatedTimeStr(`Updated a while ago`);
+          clearInterval(interval);
+        }
+      }
+    }, 10000); // Every 10 seconds
+  
+    return () => clearInterval(interval);
+  }, [lastUpdated]);
+  
+  
+
+  let filteredProducts = [...products];
+
+  if (sortCriteria) {
+    switch (sortCriteria) {
+      case "Price High to low":
+        filteredProducts.sort((a, b) => Math.min(...b.type.map(t => t.price)) - Math.min(...a.type.map(t => t.price)));
+        break;
+      case "Price Low to high":
+        filteredProducts.sort((a, b) => Math.min(...a.type.map(t => t.price)) - Math.min(...b.type.map(t => t.price)));
+        break;
+      case "Top Discount":
+        break;
+      case "Gadjet A - Z":
+        filteredProducts.sort((a, b) => a.name.localeCompare(b.name));
+        break;
+      case "Gadjet Z - A":
+        filteredProducts.sort((a, b) => b.name.localeCompare(a.name));
+        break;
+      default:
+        break;
+   }
+  }   
+  
+  for (const [key, value] of Object.entries(selectedFilters)) {
+    switch (key) {
+      case "gadget":
+        filteredProducts = filteredProducts.filter(
+          (product) => product.category === value
+        );
+        break;
+      case "storage":
+        filteredProducts = filteredProducts.filter((product) => {
+          const storageValues =
+            product.specs?.["Storage Capacity"]?.split(", ") || [];
+          if (value === "2TB and above") {
+            return storageValues.some((storage) =>
+              ["2TB", "3TB", "4TB", "5TB"].includes(storage)
+            );
+          } else {
+            return storageValues.includes(value);
+          }
+        });
+        break;
+      case "ram":
+        filteredProducts = filteredProducts.filter(
+          (product) => product.specs?.["RAM"] === value
+        );
+        break;
+      case "connectivity":
+        filteredProducts = filteredProducts.filter(
+          (product) => product.specs && product.specs[value]
+        );
+      case "displayTech":
+        filteredProducts = filteredProducts.filter(
+          (product) => product.specs?.["Display Technologies"] === value
+        );
+        break;
+      case "refreshRate":
+        filteredProducts = filteredProducts.filter(
+          (product) => product.specs?.["Screen refresh rate"] === value
+        );
+        break;
+      case "os":
+        filteredProducts = filteredProducts.filter((product) =>
+          product.specs?.["Operating System"]?.startsWith(value)
+        );
+        break;
+      case "cores":
+        filteredProducts = filteredProducts.filter(
+          (product) => product.specs?.["Processor cores"] === value
+        );
+        break;
+      case "rating":
+        filteredProducts = filteredProducts.filter((product) => {
+          if (!product.reviews || product.reviews.length === 0) {
+            return parseFloat(value) === 2; //  Temporary fix the ProducTypes "reviews - rating - user"  /images/
+          }
+          const avgRating =
+            product.reviews.reduce((acc, review) => acc + review.rating, 0) /
+            product.reviews.length;
+          return avgRating === parseFloat(value);
+        });
+      case "releaseYear":
+        filteredProducts = filteredProducts.filter(
+          (product) => product.specs?.["Release year"] === value
+        );
+        break;
+      default:
+        break;
+    }
+  }
+
   return (
     <Container>
       <div className="flex w-full mt-2 gap-12">
         <div className="border rounded-xl w-[20%]">
           <h1 className="border-b p-3 text-stone-900">FILTERS</h1>
-
           <div>
             <div
               className={`w-full p-3 border-b cursor-pointer select-none ${
@@ -79,7 +222,7 @@ const Brand: React.FC<BrowseProps> = ({ products }) => {
                     className="p-3 cursor-pointer border-b hover:bg-stone-200"
                     onClick={() => handleOptionClick("gadget", option.label)}
                   >
-                    {option.label}
+                    {splitWord(option.label)}
                   </div>
                 ))}
               </div>
@@ -383,13 +526,23 @@ const Brand: React.FC<BrowseProps> = ({ products }) => {
           <div className="flex justify-between items-center">
             <div className="flex gap-6">
               <div className="flex items-center gap-3">
-                <GrUpdate className="rotate-45" />
-                Updated just now
+              <div
+                onClick={updateProducts}
+                className={`${isButtonDisabled ? "cursor-not-allowed " : "cursor-pointer "}`}
+              >
+                <GrUpdate className={`rotate-45 ${isButtonDisabled ? "animate-pulse" : ""}`} />
               </div>
-              <div className="font-semibold">{products.length} items</div>
+
+              <div className="cursor-default">
+              {isLoading ? "Loading items..." : updatedTimeStr}
+              </div>
+              </div>
+              <div className="select-none font-semibold">
+                {filteredProducts.length} items
+              </div>
             </div>
             <div>
-              <SortByLevels />
+            <SortByLevels currentSort={sortCriteria} setSort={setSortCriteria} />
             </div>
           </div>
           <div className="flex flex-wrap gap-2 mt-4">
@@ -398,7 +551,7 @@ const Brand: React.FC<BrowseProps> = ({ products }) => {
                 key={key}
                 className="flex flex-wrap items-center border border-stone-200 bg-stone-100 rounded-full py-2 px-3 select-none space-x-2"
               >
-                <span>{value}</span>
+                <span>{splitWord(value)}</span>
                 <button
                   onClick={() => removeFilter(key)} // Pass the filter type to the removeFilter function
                   className="px-2 py-1 rounded-full"
@@ -409,53 +562,70 @@ const Brand: React.FC<BrowseProps> = ({ products }) => {
             ))}
           </div>
           <div className="flex flex-wrap gap-3  z-0 mt-5">
-            {products.map((product) => (
-              <div key={product.id} className="relative rounded-xl border ">
-                <div className="relative z-0 h-60 w-60">
-                  {product.images &&
-                    product.images[0] &&
-                    product.images[0].image && (
-                      <Image
-                        src={product.images[0].image}
-                        alt={product.name}
-                        fill
-                        className="object-contain p-3"
-                      />
-                    )}
-                </div>
-                <div className="p-3 space-y-2">
-                  <div>{formatBrowseStr(product.name)}</div>
-                  <div className="text-xs">
-                    Model:{" "}
-                    {product.specs && Object.values(product.specs?.Model)}
-                  </div>
-                  <div className="flex flex-row items-center space-x-2">
-                    <div className="text-xs">Theme:</div>
-                    {product.images?.map((image, index) => (
-                      <div
-                        key={index}
-                        className="flex flex-row space-x-2 h-4 w-4 rounded-full"
-                        style={{ backgroundColor: image.colorCode }}
-                      ></div>
-                    ))}
-                  </div>
-                  <div>{formatUSDWithComma(product.type[0].price)}</div>
-                  <div className="flex justify-between items-center  my-2 flex-col md:flex-row text-center ">
-                    <Rating
-                      sx={{ fontSize: "0.8rem" }}
-                      value={product.reviews?.[0]?.rating || 2}
-                      readOnly
-                    />
-                    <span className={`${productRating} items-center space-x-1`}>
-                      review
-                      <strong className="text-rose-500 ml-1">
-                        {product.reviews?.length}
-                      </strong>
-                    </span>
-                  </div>
-                </div>
+            {filteredProducts.length === 0 ? (
+              <div className="text-center w-full">
+                <Image
+                  src="/images/productNotAdded.svg"
+                  alt="No products found"
+                  width={400}
+                  height={400}
+                  className="mx-auto"
+                />
+                <p className="mt-2">
+                  No products found for the selected filters.
+                </p>
               </div>
-            ))}
+            ) : (
+              filteredProducts.map((product) => (
+                <div key={product.id} className="relative rounded-xl border ">
+                  <div className="relative z-0 h-60 w-60">
+                    {product.images &&
+                      product.images[0] &&
+                      product.images[0].image && (
+                        <Image
+                          src={product.images[0].image}
+                          alt={product.name}
+                          fill
+                          className="object-contain p-3"
+                        />
+                      )}
+                  </div>
+                  <div className="p-3 space-y-2">
+                    <div>{formatBrowseStr(product.name)}</div>
+                    <div className="text-xs">
+                      Model:{" "}
+                      {product.specs && Object.values(product.specs?.Model)}
+                    </div>
+                    <div className="flex flex-row items-center space-x-2">
+                      <div className="text-xs">Theme:</div>
+                      {product.images?.map((image, index) => (
+                        <div
+                          key={index}
+                          className="flex flex-row space-x-2 h-4 w-4 rounded-full"
+                          style={{ backgroundColor: image.colorCode }}
+                        ></div>
+                      ))}
+                    </div>
+                    <div>{formatUSDWithComma(product.type[0].price)}</div>
+                    <div className="flex justify-between items-center  my-2 flex-col md:flex-row text-center ">
+                      <Rating
+                        sx={{ fontSize: "0.8rem" }}
+                        value={product.reviews?.[0]?.rating || 2}
+                        readOnly
+                      />
+                      <span
+                        className={`${productRating} items-center space-x-1`}
+                      >
+                        review
+                        <strong className="text-rose-500 ml-1">
+                          {product.reviews?.length}
+                        </strong>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ))
+            )}
           </div>
         </div>
       </div>

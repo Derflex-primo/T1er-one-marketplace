@@ -25,7 +25,7 @@ export const isSeeMore = (description: string) => {
 
 //ADMIN read_only
 export const options = [
-  { value: "smartPhones", label: "Smartphones" },
+  { value: "smartPhones", label: "SmartPhones" },
   { value: "laptops", label: "Laptops" },
   { value: "cameras", label: "Cameras" },
   { value: "camera lens", label: "Camera lenses" },
@@ -52,7 +52,7 @@ export const options = [
   { value: "diy electronics", label: "DIY Electronics" },
   { value: "drones", label: "Drones" },
   { value: "virtual reality", label: "Virtual Reality" },
-  { value: "smartwatches", label: "Smartwatches" },
+  { value: "smartwatches", label: "SmartWatches" },
   { value: "fitness trackers", label: "Fitness Trackers" },
   { value: "e readers", label: "E-readers" },
   { value: "projectors", label: "Projectors" },
@@ -224,7 +224,8 @@ export const storageCapacity = [
   "128GB",
   "256GB",
   "512GB",
-  "1TB and above",
+  "1TB",
+  "2TB and above",
 ];
 
 export const connectivityOptions = [
@@ -241,7 +242,7 @@ export const connectivityOptions = [
   "Audio Jack",
   "SD Card Slot",
   "SIM Card Slot",
-  "GPS and GLONASS",
+  "GPS",
   "Zigbee and Z-wave",
   "MQTT (for IoT devices)",
 ];
@@ -290,6 +291,8 @@ export const ramCapacities = [
 export const operatingSystems = [
   "Windows",
   "macOS",
+  "watchOS",
+  "iPadOS",
   "Linux",
   "Android",
   "iOS",
@@ -299,6 +302,21 @@ export const operatingSystems = [
   "Debian",
   "FreeBSD",
   "Solaris",
+];
+
+
+export const processorCores = [
+  "Single Core",
+  "Dual Core",
+  "Quad Core",
+  "Hexa Core",
+  "Octa Core",
+  "Deca Core",
+  "12 Cores",
+  "16 Cores",
+  "24 Cores",
+  "32 Cores",
+  "64 Cores"
 ];
 
 const currentYear = new Date().getFullYear();
@@ -315,17 +333,5 @@ export const customerRatings = [
   "1 star & up",
 ];
 
-export const processorCores = [
-  "Single Core",
-  "Dual Core",
-  "Quad Core",
-  "Hexa Core",
-  "Octa Core",
-  "Deca Core",
-  "12 Cores",
-  "16 Cores",
-  "24 Cores",
-  "32 Cores",
-  "64 Cores"
-];
+
 
