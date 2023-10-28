@@ -10,21 +10,14 @@ const HomeBanner = () => {
       const date = new Date();
       const formattedDate = `${date.toLocaleString("default", {
         month: "long",
-      })} ${date.getDate()}, ${date.getFullYear()}, ${String(
-        date.getHours()
-      ).padStart(2, "0")}:${String(date.getMinutes()).padStart(
-        2,
-        "0"
-      )}:${String(date.getSeconds()).padStart(2, "0")}`;
+      })} ${date.getDate()}, ${date.getFullYear()}`;
       setCurrentDate(formattedDate);
     };
 
     updateDateTime();
 
-    const interval = setInterval(updateDateTime, 1000);
+}, []);
 
-    return () => clearInterval(interval);
-  }, []);
 
   return (
     <div>
@@ -53,20 +46,15 @@ const HomeBanner = () => {
           </div>
         </div>
       </div>
-      <div className="flex flex-row justify-between mb-3  items-center border border-stone-300 rounded-r-lg ">
-        <div className="flex flex-row space-x-4 items-center">
-          <div className="flex flex-row items-center relative   bg-gradient-to-r bg-rose-600">
-            <span className="p-2 text-lg text-white rounded-sm font-semibold relative z-10">
-              Today&apos;s Hot Deals <span className="pl-2 text-xs text-stone-900 font-mono">{currentDate}</span>
-            </span>
-            <div className="-mr-2 w-4 h-full absolute right-0 top-0 bg-rose-600 transform -skew-x-12"></div>
-          </div>
+      <div className="flex flex-row justify-between mb-3  items-center bg-stone-100 rounded-lg ">
+        <div className="flex flex-row space-x-4 items-center ml-3 text-xs  ">
+         Tier One&apos;s Hot Deals <span className="pl-2 text-xs text-stone-900 ">{currentDate}</span>  
         </div>
         <div className="flex flex-row ">
-          <span className="p-[10px] text-xs  unded-sm font-semibold  ">
+          <span className="p-[10px] text-xs  unded-sm   ">
             Why pay more? Unlock superior savings and exclusive deals with our
             memberships!
-            <span className="ml-2 text-[11px] p-2 rounded-lg bg-stone-900 text-white cursor-pointer hover:bg-stone-700">
+            <span className="ml-2 text-[11px] p-2 rounded-lg hover:bg-stone-200 cursor-pointer font-semibold">
               Join Now
             </span>
           </span>
@@ -74,7 +62,7 @@ const HomeBanner = () => {
         <div className="text-xs p-2  ">
           Have a question? Call us now 09477926745 or 8700-200
         </div>
-        <div className="mr-2 cursor-pointer">
+        <div className="mr-3 cursor-pointer">
           <AiOutlineInfoCircle size={20} />
         </div>
       </div>

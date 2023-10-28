@@ -68,7 +68,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
             />
             <span className={`${productRating}`}>
               review
-              <strong className="text-rose-500">{data.reviews?.length}</strong>
+              <strong className="text-rose-500 ml-1">{data.reviews?.length}</strong>
             </span>
           </div>
         </div>

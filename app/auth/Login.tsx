@@ -95,13 +95,15 @@ const LogInPage: React.FC<LogInPageProps> = (props) => {
   }, []);
 
   return (
-    <div
-      className={`flex items-center gap-4 ${
-        scrolled ? "text-white" : ""
-      } `}
-    >
+    <div className={`flex items-center gap-4 ${scrolled ? "text-white" : ""} `}>
       <div className="flex items-center  ">
-        <span className={`flex items-center space-x-4 rounded-l-xl pr-3 py-3 px-4 ${scrolled ? "hover:bg-none border-[1.4px] border-r-none bg-transparent" : "hover:bg-stone-200 bg-stone-100 trasition ease-in-out duration-150 border-r "}`} >
+        <span
+          className={`flex items-center space-x-4 rounded-l-xl pr-3 py-3 px-4 ${
+            scrolled
+              ? "backdrop-blur-md bg-white bg-opacity-20   hover:bg-stone-900 hover:backdrop-blur-md hover:bg-opacity-20 border-r-[0.8px]  trasition ease-in-out duration-150"
+              : "hover:bg-stone-200 bg-stone-100 trasition ease-in-out duration-150 border-r "
+          }`}
+        >
           <MdWallet size={26} />
           <button
             className="cursor-pointer font-semibold "
@@ -113,7 +115,11 @@ const LogInPage: React.FC<LogInPageProps> = (props) => {
         </span>
         <span
           onClick={() => handleSignOut()}
-          className={`cursor-pointer  border-l-none rounded-r-xl py-3 px-3 ${scrolled ? "hover:bg-none border-[1.4px] border-l-none bg-transparent" : "hover:bg-stone-200 bg-stone-100 trasition ease-in-out duration-150 "} ${
+          className={`cursor-pointer  border-l-none rounded-r-xl py-3 px-3 ${
+            scrolled
+              ? "backdrop-blur-md bg-white bg-opacity-20 hover:bg-stone-900 hover:backdrop-blur-md hover:bg-opacity-20  trasition ease-in-out duration-150"
+              : "hover:bg-stone-200 bg-stone-100 trasition ease-in-out duration-150 "
+          } ${
             scrolled ? "text-white" : ""
           } transition-all ease-in-out duration-75`}
         >
@@ -122,7 +128,7 @@ const LogInPage: React.FC<LogInPageProps> = (props) => {
               src={currentUser.photoURL}
               width={26}
               height={26}
-              className="bg-white border-[1px] rounded-full"
+              className="bg-white  rounded-full"
               alt="User menu"
             />
           ) : (
@@ -190,7 +196,13 @@ const LogInPage: React.FC<LogInPageProps> = (props) => {
           </Typography>
         </Box>
       </Modal>
-      <div className={ `px-2 py-2 rounded-xl cursor-pointer ${scrolled ? "hover:bg-none border-[1.4px] bg-transparent" : "hover:bg-stone-200 bg-stone-100 trasition ease-in-out duration-150 "}`}>
+      <div
+        className={`px-2 py-2 rounded-xl cursor-pointer ${
+          scrolled
+            ? "backdrop-blur-md bg-white bg-opacity-20 hover:bg-stone-900 hover:backdrop-blur-md hover:bg-opacity-20  trasition ease-in-out duration-150"
+            : "hover:bg-stone-200 bg-stone-100 trasition ease-in-out duration-150 "
+        }`}
+      >
         <CartCount />
       </div>
     </div>

@@ -119,7 +119,7 @@ const NavBar = () => {
         md:gap-0
         "
           >
-            <div className="flex items-center md:hidden">
+            <div className="flex items-center md:hidden overflow-hidden">
               <Link
                 href="/"
                 className={`${michroma.className} text-lg font-semibold`}
@@ -128,30 +128,19 @@ const NavBar = () => {
               </Link>
             </div>
             <div className="hidden md:flex w-80  justify-between items-center">
-              <div className="flex justify-center items-center  gap-2 ">
-                <div className="text-white rounded-full p-2 bg-rose-700 ">
-                  <Image
-                    src="/images/tierOneLogo.svg"
-                    alt="T1er One logo"
-                    width={16}
-                    height={16}
-                  />
-                </div>
-
-                <Link
-                  href="/"
-                  className={`${michroma.className} text-lg font-bold`}
-                >
-                  T1er One
-                </Link>
-              </div>
-              <hr className="inline border-[1.4px] h-8" />
-              <div className="flex gap-2 text-base ">
+              <Link
+                href="/"
+                className={`${michroma.className} text-lg font-extrabold`}
+              >
+                T1er One
+              </Link>
+              <hr className="inline border-[0.8px] h-8 "/>
+              <div className="flex items-center gap-6 text-base cursor-pointer ">
                 <Drop />
                 <Trade />
               </div>
             </div>
-            <div className="flex flex-grow relative ml-10 mx-4 md:block">
+            <div className="flex flex-grow relative ml-10 mx-4 md:block ">
               <IoSearch
                 className={`absolute left-3 top-1/2 transform -translate-y-1/2 ${
                   scrolled ? "text-white" : "text-black"
@@ -161,7 +150,7 @@ const NavBar = () => {
               <div
                 className={`cursor-pointer shadow-xs text-stone-900 absolute p-2 rounded-lg bg-stone-300 right-3 top-1/2 transform -translate-y-1/2 ${
                   scrolled
-                    ? " backdrop-blur-md bg-white bg-opacity-20 text-white"
+                    ? " backdrop-blur-md bg-white bg-opacity-20 text-white "
                     : ""
                 }
               `}
@@ -177,8 +166,8 @@ const NavBar = () => {
                 w-full pl-10 py-3 bg-stone-100 rounded-xl md:block focus:outline-none focus:ring-[0.6px] 
                  ${
                    scrolled
-                     ? "text-white   backdrop-blur-md bg-white bg-opacity-20 focus:ring-white"
-                     : "text-black placeholder-stone-800 focus:ring-stone-900"
+                     ? "text-white   backdrop-blur-md bg-white bg-opacity-20 focus:ring-white hover:bg-stone-900 hover:backdrop-blur-md hover:bg-opacity-20  trasition ease-in-out duration-150"
+                     : "text-black placeholder-stone-800 focus:ring-stone-900 hover:bg-stone-200 bg-stone-100 trasition ease-in-out duration-150 "
                  }
                 `}
                 type="text"

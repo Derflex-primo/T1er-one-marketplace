@@ -24,10 +24,14 @@ import { IoCloseSharp } from "react-icons/io5";
 import { GrUpdate } from "react-icons/gr";
 import { AiOutlinePushpin } from "react-icons/ai";
 import { MdOutlineShoppingCart } from "react-icons/md";
+import { useCart } from "@/hooks/useCart";
 
-// FIX THIS HOVER BUY / PINNED / ADD TO CART
+//  ADD PINNED AND ADD TO CART AND BUY NOW   
 
 const Brand: React.FC<BrowseProps> = ({ products }) => {
+
+  const { handleAddProductToType } = useCart();
+
   const [sortCriteria, setSortCriteria] =
     useState<Options>("Price High to low");
   const [isLoading, setIsLoading] = useState(false);
@@ -49,6 +53,7 @@ const Brand: React.FC<BrowseProps> = ({ products }) => {
     rating?: string;
     releaseYear?: string;
   }>({});
+
 
   const handleOptionClick = (type: string, value: string) => {
     setSelectedFilters((prev) => ({ ...prev, [type]: value }));
@@ -219,7 +224,7 @@ const Brand: React.FC<BrowseProps> = ({ products }) => {
               className={`w-full p-3 border-b cursor-pointer select-none ${
                 openFilter.gadjet
                   ? " bg-rose-600 text-white ease-in-out duration-300"
-                  : "hover:text-rose-500"
+                  : "hover:text-rose-500 "
               } `}
               onClick={() =>
                 setOpenFilter((prev) => ({ ...prev, gadjet: !prev.gadjet }))
@@ -662,7 +667,22 @@ const Brand: React.FC<BrowseProps> = ({ products }) => {
                         Buy now
                       </p>
                     </div>
-                    <div className="w-[30%]  h-full flex items-center justify-center pr-2 hover:bg-rose-500">
+                    <div className="w-[30%]  h-full flex items-center justify-center pr-2 hover:bg-rose-500"
+                       onClick={() => {
+                        handleAddProductToType({
+                          id: product.id,
+                          name: product.name,
+                          case: product.case,
+                          description: product.description,
+                          category: product.category,
+                          brand: product.brand,
+                          images: product.images,
+                          selectedImg: product.images[0] || null,
+                          quantity: 1,
+                          type: product.type,
+                          reviews: product.reviews,
+                        });
+                    }}>
                      <MdOutlineShoppingCart size={22} className="text-white" />
                    </div>
                   </div>
