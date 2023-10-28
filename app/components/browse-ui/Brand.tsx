@@ -22,9 +22,14 @@ import Rating from "@mui/material/Rating";
 import { productRating } from "../products-ui/ProductCard";
 import { IoCloseSharp } from "react-icons/io5";
 import { GrUpdate } from "react-icons/gr";
+import { AiOutlinePushpin } from "react-icons/ai";
+import { MdOutlineShoppingCart } from "react-icons/md";
+
+// FIX THIS HOVER BUY / PINNED / ADD TO CART
 
 const Brand: React.FC<BrowseProps> = ({ products }) => {
-  const [sortCriteria, setSortCriteria] = useState<Options>("Price High to low");
+  const [sortCriteria, setSortCriteria] =
+    useState<Options>("Price High to low");
   const [isLoading, setIsLoading] = useState(false);
   const [lastButtonPress, setLastButtonPress] = useState<Date | null>(null);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
@@ -65,10 +70,10 @@ const Brand: React.FC<BrowseProps> = ({ products }) => {
       // Prevents update if it's been less than 10 seconds since the last button press
       return;
     }
-  
+
     setIsLoading(true);
     setUpdatedTimeStr("Updated just now"); // Set the text immediately when the user clicks the update
-  
+
     // Simulate a loading delay. You can replace this with your actual product update logic.
     setTimeout(() => {
       setIsLoading(false);
@@ -77,8 +82,9 @@ const Brand: React.FC<BrowseProps> = ({ products }) => {
     }, 2000); // Assuming a 2-second loading time
   };
 
-  const isButtonDisabled = lastButtonPress && new Date().getTime() - lastButtonPress.getTime() < 10000;
-  
+  const isButtonDisabled =
+    lastButtonPress && new Date().getTime() - lastButtonPress.getTime() < 10000;
+
   useEffect(() => {
     const interval = setInterval(() => {
       if (lastUpdated) {
@@ -90,28 +96,36 @@ const Brand: React.FC<BrowseProps> = ({ products }) => {
         } else if (diffInSeconds < 3600) {
           // Less than 1 hour but more than 1 minute
           const minutes = Math.floor(diffInSeconds / 60);
-          setUpdatedTimeStr(`Updated ${minutes} minute${minutes > 1 ? 's' : ''} ago`);
+          setUpdatedTimeStr(
+            `Updated ${minutes} minute${minutes > 1 ? "s" : ""} ago`
+          );
         } else {
           setUpdatedTimeStr(`Updated a while ago`);
           clearInterval(interval);
         }
       }
     }, 10000); // Every 10 seconds
-  
+
     return () => clearInterval(interval);
   }, [lastUpdated]);
-  
-  
 
   let filteredProducts = [...products];
 
   if (sortCriteria) {
     switch (sortCriteria) {
       case "Price High to low":
-        filteredProducts.sort((a, b) => Math.min(...b.type.map(t => t.price)) - Math.min(...a.type.map(t => t.price)));
+        filteredProducts.sort(
+          (a, b) =>
+            Math.min(...b.type.map((t) => t.price)) -
+            Math.min(...a.type.map((t) => t.price))
+        );
         break;
       case "Price Low to high":
-        filteredProducts.sort((a, b) => Math.min(...a.type.map(t => t.price)) - Math.min(...b.type.map(t => t.price)));
+        filteredProducts.sort(
+          (a, b) =>
+            Math.min(...a.type.map((t) => t.price)) -
+            Math.min(...b.type.map((t) => t.price))
+        );
         break;
       case "Top Discount":
         break;
@@ -123,9 +137,9 @@ const Brand: React.FC<BrowseProps> = ({ products }) => {
         break;
       default:
         break;
-   }
-  }   
-  
+    }
+  }
+
   for (const [key, value] of Object.entries(selectedFilters)) {
     switch (key) {
       case "gadget":
@@ -198,8 +212,8 @@ const Brand: React.FC<BrowseProps> = ({ products }) => {
   return (
     <Container>
       <div className="flex w-full mt-2 gap-12">
-        <div className="border rounded-xl w-[20%]">
-          <h1 className="border-b p-3 text-stone-900">FILTERS</h1>
+        <div className="bg-stone-100 rounded-xl w-[20%] overflow-hidden">
+          <h1 className="border-b p-3 text-stone-900 ">FILTERS</h1>
           <div>
             <div
               className={`w-full p-3 border-b cursor-pointer select-none ${
@@ -526,30 +540,39 @@ const Brand: React.FC<BrowseProps> = ({ products }) => {
           <div className="flex justify-between items-center">
             <div className="flex gap-6">
               <div className="flex items-center gap-3">
-              <div
-                onClick={updateProducts}
-                className={`${isButtonDisabled ? "cursor-not-allowed " : "cursor-pointer "}`}
-              >
-                <GrUpdate className={`rotate-45 ${isButtonDisabled ? "animate-pulse" : ""}`} />
-              </div>
+                <div
+                  onClick={updateProducts}
+                  className={`${
+                    isButtonDisabled ? "cursor-not-allowed " : "cursor-pointer "
+                  }`}
+                >
+                  <GrUpdate
+                    className={`rotate-45 ${
+                      isButtonDisabled ? "animate-pulse" : ""
+                    }`}
+                  />
+                </div>
 
-              <div className="cursor-default">
-              {isLoading ? "Loading items..." : updatedTimeStr}
-              </div>
+                <div className="cursor-default">
+                  {isLoading ? "Loading items..." : updatedTimeStr}
+                </div>
               </div>
               <div className="select-none font-semibold">
                 {filteredProducts.length} items
               </div>
             </div>
             <div>
-            <SortByLevels currentSort={sortCriteria} setSort={setSortCriteria} />
+              <SortByLevels
+                currentSort={sortCriteria}
+                setSort={setSortCriteria}
+              />
             </div>
           </div>
           <div className="flex flex-wrap gap-2 mt-4">
             {Object.entries(selectedFilters).map(([key, value]) => (
               <div
                 key={key}
-                className="flex flex-wrap items-center border border-stone-200 bg-stone-100 rounded-full py-2 px-3 select-none space-x-2"
+                className="flex flex-wrap items-center bg-stone-200 rounded-full py-2 px-3 select-none space-x-2"
               >
                 <span>{splitWord(value)}</span>
                 <button
@@ -561,7 +584,7 @@ const Brand: React.FC<BrowseProps> = ({ products }) => {
               </div>
             ))}
           </div>
-          <div className="flex flex-wrap gap-3  z-0 mt-5">
+          <div className="flex flex-wrap gap-3 z-10 mt-5 relative">
             {filteredProducts.length === 0 ? (
               <div className="text-center w-full">
                 <Image
@@ -570,6 +593,7 @@ const Brand: React.FC<BrowseProps> = ({ products }) => {
                   width={400}
                   height={400}
                   className="mx-auto"
+                  priority={false}
                 />
                 <p className="mt-2">
                   No products found for the selected filters.
@@ -577,8 +601,11 @@ const Brand: React.FC<BrowseProps> = ({ products }) => {
               </div>
             ) : (
               filteredProducts.map((product) => (
-                <div key={product.id} className="relative rounded-xl border ">
-                  <div className="relative z-0 h-60 w-60">
+                <div
+                  key={product.id}
+                  className="relative rounded-xl border  group overflow-hidden   shadow-md "
+                >
+                  <div className="relative z-0 h-60 w-56">
                     {product.images &&
                       product.images[0] &&
                       product.images[0].image && (
@@ -586,17 +613,21 @@ const Brand: React.FC<BrowseProps> = ({ products }) => {
                           src={product.images[0].image}
                           alt={product.name}
                           fill
-                          className="object-contain p-3"
+                          sizes="100%"
+                          className="object-contain p-3 group-transition-transform duration-300 ease-in-out transform group-hover:scale-110 cursor-pointer"
+                          priority={false}
                         />
                       )}
                   </div>
-                  <div className="p-3 space-y-2">
-                    <div>{formatBrowseStr(product.name)}</div>
-                    <div className="text-xs">
+                  <div className="relative p-3 space-y-2">
+                    <div className="cursor-default">
+                      {formatBrowseStr(product.name)}
+                    </div>
+                    <div className="text-xs cursor-default">
                       Model:{" "}
                       {product.specs && Object.values(product.specs?.Model)}
                     </div>
-                    <div className="flex flex-row items-center space-x-2">
+                    <div className="flex flex-row items-center space-x-2 cursor-default">
                       <div className="text-xs">Theme:</div>
                       {product.images?.map((image, index) => (
                         <div
@@ -606,8 +637,10 @@ const Brand: React.FC<BrowseProps> = ({ products }) => {
                         ></div>
                       ))}
                     </div>
-                    <div>{formatUSDWithComma(product.type[0].price)}</div>
-                    <div className="flex justify-between items-center  my-2 flex-col md:flex-row text-center ">
+                    <div className="cursor-default">
+                      {formatUSDWithComma(product.type[0].price)}
+                    </div>
+                    <div className="flex justify-between items-center my-2 flex-col md:flex-row text-center cursor-default">
                       <Rating
                         sx={{ fontSize: "0.8rem" }}
                         value={product.reviews?.[0]?.rating || 2}
@@ -621,6 +654,24 @@ const Brand: React.FC<BrowseProps> = ({ products }) => {
                           {product.reviews?.length}
                         </strong>
                       </span>
+                    </div>
+                  </div>
+                  <div className="flex justify-between items-center content-center overflow-hidden h-10 cursor-pointer absolute -bottom-10 rounded-t-full w-56 bg-rose-600 z-20 group-hover:-translate-y-10 transition-transform">
+                    <div className="text-center h-full flex items-center justify-center w-[70%] border-r-[1px] border-white hover:bg-rose-500">
+                      <p className="text-sm font-semibold text-white">
+                        Buy now
+                      </p>
+                    </div>
+                    <div className="w-[30%]  h-full flex items-center justify-center pr-2 hover:bg-rose-500">
+                     <MdOutlineShoppingCart size={22} className="text-white" />
+                   </div>
+                  </div>
+                  <div className="absolute   cursor-pointer text-white r -top-11 -right-11 h-12 w-12 bg-rose-600 rounded-l-full  rounded-t-none group-hover:translate-y-11 group-hover:-translate-x-11  transition-transform hover:bg-rose-500">
+                    <div className="relative">
+                      <AiOutlinePushpin
+                        className="absolute z-10 right-2 -bottom-[26px]"
+                        size={18}
+                      />
                     </div>
                   </div>
                 </div>

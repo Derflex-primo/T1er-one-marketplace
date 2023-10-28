@@ -1,7 +1,7 @@
 import { useCart } from "@/hooks/useCart";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { PiShoppingBagOpenThin } from "react-icons/pi";
+import { MdOutlineShoppingCart } from "react-icons/md";
 
 const CartCount = () => {
   const router = useRouter();
@@ -26,9 +26,9 @@ const CartCount = () => {
   }, []);
 
   return (
-    <div className="relative cursor-pointer" onClick={() => router.push("/cart")}>
+    <div className="relative cursor-pointer p-1" onClick={() => router.push("/cart")}>
       <div className={`text-3xl ${scrolled ? 'text-white' : ''} `}>
-        <PiShoppingBagOpenThin />
+        <MdOutlineShoppingCart  size={26}/>
       </div>
       {cartTotalQty > 0 && ( // Show the span only if cartTotalQty > 0
         <span
@@ -36,7 +36,7 @@ const CartCount = () => {
             absolute 
             top-[-5px] 
             right-[-6px]
-            bg-stone-800
+            bg-rose-600
             text-white
             h-4
             w-4

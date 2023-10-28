@@ -101,8 +101,8 @@ const LogInPage: React.FC<LogInPageProps> = (props) => {
       } `}
     >
       <div className="flex items-center  ">
-        <span className="flex items-center space-x-4 border-[1.4px] rounded-l-xl pr-3 py-3 px-4 hover:border-slate-400   ">
-          <MdWallet size={24} />
+        <span className={`flex items-center space-x-4 rounded-l-xl pr-3 py-3 px-4 ${scrolled ? "hover:bg-none border-[1.4px] border-r-none bg-transparent" : "hover:bg-stone-200 bg-stone-100 trasition ease-in-out duration-150 border-r "}`} >
+          <MdWallet size={26} />
           <button
             className="cursor-pointer font-semibold "
             onClick={handleOpen}
@@ -113,20 +113,20 @@ const LogInPage: React.FC<LogInPageProps> = (props) => {
         </span>
         <span
           onClick={() => handleSignOut()}
-          className={`cursor-pointer border-[1.4px] border-l-none rounded-r-xl py-[9px] px-3 hover:border-slate-400 ${
+          className={`cursor-pointer  border-l-none rounded-r-xl py-3 px-3 ${scrolled ? "hover:bg-none border-[1.4px] border-l-none bg-transparent" : "hover:bg-stone-200 bg-stone-100 trasition ease-in-out duration-150 "} ${
             scrolled ? "text-white" : ""
           } transition-all ease-in-out duration-75`}
         >
           {currentUser && currentUser.photoURL ? (
             <Image
               src={currentUser.photoURL}
-              width={30}
-              height={30}
+              width={26}
+              height={26}
               className="bg-white border-[1px] rounded-full"
               alt="User menu"
             />
           ) : (
-            <CgProfile size={30} />
+            <CgProfile size={26} />
           )}
         </span>
       </div>
@@ -190,7 +190,7 @@ const LogInPage: React.FC<LogInPageProps> = (props) => {
           </Typography>
         </Box>
       </Modal>
-      <div className="border-[1.4px] px-2 py-2 rounded-xl cursor-pointer hover:border-slate-400 ">
+      <div className={ `px-2 py-2 rounded-xl cursor-pointer ${scrolled ? "hover:bg-none border-[1.4px] bg-transparent" : "hover:bg-stone-200 bg-stone-100 trasition ease-in-out duration-150 "}`}>
         <CartCount />
       </div>
     </div>

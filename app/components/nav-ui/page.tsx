@@ -16,6 +16,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { useProducts } from "@/hooks/useProducts";
 import splitWord from "@/lib/utils/formats";
+import Image from "next/image";
 
 const michroma = Michroma({ subsets: ["latin"], weight: ["400"] });
 
@@ -24,10 +25,8 @@ const NavBar = () => {
 
   const { products } = useProducts(); // use this for brands
 
-
   const uniqueCategories = Array.from(new Set(products.map((p) => p.category)));
   const uniqueBrands = Array.from(new Set(products.map((p) => p.brand)));
-  
 
   const handleBrowseClick = (type: string) => {
     setBrowseType(type);
@@ -120,7 +119,6 @@ const NavBar = () => {
         md:gap-0
         "
           >
-
             <div className="flex items-center md:hidden">
               <Link
                 href="/"
@@ -130,14 +128,25 @@ const NavBar = () => {
               </Link>
             </div>
             <div className="hidden md:flex w-80  justify-between items-center">
-              <Link
-                href="/"
-                className={`${michroma.className} text-lg font-semibold`}
-              >
-                T1er One
-              </Link>
+              <div className="flex justify-center items-center  gap-2 ">
+                <div className="text-white rounded-full p-2 bg-rose-700 ">
+                  <Image
+                    src="/images/tierOneLogo.svg"
+                    alt="T1er One logo"
+                    width={16}
+                    height={16}
+                  />
+                </div>
+
+                <Link
+                  href="/"
+                  className={`${michroma.className} text-lg font-bold`}
+                >
+                  T1er One
+                </Link>
+              </div>
               <hr className="inline border-[1.4px] h-8" />
-              <div className="flex gap-12 text-base font-semibold">
+              <div className="flex gap-2 text-base ">
                 <Drop />
                 <Trade />
               </div>
@@ -165,7 +174,7 @@ const NavBar = () => {
               <input
                 id="searchProducts"
                 className={`
-                w-full pl-10 py-3 border rounded-xl md:block focus:outline-none focus:ring-[0.6px] 
+                w-full pl-10 py-3 bg-stone-100 rounded-xl md:block focus:outline-none focus:ring-[0.6px] 
                  ${
                    scrolled
                      ? "text-white   backdrop-blur-md bg-white bg-opacity-20 focus:ring-white"
@@ -266,7 +275,7 @@ const NavBar = () => {
                           component="div"
                           id="modal-modal-brandsFeatured"
                         >
-                          <Link  href={`/product/${brand}`}>
+                          <Link href={`/product/${brand}`}>
                             <div
                               key={brand}
                               onClick={() => {
@@ -293,9 +302,7 @@ const NavBar = () => {
                           component="div"
                           id="modal-modal-brandsFeatured"
                         >
-                          <Link
-                             href={`/product/${category}`}
-                          >
+                          <Link href={`/product/${category}`}>
                             <div
                               key={category}
                               onClick={() => {
