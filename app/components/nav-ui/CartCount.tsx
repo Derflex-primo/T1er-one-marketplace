@@ -1,10 +1,9 @@
 import { useCart } from "@/hooks/useCart";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { MdOutlineShoppingCart } from "react-icons/md";
 
 const CartCount = () => {
-  const router = useRouter();
   const { cartTotalQty } = useCart();
 
   const [scrolled, setScrolled] = useState(false);
@@ -26,7 +25,8 @@ const CartCount = () => {
   }, []);
 
   return (
-    <div className="relative cursor-pointer p-1" onClick={() => router.push("/cart")}>
+    <Link href={`/cart`}>
+    <div className="relative cursor-pointer p-1">
       <div className={`text-3xl ${scrolled ? 'text-white' : ''} `}>
         <MdOutlineShoppingCart  size={26}/>
       </div>
@@ -52,6 +52,7 @@ const CartCount = () => {
         </span>
       )}
     </div>
+    </Link>
   );
 };
 

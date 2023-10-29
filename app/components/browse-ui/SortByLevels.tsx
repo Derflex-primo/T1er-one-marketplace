@@ -27,16 +27,16 @@ const SortByLevels = ({ currentSort, setSort }: { currentSort: Options; setSort:
         setOpen(open);
         setIsClicked(true);
       }}>
-        <DropdownMenu.Trigger className={`flex flex-row items-center  z-30 px-4 py-3 bg-stone-100 rounded-xl dark:ring-stone-50 outline-none ${isClicked && !open ? "bg-stone-200" : ""}`}>
+        <DropdownMenu.Trigger className={`flex flex-row items-center  z-30 px-4 py-3 border rounded-xl dark:ring-stone-50 outline-none font-semibold ${isClicked && !open ? "" : ""}`}>
           <span className="text-stone-900 ">{sortSelection}</span>
           <FiChevronDown
-            className={`h-5 w-5 text-stone-900 transition-transform ${open ? "rotate-180" : ""}`}
+            className={`h-5 w-5 ml-3 text-stone-900 transition-transform ${open ? "rotate-180" : ""}`}
           />
         </DropdownMenu.Trigger>
         <DropdownMenu.Content
           align="end"
           sideOffset={12}
-          className="cursor-pointer bg-white  z-30 overflow-hidden rounded-[8px] border-b-none  md:w-44 "
+          className="cursor-pointer p-3 bg-white z-30 overflow-hidden border-[0.5px] rounded-2xl border-b-none  md:w-56 shadow-2xl  "
         >
           {Object.keys(options).map((key) => (
             <DropdownMenu.Item
@@ -47,7 +47,7 @@ const SortByLevels = ({ currentSort, setSort }: { currentSort: Options; setSort:
             }}          
               key={key}
               disabled={sortSelection === options[key]}
-              className={` rounded-none px-4 py-3 border-b bg-stone-100 hover:bg-stone-200 focus:outline-none`}
+              className={` rounded-lg px-4 py-3 border-non focus:outline-none font-semibold  outline-none  hover:bg-stone-100`}
               aria-label={`Sort by ${options[key]}`}
             >
               {options[key]}

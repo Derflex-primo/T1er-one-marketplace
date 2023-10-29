@@ -30,7 +30,7 @@ const CartClient = () => {
 
   if (!cartProducts || cartProducts.length === 0) {
     return (
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center min-h-screen">
         <div className="flex items-center text-2xl gap-2">
           Your cart is empty{" "}
           <MdOutlineRemoveShoppingCart className="text-rose-500" size={28} />
@@ -48,7 +48,7 @@ const CartClient = () => {
     );
   }
   return (
-    <div>
+    <div className="min-h-screen">
       <Heading title="Checkout Cart" center />
       <div className="grid grid-cols-5 text-xs gap-4 pb-2 items-center mt-8">
         <div className="col-span-2 justify-self-start">PRODUCT</div>

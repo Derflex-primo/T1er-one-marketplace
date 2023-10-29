@@ -10,7 +10,7 @@ import {
   AiFillYoutube,
 } from "react-icons/ai";
 
-const footer = "bg-rose-700 text-slate-100 text-sm mt-16";
+const footer = "bg-rose-700 text-slate-100 text-sm mt-20";
 const hoverIcon =
   " rounded-lg  p-3 ease-in-out duration-300 bg-white backdrop-blur-md bg-white bg-opacity-20   hover:bg-stone-900 hover:backdrop-blur-md hover:bg-opacity-20 trasition ease-in-out duration-150";
 const aboutUs = "flex flex-col md:flex-row justify-between pt-16 pd-8";
