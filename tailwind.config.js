@@ -22,6 +22,7 @@ module.exports = {
         '2xl': 'blur(40px)',
         '3xl': 'blur(64px)',
       },
+      
     },
   },
   plugins: [],

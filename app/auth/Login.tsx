@@ -98,7 +98,7 @@ const LogInPage: React.FC<LogInPageProps> = (props) => {
     <div className={`flex items-center gap-4 ${scrolled ? "text-white" : ""} `}>
       <div className="flex items-center  ">
         <span
-          className={`flex items-center space-x-4 rounded-l-xl pr-3 py-3 px-4 ${
+          className={`flex items-center space-x-4 rounded-l-xl pr-3 py-3 px-4 cursor-pointer ${
             scrolled
               ? "backdrop-blur-md bg-white bg-opacity-20   hover:bg-stone-900 hover:backdrop-blur-md hover:bg-opacity-20 border-r-[0.8px]  trasition ease-in-out duration-150"
               : "hover:bg-stone-200 bg-stone-100 trasition ease-in-out duration-150 border-r "
@@ -106,7 +106,7 @@ const LogInPage: React.FC<LogInPageProps> = (props) => {
         >
           <MdWallet size={26} />
           <button
-            className="cursor-pointer font-semibold "
+            className="font-semibold "
             onClick={handleOpen}
             disabled={authing}
           >

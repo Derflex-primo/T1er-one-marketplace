@@ -4,6 +4,18 @@ export const formatStr = (str?: string) => {
   return str.substring(0, 12) + "...";
 };
 
+export const formatPinnedStr = (str?: string) => {
+  if (!str) return ""; // Return an empty string if `str` is undefined or null
+  if (str.length < 10) return str;
+  return str.substring(0, 10) + "...";
+};
+
+
+export const formatModel =  (str?: string) => { 
+  if (!str) return ""; 
+  return str.split(",")[0].trim()
+}
+
 export const formatBrowseStr = (str?: string) => {
   if (!str) return ""; // Return an empty string if `str` is undefined or null
   if (str.length < 20) return str;

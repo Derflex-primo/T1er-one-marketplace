@@ -39,7 +39,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
 
   return (
     <>
-      <Link href={`/products/${data.id}`} className={`${productCotainer}`}>
+      <Link href={`/products/${data.id}`} className={`${productCotainer} shadow-lg`}>
         <div className="">
           <div className="aspect-square overflow-hidden relative w-full">
             {data.images && data.images[0] && data.images[0].image && (
@@ -53,7 +53,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
               />
             )}
           </div>
-          <h1 className="mx-2 text-sm">{formatStr(data.name)}</h1>
+          <h1 className="mx-2 text-sm font-semibold">{formatStr(data.name)}</h1>
           <div className="flex justify-between mx-2 mt-1 text-xs">
             <span>{formatUSDWithComma(data.type[0].price)}</span>
             <span className="bg-rose-500 text-white font-semibold px-1 text-xs">
@@ -65,6 +65,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
               sx={{ fontSize: "0.8rem" }}
               value={productShowRating}
               readOnly
+              defaultValue={2}
             />
             <span className={`${productRating}`}>
               review

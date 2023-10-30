@@ -23,14 +23,17 @@ import { productRating } from "../products-ui/ProductCard";
 import { IoCloseSharp, IoFilterSharp } from "react-icons/io5";
 import { GrUpdate } from "react-icons/gr";
 import { AiOutlinePushpin } from "react-icons/ai";
-import { MdOutlineShoppingCart } from "react-icons/md";
+import { MdOutlineFilterListOff, MdOutlineShoppingCart } from "react-icons/md";
 import { useCart } from "@/hooks/useCart";
 import { FiChevronDown } from "react-icons/fi";
+import { usePinned } from "@/hooks/usePinned";
+import { BsCircleFill } from "react-icons/bs";
 
 //  ADD PINNED AND ADD TO CART AND BUY NOW
 
 const Brand: React.FC<BrowseProps> = ({ products }) => {
   const { handleAddProductToType } = useCart();
+  const { handleAddPinnedProductToType } = usePinned();
 
   const [sortCriteria, setSortCriteria] =
     useState<Options>("Price High to low");
@@ -64,6 +67,10 @@ const Brand: React.FC<BrowseProps> = ({ products }) => {
       delete newFilters[type as keyof typeof newFilters];
       return newFilters;
     });
+  };
+
+  const clearAllFilters = () => {
+    setSelectedFilters({});
   };
 
   const updateProducts = () => {
@@ -146,7 +153,7 @@ const Brand: React.FC<BrowseProps> = ({ products }) => {
 
   for (const [key, value] of Object.entries(selectedFilters)) {
     switch (key) {
-      case "gadget":
+      case "gadjet":
         filteredProducts = filteredProducts.filter(
           (product) => product.category === value
         );
@@ -236,9 +243,15 @@ const Brand: React.FC<BrowseProps> = ({ products }) => {
               }
             >
               Gadjet type
-              <FiChevronDown
-                className={`h-5 w-5 ml-3 text-stone-900 transition-transform ${
-                  openFilter.gadjet ? "rotate-180" : ""
+              <BsCircleFill
+                size={8}
+                className={`mr-2 transition-transform 
+                ${
+                  selectedFilters.gadjet
+                    ? "text-lime-500"
+                    : openFilter.gadjet
+                    ? "text-rose-500"
+                    : "text-stone-200"
                 }`}
               />
             </div>
@@ -249,7 +262,7 @@ const Brand: React.FC<BrowseProps> = ({ products }) => {
                   <div
                     key={option.value}
                     className="p-3 cursor-pointer rounded-xl hover:bg-stone-100"
-                    onClick={() => handleOptionClick("gadget", option.label)}
+                    onClick={() => handleOptionClick("gadjet", option.label)}
                   >
                     {splitWord(option.label)}
                   </div>
@@ -268,9 +281,15 @@ const Brand: React.FC<BrowseProps> = ({ products }) => {
               }
             >
               Storage capacity
-              <FiChevronDown
-                className={`h-5 w-5 ml-3 text-stone-900 transition-transform ${
-                  openFilter.storage ? "rotate-180" : ""
+              <BsCircleFill
+                size={8}
+                className={`mr-2 transition-transform 
+                ${
+                  selectedFilters.storage
+                    ? "text-lime-500"
+                    : openFilter.storage
+                    ? "text-rose-500"
+                    : "text-stone-200"
                 }`}
               />
             </div>
@@ -302,9 +321,15 @@ const Brand: React.FC<BrowseProps> = ({ products }) => {
               }
             >
               RAM capacity
-              <FiChevronDown
-                className={`h-5 w-5 ml-3 text-stone-900 transition-transform ${
-                  openFilter.ram ? "rotate-180" : ""
+              <BsCircleFill
+                size={8}
+                className={`mr-2 transition-transform 
+                ${
+                  selectedFilters.ram
+                    ? "text-lime-500"
+                    : openFilter.ram
+                    ? "text-rose-500"
+                    : "text-stone-200"
                 }`}
               />
             </div>
@@ -337,9 +362,15 @@ const Brand: React.FC<BrowseProps> = ({ products }) => {
               }
             >
               Connectivity options
-              <FiChevronDown
-                className={`h-5 w-5 ml-3 text-stone-900 transition-transform ${
-                  openFilter.connectivity ? "rotate-180" : ""
+              <BsCircleFill
+                size={8}
+                className={`mr-2 transition-transform 
+                ${
+                  selectedFilters.connectivity
+                    ? "text-lime-500"
+                    : openFilter.connectivity
+                    ? "text-rose-500"
+                    : "text-stone-200"
                 }`}
               />
             </div>
@@ -371,10 +402,16 @@ const Brand: React.FC<BrowseProps> = ({ products }) => {
                 }))
               }
             >
-              Display Technologies
-              <FiChevronDown
-                className={`h-5 w-5 ml-3 text-stone-900 transition-transform ${
-                  openFilter.displayTech ? "rotate-180" : ""
+              Display technologies
+              <BsCircleFill
+                size={8}
+                className={`mr-2 transition-transform 
+                ${
+                  selectedFilters.displayTech
+                    ? "text-lime-500"
+                    : openFilter.displayTech
+                    ? "text-rose-500"
+                    : "text-stone-200"
                 }`}
               />
             </div>
@@ -407,9 +444,15 @@ const Brand: React.FC<BrowseProps> = ({ products }) => {
               }
             >
               Screen refresh rate
-              <FiChevronDown
-                className={`h-5 w-5 ml-3 text-stone-900 transition-transform ${
-                  openFilter.refreshRate ? "rotate-180" : ""
+              <BsCircleFill
+                size={8}
+                className={`mr-2 transition-transform 
+                ${
+                  selectedFilters.refreshRate
+                    ? "text-lime-500"
+                    : openFilter.refreshRate
+                    ? "text-rose-500"
+                    : "text-stone-200"
                 }`}
               />
             </div>
@@ -441,10 +484,16 @@ const Brand: React.FC<BrowseProps> = ({ products }) => {
                 }))
               }
             >
-              Operating System
-              <FiChevronDown
-                className={`h-5 w-5 ml-3 text-stone-900 transition-transform ${
-                  openFilter.os ? "rotate-180" : ""
+              Operating system
+              <BsCircleFill
+                size={8}
+                className={`mr-2 transition-transform 
+                ${
+                  selectedFilters.os
+                    ? "text-lime-500"
+                    : openFilter.os
+                    ? "text-rose-500"
+                    : "text-stone-200"
                 }`}
               />
             </div>
@@ -476,10 +525,16 @@ const Brand: React.FC<BrowseProps> = ({ products }) => {
                 }))
               }
             >
-              Processor Cores
-              <FiChevronDown
-                className={`h-5 w-5 ml-3 text-stone-900 transition-transform ${
-                  openFilter.cores ? "rotate-180" : ""
+              Processor cores
+              <BsCircleFill
+                size={8}
+                className={`mr-2 transition-transform 
+                ${
+                  selectedFilters.cores
+                    ? "text-lime-500"
+                    : openFilter.cores
+                    ? "text-rose-500"
+                    : "text-stone-200"
                 }`}
               />
             </div>
@@ -511,16 +566,22 @@ const Brand: React.FC<BrowseProps> = ({ products }) => {
                 }))
               }
             >
-              Customer Rating
-              <FiChevronDown
-                className={`h-5 w-5 ml-3 text-stone-900 transition-transform ${
-                  openFilter.rating ? "rotate-180" : ""
+              Customer rating
+              <BsCircleFill
+                size={8}
+                className={`mr-2 transition-transform 
+                ${
+                  selectedFilters.rating
+                    ? "text-lime-500"
+                    : openFilter.rating
+                    ? "text-rose-500"
+                    : "text-stone-200"
                 }`}
               />
             </div>
 
             {openFilter.rating && (
-             <div className="mb-2 p-3 shadow-2xl rounded-2xl border-[0.8px] mt-2 w-full bg-white  ease-in-out duration-300 select-none">
+              <div className="mb-2 p-3 shadow-2xl rounded-2xl border-[0.8px] mt-2 w-full bg-white  ease-in-out duration-300 select-none">
                 {customerRatings.map((rating) => (
                   <div
                     key={rating}
@@ -547,15 +608,21 @@ const Brand: React.FC<BrowseProps> = ({ products }) => {
               }
             >
               Release year
-              <FiChevronDown
-                className={`h-5 w-5 ml-3 text-stone-900 transition-transform ${
-                  openFilter.releaseYear ? "rotate-180" : ""
+              <BsCircleFill
+                size={8}
+                className={`mr-2 transition-transform 
+                ${
+                  selectedFilters.releaseYear
+                    ? "text-lime-500"
+                    : openFilter.releaseYear
+                    ? "text-rose-500"
+                    : "text-stone-200"
                 }`}
               />
             </div>
 
             {openFilter.releaseYear && (
-                <div className="mb-2 p-3 shadow-2xl rounded-2xl border-[0.8px] mt-2 w-full bg-white  ease-in-out duration-300 select-none">
+              <div className="mb-2 p-3 shadow-2xl rounded-2xl border-[0.8px] mt-2 w-full bg-white  ease-in-out duration-300 select-none">
                 {releaseYears.map((year) => (
                   <div
                     key={year}
@@ -571,19 +638,25 @@ const Brand: React.FC<BrowseProps> = ({ products }) => {
             )}
 
             <div
-             className={`flex items-center justify-between w-full p-3  cursor-pointer select-none ${
-              openFilter.discount
-                ? "border-[0.8px] bg-stone-100 rounded-xl"
-                : "hover:bg-stone-100 rounded-xl "
-            } `}
+              className={`flex items-center justify-between w-full p-3  cursor-pointer select-none ${
+                openFilter.discount
+                  ? "border-[0.8px] bg-stone-100 rounded-xl"
+                  : "hover:bg-stone-100 rounded-xl "
+              } `}
               onClick={() =>
                 setOpenFilter((prev) => ({ ...prev, discount: !prev.discount }))
               }
             >
               Discount available
-              <FiChevronDown
-                className={`h-5 w-5 ml-3 text-stone-900 transition-transform ${
-                  openFilter.discount ? "rotate-180" : ""
+              <BsCircleFill
+                size={8}
+                className={`mr-2 transition-transform 
+                ${
+                  selectedFilters.discount
+                    ? "text-lime-500"
+                    : openFilter.discount
+                    ? "text-rose-500"
+                    : "text-stone-200"
                 }`}
               />
             </div>
@@ -644,12 +717,20 @@ const Brand: React.FC<BrowseProps> = ({ products }) => {
                 <span>{splitWord(value)}</span>
                 <button
                   onClick={() => removeFilter(key)} // Pass the filter type to the removeFilter function
-                  className="px-2 py-1 rounded-full"
+                  className="py-1 rounded-full"
                 >
                   <IoCloseSharp className="text-black" size={19} />
                 </button>
               </div>
             ))}
+            {Object.keys(selectedFilters).length > 1 && (
+              <button
+                onClick={clearAllFilters}
+                className="flex flex-wrap items-center bg-stone-100 hover:bg-stone-200 transition ease-in-out duration-150 rounded-xl py-2 px-3 select-none space-x-2 font-semibold"
+              >
+                <MdOutlineFilterListOff className="text-rose-500" size={24} />
+              </button>
+            )}
           </div>
           <div className="flex flex-wrap gap-3 z-10 mt-5 relative">
             {filteredProducts.length === 0 ? (
@@ -744,13 +825,32 @@ const Brand: React.FC<BrowseProps> = ({ products }) => {
                           quantity: 1,
                           type: product.type,
                           reviews: product.reviews,
+                          specs: product.specs
                         });
                       }}
                     >
                       <MdOutlineShoppingCart size={22} className="text-white" />
                     </div>
                   </div>
-                  <div className="absolute   cursor-pointer text-white r -top-11 -right-11 h-12 w-12 bg-rose-600 rounded-l-full  rounded-t-none group-hover:translate-y-11 group-hover:-translate-x-11  transition-transform hover:bg-rose-500">
+                  <div
+                    onClick={() => {
+                      handleAddPinnedProductToType({
+                        id: product.id,
+                        name: product.name,
+                        case: product.case,
+                        description: product.description,
+                        category: product.category,
+                        brand: product.brand,
+                        images: product.images,
+                        selectedImg: product.images[0] || null,
+                        quantity: 1,
+                        type: product.type,
+                        reviews: product.reviews,
+                        specs: product.specs
+                      });
+                    }}
+                    className="absolute   cursor-pointer text-white r -top-11 -right-11 h-12 w-12 bg-rose-600 rounded-l-full  rounded-t-none group-hover:translate-y-11 group-hover:-translate-x-11  transition-transform hover:bg-rose-500"
+                  >
                     <div className="relative">
                       <AiOutlinePushpin
                         className="absolute z-10 right-2 -bottom-[26px]"

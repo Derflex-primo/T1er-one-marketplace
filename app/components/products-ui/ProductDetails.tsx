@@ -178,7 +178,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
             </div>
             <button
               onClick={() => handleRemoveProductToType(product)}
-              className="flex justify-center items-center rounded-lg  bg-stone-800 hover:bg-stone-700 border w-12"
+              className="flex justify-center items-center rounded-lg  bg-rose-600 hover:bg-rose-500 border w-12 transition ease-in-out duration-150"
             >
               <BiUndo size={18} className="text-white" /> {/* REDO BUTTON */}
             </button>
@@ -202,6 +202,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
             <div className="md:max-w-[200px] sm:w-full mt-4">
               <Button
                 label="Add to cart"
+                outline={true}
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();

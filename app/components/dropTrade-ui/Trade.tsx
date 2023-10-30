@@ -1,8 +1,5 @@
- 
 const Trade = () => {
-  return (
-    <div>Trades</div>
-  )
-}
+  return <div className="p-3   rounded-xl">Trades</div>;
+};
 
-export default Trade
+export default Trade;

@@ -1,7 +1,10 @@
 
 const Drop = () => {
   return (
-    <div>Drops</div>
+    <div
+     className="p-3   rounded-xl"
+     >Drops
+     </div>
   )
 }
 

@@ -1,4 +1,5 @@
 import "./globals.css";
+import "@radix-ui/themes/styles.css";
 import type { Metadata } from "next";
 import { Michroma, Roboto } from "next/font/google";
 import NavBar from "./components/nav-ui/page";
@@ -10,6 +11,8 @@ import AuthRouteProvider from "@/providers/AuthRouteProvider";
 import ProductProvider from "@/providers/ProductProvider";
 import { config } from "@/lib/db/firebaseUtils";
 import NextTopLoader from "nextjs-toploader";
+import { Theme } from "@radix-ui/themes";
+import PinnedProvider from "@/providers/PinnnedProvider";
 
 export const Firebase = initializeApp(config.firebaseConfig);
 
@@ -50,18 +53,24 @@ export default function RootLayout({
             },
           }}
         />
-        <ProductProvider>
-          <AuthRouteProvider>
-            <CartProvider>
-              <div className="flex flex-col min-h-screen">
-                <NextTopLoader color="#fc0335" showSpinner={false} />
-                <NavBar />
-                <main className="flex-grow bg-[#5f7f7]-100">{children}</main>
-                <Footer />
-              </div>
-            </CartProvider>
-          </AuthRouteProvider>
-        </ProductProvider>
+        <Theme>
+          <ProductProvider>
+            <AuthRouteProvider>
+              <CartProvider>
+                <PinnedProvider>
+                  <div className="flex flex-col min-h-screen">
+                    <NextTopLoader color="#fc0335" showSpinner={false} />
+                    <NavBar />
+                    <main className="flex-grow bg-[#5f7f7]-100">
+                      {children}
+                    </main>
+                    <Footer />
+                  </div>
+                </PinnedProvider>
+              </CartProvider>
+            </AuthRouteProvider>
+          </ProductProvider>
+        </Theme>
       </body>
     </html>
   );

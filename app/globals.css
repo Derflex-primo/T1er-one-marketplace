@@ -2,3 +2,43 @@
 @tailwind components;
 @tailwind utilities;
 
+
+
+ 
+  
+
+
+.link__hover-effect {
+    position: relative;
+}
+
+.link__hover-effect:hover:after {
+    left: 0;
+    width: 100%;
+}
+
+.link__hover-effect:after{
+    content: "";
+    position: absolute;
+    bottom: -3px;
+    height: 3px;
+    width: 0;
+    right: 0;
+    background-color: #a848c5;
+    transition: all 400ms ease;
+}
+
+
+.blurred-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50vh;  /* Adjusted this to make the div cover only 50% of the viewport height */
+    background-image: url('/images/banner-image.png');
+    background-size: cover;
+    background-position: center;
+    backdrop-filter: blur(10px);
+    z-index: 0;
+  }
+  
