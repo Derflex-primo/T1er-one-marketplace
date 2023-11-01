@@ -111,6 +111,7 @@ const NavBar = () => {
     shadow-sm 
     ${scrolled ? "bg-gradient-to-r  bg-rose-700 text-white" : ""}
     transition-colors duration-300
+    overflow-visible
   `}
     >
       <div className={`py-4 ${scrolled ? "" : " "}`}>
@@ -204,7 +205,7 @@ const NavBar = () => {
         <div className="px-8 shadow-t-lg shadow-rose-600">
           <div className="flex flex-row  py-2 justify-between">
             <div className="flex flex-row gap-4  ">
-              <div
+              {/* <div
                 ref={browseRef}
                 onClick={() => {
                   if (open) {
@@ -325,7 +326,9 @@ const NavBar = () => {
                     ))}
                   </Box>
                 )}
-              </Modal>
+              </Modal> */}
+
+              <SortBrowse />
 
               <Link
                 href={""}

@@ -12,8 +12,11 @@ import {
 import Button from "../products-ui/Button";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/hooks/useCart";
+import { TfiTrash } from "react-icons/tfi"
 
  
+
+// WHEN THE PRODUCT WAS HOVER SHOW DELETE ICON
 
 const style = {
   position: "absolute" as "absolute",
@@ -146,7 +149,7 @@ const Pinned = () => {
                 {cartProducts?.map((product) => (
                   <div
                     key={product.id}
-                    className="mt-2 cursor-pointer hover:bg-stone-100 rounded-xl transition ease-in-out duration-150"
+                    className="mt-2 cursor-pointer hover:bg-stone-100 rounded-xl transition ease-in-out duration-150 group"
                   >
                     <div className="p-2 flex flex-row justify-between   items-center space-x-4 ">
                       <div className="flex flex-row   items-center space-x-4 ">
@@ -179,11 +182,12 @@ const Pinned = () => {
                         </div>
                       </div>
                       <div
-                        className="pl-8 text-sm"
+                        className="pl-8 text-sm group-hover:hidden"
                         onClick={() => handleRemoveProductToType(product)}
                       >
                         {formatUSDWithComma(product.type[0].price)}
                       </div>
+                      <TfiTrash onClick={() => handleRemoveProductToType(product)} className="hidden group-hover:block" /> 
                     </div>
                   </div>
                 ))}
