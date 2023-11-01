@@ -44,7 +44,10 @@ const SortBrowse = () => {
     <div>
       <button
         className={filterPlaceholder}
-        onClick={() => setIsModalOpen(!isModalOpen)}
+        onClick={() => { 
+        setIsModalOpen(!isModalOpen)
+        setSelectedFilter(null);
+        }}
       >
         {isModalOpen ? <IoCloseSharp size={18} /> : <SlMenu size={18} />}
         <span>Browse</span>

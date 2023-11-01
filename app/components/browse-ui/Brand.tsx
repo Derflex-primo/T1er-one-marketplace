@@ -25,11 +25,11 @@ import { GrUpdate } from "react-icons/gr";
 import { AiOutlinePushpin } from "react-icons/ai";
 import { MdOutlineFilterListOff, MdOutlineShoppingCart } from "react-icons/md";
 import { useCart } from "@/hooks/useCart";
-import { FiChevronDown } from "react-icons/fi";
 import { usePinned } from "@/hooks/usePinned";
 import { BsCircleFill } from "react-icons/bs";
 
-//  ADD PINNED AND ADD TO CART AND BUY NOW
+
+// BUY NOW LACK 
 
 const Brand: React.FC<BrowseProps> = ({ products }) => {
   const { handleAddProductToType } = useCart();

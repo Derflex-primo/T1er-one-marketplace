@@ -346,4 +346,12 @@ export const customerRatings = [
 ];
 
 
+// BRAND
+
+export const brandListed = [
+  "Apple",
+  "AstroGaming",
+  
+]
+
 
