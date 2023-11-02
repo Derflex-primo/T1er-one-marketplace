@@ -73,7 +73,7 @@ const SortBrowse = () => {
       )}
 
       {selectedFilter === "Brands" && (
-        <div className={`${filterPlaceholderStyle} right-[1160px] top-[16] `}>
+        <div className={`${filterPlaceholderStyle} left-[160px] top-[16] `}>
           {uniqueBrands.map((brand) => (
             <Link
               key={brand}
@@ -92,7 +92,7 @@ const SortBrowse = () => {
       )}
 
       {selectedFilter === "Category" && (
-        <div className={`${filterPlaceholderStyle} right-[1104px] top-[16] `}>
+        <div className={`${filterPlaceholderStyle} left-[160px] top-[16] `}>
           {uniqueCategories.map((category) => (
             <Link 
             key={category}

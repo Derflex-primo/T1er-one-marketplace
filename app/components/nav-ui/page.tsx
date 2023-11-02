@@ -137,7 +137,7 @@ const NavBar = () => {
       {!scrolled && (
         <div className="px-8 shadow-t-lg shadow-rose-600">
           <div className="flex flex-row  py-2 justify-between">
-            <div className="flex flex-row gap-4  ">
+            <div className="flex flex-row gap-4   ">
               <SortBrowse />
               <Link
                 href={""}

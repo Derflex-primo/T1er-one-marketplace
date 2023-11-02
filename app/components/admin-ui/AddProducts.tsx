@@ -34,6 +34,10 @@ import {
 import SpecsCategories from "./SpecsCategories";
 import VideoAd from "./VideoAd";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import dotenv from 'dotenv';
+
+dotenv.config({ path: '.env.development' });
+
 const AUTHORIZED_EMAIL_ADMIN = process.env.NEXT_PUBLIC_AUTHORIZED_EMAIL_ADMIN;
 const AUTHORIZED_EMAIL_USER = process.env.NEXT_PUBLIC_AUTHORIZED_EMAIL_USER;
 const productCollectionRef = collection(db, "products");

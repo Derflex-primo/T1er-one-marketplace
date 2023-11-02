@@ -101,7 +101,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
             {product.name}
           </span>
 
-          <span className="flex  flex-wrap justify-between items-center">
+          <span className="flex mt-2 flex-wrap justify-between items-center">
             <span className="flex space-x-4 items-center">
               <span className="flex text-base space-x-2 text-black">
                 <h1>{formatWithComma(discountedPrice)}</h1>
@@ -114,21 +114,21 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
                 Save 30%
               </span>
             </span>
-            <div className="flex justify-between mt-2 space-x-2 items-center sm:flex-row-reverse md:flex-row">
-              <Rating
-                sx={{ fontSize: "0.8rem" }}
-                value={productShowRating}
-                readOnly
-                defaultValue={2}
-              />
-              <span className={productRating}>
-                reviews{" "}
-                <strong className="text-rose-500">
-                  {product.reviews?.length}
-                </strong>
-              </span>
-            </div>
           </span>
+          <div className="flex justify-between mt-2 space-x-2 items-center sm:flex-row-reverse md:flex-row">
+            <Rating
+              sx={{ fontSize: "0.8rem" }}
+              value={productShowRating}
+              readOnly
+              defaultValue={2}
+            />
+            <span className={productRating}>
+              reviews{" "}
+              <strong className="text-rose-500">
+                {product.reviews?.length}
+              </strong>
+            </span>
+          </div>
         </div>
         <div className="flex flex-col border-[0.8px] p-4 rounded-xl mt-2">
           <div className={`${colorCategories} mb-2`}>Product info</div>
