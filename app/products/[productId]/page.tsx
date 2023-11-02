@@ -2,7 +2,6 @@
 
 import Container from "@/app/components/Container";
 import ProductDetails from "@/app/components/products-ui/ProductDetails";
-import ListRating from "@/app/components/products-ui/ListRating";
 import { IParams, ProductMapType } from "@/types";
 import { useProducts } from "@/hooks/useProducts";
 import { ProductDetailsSkeleton } from "@/app/components/skelton-ui/ProductDetailsSkeleton";
@@ -34,9 +33,6 @@ const Product = ({ params }: { params: IParams }) => {
     <div>
       <Container>
         <ProductDetails product={product} />
-        {product.reviews && product.reviews.length > 0 && (
-          <ListRating product={product} />
-        )}
       </Container>
     </div>
   );

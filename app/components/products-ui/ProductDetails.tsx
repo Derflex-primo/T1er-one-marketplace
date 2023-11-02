@@ -213,23 +213,4 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
 
 export default ProductDetails;
 
-{
-  /* <span>
-            {product.specs ? (
-              <Specs product={product.specs} categoryItem={product.category} />
-            ) : null}
-          </span> */
-}
-
-{
-  /* <span
-              className={`
-            ${
-              product.quantity > 0
-                ? "text-green-400 font-semibold cursor-default text-sm"
-                : "text-rose-400 font-semibold cursor-default text-sm"
-            }`}
-            >
-              {product.quantity > 0 ? "In stock" : "Out of stock"}
-            </span> */
-}
+ 
