@@ -22,8 +22,8 @@ const SetColors: React.FC<SetColorsProps> = ({
 
   return (
     <div>
-      <div className="flex flex-col  gap-4  ">
-        <span className={`font-medium text-xs text-stone-600 cursor-default`}>Theme: {selectedImageColor}</span>
+      <div className="px-4 flex flex-col  gap-4  ">
+        <span className={colorCategories}>Theme: <strong className="font-normal">{selectedImageColor}</strong></span>
         <div className="flex gap-3">
           {images &&
             images.map((image) => {

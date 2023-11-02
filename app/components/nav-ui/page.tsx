@@ -13,8 +13,6 @@ import Pinned from "./Pinned";
 import Image from "next/image";
 import SortBrowse from "../browse-ui/SortBrowse";
 
-// FIX BROWSE  Categories
-
 const michroma = Michroma({ subsets: ["latin"], weight: ["400"] });
 
 const NavBar = () => {

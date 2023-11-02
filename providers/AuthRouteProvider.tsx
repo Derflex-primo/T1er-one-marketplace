@@ -30,7 +30,7 @@ const AuthRouteProvider: React.FC<AuthRouteProps> = props => {
       if(user){
         setloading(false);
       }else {
-        console.log("Add your wallet to proceed checkout");
+        
       }
     });
     if(loading) return <p>Loading...</p>

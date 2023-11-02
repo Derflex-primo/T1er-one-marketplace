@@ -12,12 +12,15 @@ import { useCart } from "@/hooks/useCart";
 import { useRouter } from "next/navigation";
 import { ProductTypes, ProductDetailsProps, ImageProps } from "@/types";
 import Specs from "./Specs";
+import splitWord from "@/lib/utils/formats";
+
+// FIX DESIGN
 
 export const Horizontal = () => {
   return <hr className="w-[100%] my-2" />;
 };
 export const colorCategories =
-  "font-medium text-xs text-stone-600 cursor-default";
+  "font-semibold text-sm text-stone-900 cursor-default";
 export const productDetails = "mt-4 grid grid-cols-1 md:grid-cols-2 gap-12";
 
 const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
@@ -88,10 +91,10 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
   }, [cartProduct]);
 
   return (
-    <div className={productDetails}>
+    <div className={`${productDetails} h-screen`}>
       <ProductImage cartProduct={cartProduct} product={product} />
       <div className="flex flex-col gap-1 text-sm">
-        <div className="border p-4 rounded-xl cursor-default">
+        <div className="border-[0.8px] p-4 rounded-xl cursor-default">
           <span className="text-2xl font-medium text-stone-800">
             {product.name}
           </span>
@@ -116,59 +119,50 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
                   {product.reviews?.length}
                 </strong>
               </span>
-              {product.reviews?.length === 0 ? null : (
-                <Rating sx={{ fontSize: "1rem" }} readOnly />
-              )}
             </div>
           </span>
         </div>
-        <div className="border p-4 rounded-xl mt-2">
+        <div className="flex flex-col border-[0.8px] p-4 rounded-xl mt-2">
           <div className={`${colorCategories} mb-2`}>Product info</div>
-          <p className="text-stone-500 text-justify">
+          <p className="text-stone-900 text-justify">
             {expanded ? product.description : product.description.slice(0, 468)}
             {!expanded && product.description.length > 468 && "..."}
           </p>
           {product.description.length > 468 && (
-            <button className="hover:underline" onClick={toggleDescription}>
-              {expanded ? "See less" : "See more"}
+            <button
+              className="flex justify-end hover:underline mt-1"
+              onClick={toggleDescription}
+            >
+              {expanded ? "see less" : "see more"}
             </button>
           )}
         </div>
-        <div className="border rounded-xl p-2 mt-2 mb-6 grid grid-cols-4 md:grid-cols-2 lg:grid-template-columns repeat(4, min-content) gap-2 items-center">
-          <span className="flex border bg-stone-100 rounded-lg p-2 space-x-2 items-center font-semibold">
-            <span className={colorCategories}>Category:</span>
-            <span className="text-black text-xs capitalize cursor-default">
-              {product.category}
+        <div className="overflow-hidden border-[0.8px] rounded-xl mt-2 mb-3 grid grid-cols-4 md:grid-cols-2 lg:grid-template-columns repeat(4, min-content)  items-center">
+          <div className="flex space-x-3 border-b-[0.8px]  border-r-[0.8px] px-4 py-2 ">
+            <span className={colorCategories}>Model</span>
+            <span>{product.specs?.Model}</span>
+          </div>
+          <div className="flex space-x-3 border-b-[0.8px] border-r-[0.8px]  px-4 py-2">
+            <span className={colorCategories}>Product Condition</span>
+            <span>{product.specs?.["Product Condition"]}</span>
+          </div>
+          <div className="flex space-x-3 border-b-[0.8px] border-r-[0.8px]  px-4 py-2">
+            <span className={colorCategories}>Brand</span>
+            <span>{splitWord(product.brand)}</span>
+          </div>
+          <div className="flex space-x-3 border-b-[0.8px] border-r-[0.8px]  px-4 py-2">
+            <span>
+              {product.specs ? (
+                <Specs
+                  product={product.specs}
+                  categoryItem={product.category}
+                />
+              ) : null}
             </span>
-          </span>
-          <span className="flex border  bg-stone-100 rounded-lg p-2  space-x-2 items-center font-semibold">
-            <span className={colorCategories}>Brand:</span>
-            <span className="text-black text-xs font-semibold cursor-default">
-              {product.brand}
-            </span>
-          </span>
-          <span>
-            {product.specs ? (
-              <Specs product={product.specs} categoryItem={product.category} />
-            ) : null}
-          </span>
-          <span className="flex border bg-stone-100 rounded-lg p-2  space-x-2 items-center font-semibold">
-            <span className={colorCategories}>Status:</span>
-            <span
-              className={`
-            ${
-              product.quantity > 0
-                ? "text-green-400 font-semibold cursor-default text-xs"
-                : "text-rose-400 font-semibold cursor-default text-xs"
-            }`}
-            >
-              {product.quantity > 0 ? "In stock" : "Out of stock"}
-            </span>
-          </span>
+          </div>
         </div>
-
         {isProductInCart ? (
-          <div className="flex gap-1 ">
+          <div className="flex  gap-1 ">
             <div className="md:max-w-[200px] sm:w-full ">
               <Button
                 label="View Cart"
@@ -218,3 +212,24 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
 };
 
 export default ProductDetails;
+
+{
+  /* <span>
+            {product.specs ? (
+              <Specs product={product.specs} categoryItem={product.category} />
+            ) : null}
+          </span> */
+}
+
+{
+  /* <span
+              className={`
+            ${
+              product.quantity > 0
+                ? "text-green-400 font-semibold cursor-default text-sm"
+                : "text-rose-400 font-semibold cursor-default text-sm"
+            }`}
+            >
+              {product.quantity > 0 ? "In stock" : "Out of stock"}
+            </span> */
+}

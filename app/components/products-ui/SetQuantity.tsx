@@ -21,19 +21,19 @@ const SetQuantity: React.FC<SetQuantityProps> = ({
   handleQtyDecrease,
 }) => {
   return (
-    <div className="flex gap-9 items-center">
-      {cartCounter ? null : <div className={`font-medium text-xs text-stone-600 cursor-default`}>Quantity:</div>}
+    <div className="flex items-center">
+      {cartCounter ? null : <div className={`font-semibold text-sm text-stone-800 cursor-default px-[14px]`}>Quantity:</div>}
       <div className="flex gap-[.4px] items-center text-base">
         <button
           onClick={handleQtyDecrease}
-          className={`${buttonStyle} relative rounded-l-lg  hover:bg-stone-800 hover:text-white transition ease-in-out delay-100`}
+          className={`${buttonStyle} relative rounded-l-lg  hover:bg-rose-600 hover:text-white transition ease-in-out delay-100`}
         >
           <AiOutlineMinus size={16} />
         </button>
         <div className={`border  px-2 py-1 md:px-4 `}>{cartProduct.quantity}</div>
         <button
           onClick={handleQtyIncrease}
-          className={`${buttonStyle}relative rounded-r-lg hover:bg-stone-800 hover:text-white transition ease-in-out delay-100`}
+          className={`${buttonStyle}relative rounded-r-lg hover:bg-rose-600 hover:text-white transition ease-in-out delay-100`}
         >
            <AiOutlinePlus size={16} />
         </button>
