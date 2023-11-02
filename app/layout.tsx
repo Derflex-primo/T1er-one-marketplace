@@ -14,7 +14,7 @@ import NextTopLoader from "nextjs-toploader";
 import { Theme } from "@radix-ui/themes";
 import PinnedProvider from "@/providers/PinnnedProvider";
 
-export const Firebase = initializeApp(config.firebaseConfig);
+const Firebase = initializeApp(config.firebaseConfig);
 
 const michroma = Michroma({ subsets: ["latin"], weight: "400" });
 

@@ -28,6 +28,7 @@ import { MdOutlineFilterListOff, MdOutlineShoppingCart } from "react-icons/md";
 import { useCart } from "@/hooks/useCart";
 import { usePinned } from "@/hooks/usePinned";
 import { BsCircleFill } from "react-icons/bs";
+import Link from "next/link";
 
 
 // BUY NOW LACK 
@@ -754,6 +755,7 @@ const Category: React.FC<BrowseProps> = ({ products }) => {
                   key={product.id}
                   className="relative rounded-xl border  group overflow-hidden   shadow-md "
                 >
+                  <Link href={`/products/${product.id}`}>
                   <div className="relative z-0 h-60 w-56">
                     {product.images &&
                       product.images[0] &&
@@ -768,6 +770,7 @@ const Category: React.FC<BrowseProps> = ({ products }) => {
                         />
                       )}
                   </div>
+                  </Link>
                   <div className="relative p-3 space-y-2">
                     <div className="cursor-default">
                       {formatBrowseStr(product.name)}

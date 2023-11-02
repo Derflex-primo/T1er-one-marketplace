@@ -90,6 +90,8 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
     });
   }, [cartProduct]);
 
+  const productShowRating = product.reviews?.[0]?.rating ?? 0;
+
   return (
     <div className={`${productDetails} h-screen`}>
       <ProductImage cartProduct={cartProduct} product={product} />
@@ -113,6 +115,12 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
               </span>
             </span>
             <div className="flex justify-between mt-2 space-x-2 items-center sm:flex-row-reverse md:flex-row">
+              <Rating
+                sx={{ fontSize: "0.8rem" }}
+                value={productShowRating}
+                readOnly
+                defaultValue={2}
+              />
               <span className={productRating}>
                 reviews{" "}
                 <strong className="text-rose-500">
@@ -212,5 +220,3 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
 };
 
 export default ProductDetails;
-
- 

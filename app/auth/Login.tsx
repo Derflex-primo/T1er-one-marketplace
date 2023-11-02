@@ -52,17 +52,19 @@ const LogInPage: React.FC<LogInPageProps> = (props) => {
   }, []);
 
   const signInWithGoogle = async () => {
-    setAuthing(true);
-    signInWithPopup(auth, new GoogleAuthProvider())
-      .then((response) => {
-        console.log(response.user.uid);
-        setAuthing(false);
-      })
-      .catch((error) => {
-        console.log(error);
-        setAuthing(false);
-      });
+    const provider = new GoogleAuthProvider();
+    provider.setCustomParameters({ prompt: 'select_account' });
+    try {
+      await signInWithPopup(auth, provider);
+    } catch (error: any) {
+      if (error && typeof error.message === "string") {
+        alert(error.message);
+      } else {
+        alert("An error occurred.");
+      }
+    }
   };
+  
 
   const handleSignOut = async () => {
     try {
@@ -166,12 +168,12 @@ const LogInPage: React.FC<LogInPageProps> = (props) => {
               mt: 2,
               mb: 2,
               px: 4,
-              fontSize: "14px",
+              fontSize: "16px",
               fontWeight: 400,
               textAlign: "center",
             }}
           >
-            <span> If you don&apos;t have a wallet, ... </span>
+            <span> If you don&apos;t have a wallet, you can select a provider and create one now. </span>
             <span className="text-sky-500">Learn more</span>
           </Typography>
           <Typography component="div">
