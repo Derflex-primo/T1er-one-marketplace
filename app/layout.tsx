@@ -6,15 +6,11 @@ import NavBar from "./components/nav-ui/page";
 import Footer from "./components/footer-ui/Footer";
 import CartProvider from "@/providers/CartProvider";
 import { Toaster } from "react-hot-toast";
-import { initializeApp } from "firebase/app";
-import AuthRouteProvider from "@/providers/AuthRouteProvider";
 import ProductProvider from "@/providers/ProductProvider";
-import { config } from "@/lib/db/firebaseUtils";
 import NextTopLoader from "nextjs-toploader";
 import { Theme } from "@radix-ui/themes";
 import PinnedProvider from "@/providers/PinnnedProvider";
-
-const Firebase = initializeApp(config.firebaseConfig);
+import AuthProvider from "@/providers/AuthRouteProvider";
 
 const michroma = Michroma({ subsets: ["latin"], weight: "400" });
 
@@ -31,7 +27,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className="scroll-smooth">
       <body className={`${roboto.className}${michroma.className}`}>
         <Toaster
           toastOptions={{
@@ -55,7 +51,7 @@ export default function RootLayout({
         />
         <Theme>
           <ProductProvider>
-            <AuthRouteProvider>
+            <AuthProvider>
               <CartProvider>
                 <PinnedProvider>
                   <div className="flex flex-col min-h-screen">
@@ -68,7 +64,7 @@ export default function RootLayout({
                   </div>
                 </PinnedProvider>
               </CartProvider>
-            </AuthRouteProvider>
+            </AuthProvider>
           </ProductProvider>
         </Theme>
       </body>

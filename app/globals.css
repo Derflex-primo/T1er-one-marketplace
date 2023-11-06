@@ -2,43 +2,61 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
- 
-  
-
+html {
+  scroll-behavior: smooth;
+}
 
 .link__hover-effect {
-    position: relative;
+  position: relative;
 }
 
 .link__hover-effect:hover:after {
-    left: 0;
-    width: 100%;
+  left: 0;
+  width: 100%;
 }
 
-.link__hover-effect:after{
-    content: "";
-    position: absolute;
-    bottom: -3px;
-    height: 3px;
-    width: 0;
-    right: 0;
-    background-color: #a848c5;
-    transition: all 400ms ease;
+.link__hover-effect:after {
+  content: "";
+  position: absolute;
+  bottom: -3px;
+  height: 3px;
+  width: 0;
+  right: 0;
+  background-color: #a848c5;
+  transition: all 400ms ease;
 }
-
 
 .blurred-bg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 50vh;  /* Adjusted this to make the div cover only 50% of the viewport height */
-    background-image: url('/images/banner-image.png');
-    background-size: cover;
-    background-position: center;
-    backdrop-filter: blur(10px);
-    z-index: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50vh; /* Adjusted this to make the div cover only 50% of the viewport height */
+  background-image: url("/images/banner-image.png");
+  background-size: cover;
+  background-position: center;
+  backdrop-filter: blur(10px);
+  z-index: 0;
+}
+
+
+.HoverCardContent {
+  transform-origin: var(--radix-hover-card-content-transform-origin);
+  animation: scaleIn 0.5s ease-out;
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0);
   }
-  
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+
+.leaflet-tile {
+  filter: brightness(90%) saturate(125%);
+}

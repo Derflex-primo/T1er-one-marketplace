@@ -7,6 +7,7 @@ import { MdWallet } from "react-icons/md";
 import CartCount from "../components/nav-ui/CartCount";
 import { useAuth } from "@/hooks/useAuth";
 import Profile from "../components/user-infos-ui/Profile";
+import React from "react";
 
 // PROFILE ADDRESS -  TIER ONE FIREBASE
 

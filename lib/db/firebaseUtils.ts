@@ -32,6 +32,7 @@ export const config = {
 export const app = initializeApp(config.firebaseConfig);
 // Initilized Firestore
 export const db = getFirestore(app);
+
 export const getProductsFromFirebase = async (): Promise<ProductTypes[]> => {
   try {
     const productCollectionRef = collection(db, "products");

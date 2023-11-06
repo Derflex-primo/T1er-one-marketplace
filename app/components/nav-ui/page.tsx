@@ -126,7 +126,7 @@ const NavBar = () => {
                  }
                 `}
                 type="text"
-                placeholder="Search for products, Shops, Accounts"
+                 placeholder="Search"
               />
             </div>
 
@@ -135,7 +135,7 @@ const NavBar = () => {
         </Container>
       </div>
       {!scrolled && (
-        <div className="px-8 shadow-t-lg shadow-rose-600">
+        <div className="shadow-t-lg shadow-rose-600 sm:px-1 lg:px-1 xl:px-8 2xl:px-8 ">
           <div className="flex flex-row  py-2 justify-between">
             <div className="flex flex-row gap-4   ">
               <SortBrowse />

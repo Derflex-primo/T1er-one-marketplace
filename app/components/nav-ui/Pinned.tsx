@@ -89,7 +89,7 @@ const Pinned = () => {
 
   return (
     <div>
-      <button className={`flex items-center space-x-1 ${cartTotalQty > 0 ? "text-rose-600" : ""} `} onClick={handleOpen}>
+      <button className={`flex items-center cursor-pointer space-x-1 ${cartTotalQty > 0 ? "text-rose-600" : ""} `} onClick={handleOpen}>
         <span>
           <AiOutlinePushpin size={18} />
         </span>
@@ -187,7 +187,7 @@ const Pinned = () => {
                       >
                         {formatUSDWithComma(product.type[0].price)}
                       </div>
-                      <TfiTrash onClick={() => handleRemoveProductToType(product)} className="hidden group-hover:block" /> 
+                      <TfiTrash onClick={() => handleRemoveProductToType(product)} className="hidden group-hover:block mr-2" /> 
                     </div>
                   </div>
                 ))}
