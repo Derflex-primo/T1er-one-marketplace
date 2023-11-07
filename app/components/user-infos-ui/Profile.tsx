@@ -89,7 +89,7 @@ const Profile: React.FC<Profile> = ({ scrolled, connectWallet }) => {
                 href={`/`}>
               <div
                 onClick={user ? () => handleSignOut() : undefined}
-                className={`p-2 select-none text-stone-900 font-semibold rounded-xl flex items-center space-x-4 hover:bg-stone-100   trasition ease-in-out duration-150 ${
+                className={`p-3 select-none text-stone-900 font-semibold rounded-xl flex items-center space-x-4 hover:bg-stone-100   trasition ease-in-out duration-150 ${
                   !user ? "cursor-not-allowed" : "cursor-pointer"
                 }`}
               >
