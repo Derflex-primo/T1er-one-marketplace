@@ -1,3 +1,10 @@
+import { BiSolidPlaneTakeOff } from "react-icons/bi";
+import { BsFillHouseFill } from "react-icons/bs";
+import { CgWebsite } from "react-icons/cg";
+import { PiBuildings } from "react-icons/pi";
+import { RiBuildingLine } from "react-icons/ri";
+import { TbTruckDelivery } from "react-icons/tb";
+
 export const formatStr = (str?: string) => {
   if (!str) return ""; // Return an empty string if `str` is undefined or null
   if (str.length < 12) return str;
@@ -355,4 +362,32 @@ export const brandListed = [
 ]
 
 
- 
+ // PARCEL
+
+
+ export const currentStep = '';
+
+ export const steps = {
+   website: <CgWebsite size={49} />,
+   warehouse: <PiBuildings size={49} />,
+   plane: <BiSolidPlaneTakeOff size={49} />,
+   customs: <RiBuildingLine size={47} />,
+   truck: <TbTruckDelivery size={50} />,
+   home: <BsFillHouseFill size={45} />,
+ };
+
+
+ type StepMessages = {
+  [key: string]: string;
+};
+
+
+ export const stepMessages: StepMessages = {
+  website: "Your order is being processed.",
+  warehouse: "Your parcel is at the warehouse.",
+  plane: "Your parcel is on its way to you, flying high!",
+  customs: "Your parcel is clearing customs.",
+  truck: "Your parcel is out for delivery.",
+  home: "Your parcel has been delivered to your home."
+};
+

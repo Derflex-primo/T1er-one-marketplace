@@ -64,7 +64,7 @@ const LogInPage: React.FC<LogInPageProps> = () => {
             onClick={handleOpen}
             disabled={authing}
           >
-            Connect wallet
+             Login
           </button>
         </span>
          <Profile connectWallet={handleOpen} scrolled={scrolled} />
@@ -89,7 +89,7 @@ const LogInPage: React.FC<LogInPageProps> = () => {
             {user ? (
               <span className="text-green-500">Connected</span>
             ) : (
-              <span>Connect your wallet</span>
+              <span>Connect your account</span>
             )}
           </Typography>
           <Typography
@@ -105,9 +105,9 @@ const LogInPage: React.FC<LogInPageProps> = () => {
             }}
           >
             <span>
-              {" "}
-              If you don&apos;t have a wallet, you can select a provider and
-              create one now.{" "}
+            {" "}
+              If you don&apos;t have a account, you can select provider 
+               and create one.{" "}
             </span>
             <span className="text-sky-500">Learn more</span>
           </Typography>
@@ -120,7 +120,7 @@ const LogInPage: React.FC<LogInPageProps> = () => {
               className="flex px-6 justify-between items-center cursor-pointer hover:bg-stone-100 py-4"
             >
               <span className="flex space-x-4 font-semibold">
-                <FcGoogle size={24} /> <span>Google Pay</span>
+                <FcGoogle size={24} /> <span>Google</span>
               </span>
               <span className="text-stone-600 text-xs font-semibold">
                 POPULAR

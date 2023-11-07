@@ -144,3 +144,18 @@ export interface ItemSpecsRef {
 export interface BrowseProps {
     products: ProductTypes[];
 }
+
+
+
+// Wallet
+
+
+export type PurchaseItem = {
+    name: string;
+    price: number;
+  };
+
+export type UserPurchasesState = {
+    items: PurchaseItem[];
+    totalSpent: number;
+  };

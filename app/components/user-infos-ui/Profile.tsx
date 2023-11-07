@@ -85,6 +85,8 @@ const Profile: React.FC<Profile> = ({ scrolled, connectWallet }) => {
               </div>
             </div>
             <div className="border-b-[0.8px] p-2">
+              <Link
+                href={`/`}>
               <div
                 onClick={user ? () => handleSignOut() : undefined}
                 className={`p-4 select-none text-stone-900 font-semibold rounded-xl flex items-center space-x-4 hover:bg-stone-200   trasition ease-in-out duration-150 ${
@@ -94,6 +96,7 @@ const Profile: React.FC<Profile> = ({ scrolled, connectWallet }) => {
                 <IoLogOutOutline size={20} />
                 <h2>Logout</h2>
               </div>
+              </Link>
               <div className={ButtonStyle}>
                 <MdOutlineBugReport size={20} />
                 <h2>Report</h2>
