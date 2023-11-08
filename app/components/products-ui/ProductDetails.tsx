@@ -179,7 +179,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
               />
             </div>
             <button
-              onClick={() => handleRemoveProductToType(product)}
+              onClick={() => handleRemoveProductToType(product.id)}
               className="flex justify-center items-center rounded-lg  bg-rose-600 hover:bg-rose-500 border w-12 transition ease-in-out duration-150"
             >
               <BiUndo size={18} className="text-white" /> {/* REDO BUTTON */}

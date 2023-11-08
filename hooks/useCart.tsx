@@ -1,6 +1,6 @@
 "use client";
 
-import { ProductTypes } from "@/types";
+import { CartProduct, ProductTypes } from "@/types";
 import {
   createContext,
   useCallback,
@@ -9,13 +9,14 @@ import {
   useState,
 } from "react";
 import { toast } from "react-hot-toast";
+import { v4 as uuidv4 } from 'uuid';
 
 type CartContextType = {
   cartTotalQty: number;
   cartTotalAmount: number;
-  cartProducts: ProductTypes[] | null;
+  cartProducts: CartProduct[] | null;
   handleAddProductToType: (product: ProductTypes) => void;
-  handleRemoveProductToType: (product: ProductTypes) => void;
+  handleRemoveProductToType: (cartItemId: string) => void;
   handleCartQtyIncrease: (product: ProductTypes) => void;
   handleCartQtyDecrease: (product: ProductTypes) => void;
   handleClearCart: () => void;
@@ -29,17 +30,30 @@ interface Props {
 
 export const CartContextProvider = (props: Props) => {
   const [cartTotalQty, setCartTotalQty] = useState(0);
-  const [cartProducts, setCartProducts] = useState<ProductTypes[] | null>(
-    null
-  );
+  const [cartProducts, setCartProducts] = useState<CartProduct[] | null>(null);
   const [cartTotalAmount, setCartTotalAmount] = useState(0);
 
   const initializeCart = () => {
-    const cartItems: any = localStorage.getItem("tierOneItems");
-    const effectCartProducts: ProductTypes[] | null = JSON.parse(cartItems);
+    const cartItemsString = localStorage.getItem("tierOneItems");
+    let effectCartProducts: CartProduct[] | null = null;
+  
+    if (cartItemsString) {
+      const parsedItems: ProductTypes[] = JSON.parse(cartItemsString);
+  
+      if (parsedItems) { // Check if parsedItems is not null
+        // Map each ProductTypes object to a CartProduct object, adding a cartItemId.
+        effectCartProducts = parsedItems.map((item) => ({
+          ...item,
+          // Only add a cartItemId if one doesn't already exist
+          cartItemId: (item as any).cartItemId ?? uuidv4(),
+        }));
+      }
+    }
+  
     setCartProducts(effectCartProducts);
-  }
-
+  };
+  
+  
   useEffect(() => {
     initializeCart();
   }, []);
@@ -84,35 +98,36 @@ export const CartContextProvider = (props: Props) => {
   const handleAddProductToType = useCallback((product: ProductTypes) => {
     setCartProducts((prev) => {
       let updatedCart;
-
+      const cartItem: CartProduct = {
+        ...product,
+        cartItemId: uuidv4(), // Add a unique cart item ID
+      };
+  
       if (prev) {
-        updatedCart = [...prev, product];
+        updatedCart = [...prev, cartItem];
       } else {
-        updatedCart = [product];
+        updatedCart = [cartItem];
       }
       console.log("handleAddProductToType is called");
-
+  
       toast.success("Product added to cart");
       localStorage.setItem("tierOneItems", JSON.stringify(updatedCart)); // Change this to db
       return updatedCart;
     });
   }, []);
+  
 
-  const handleRemoveProductToType = useCallback(
-    (product: ProductTypes) => {
-      if (cartProducts) {
-        const filteredProducts = cartProducts.filter((item) => {
-          return item.id !== product.id;
-        });
-
-        setCartProducts(filteredProducts);
+  const handleRemoveProductToType = useCallback((cartItemId: string) => {
+    setCartProducts((prev) => {
+      if (prev) {
+        const updatedCart = prev.filter((item) => item.cartItemId !== cartItemId);
         toast.success("Product has been removed");
-        localStorage.setItem("tierOneItems", JSON.stringify(filteredProducts));
-        return filteredProducts;
+        localStorage.setItem("tierOneItems", JSON.stringify(updatedCart));
+        return updatedCart;
       }
-    },
-    [cartProducts]
-  );
+      return null;
+    });
+  }, []);
 
   const handleCartQtyIncrease = useCallback(
     (product: ProductTypes) => {

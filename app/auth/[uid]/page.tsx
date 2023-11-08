@@ -185,7 +185,7 @@ const UserInfo = () => {
                 >
                   <div>{icon}</div>
                   {tooltip.show && tooltip.step === step && (
-                    <div className="absolute w-64 p-2 bg-white  text-stone-900 rounded-md z-10 text-xs font-semibold">
+                    <div className="absolute p-2 bg-white  text-stone-900 rounded-md z-10 text-xs font-semibold mt-5">
                       {tooltip.content}
                     </div>
                   )}
@@ -240,7 +240,7 @@ const UserInfo = () => {
             </div>
           </div>
 
-          <div className="flex flex-row-reverse ml-8 mt-16 w-full h-full">
+          <div className="flex flex-row ml-8 mt-16 w-full h-full">
             <div className="w-[50%] space-y-4">
               <div className="flex flex-row items-center space-x-3  w-full mt-2">
                 <label htmlFor="name" className="font-semibold text-sm w-1/12">

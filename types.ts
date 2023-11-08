@@ -28,7 +28,14 @@ export interface ProductTypes {
     logistics?: string;
     store?: StoreProps
     addedBy?: UserAuthProps | null;
+
+
 }
+
+export interface CartProduct extends ProductTypes {
+    cartItemId: string; // This is the new property for the unique identifier
+  }
+  
 
 export interface ProductSpecs {
     [key: string]: string;
