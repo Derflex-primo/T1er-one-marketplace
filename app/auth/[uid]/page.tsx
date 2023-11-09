@@ -154,13 +154,13 @@ const UserInfo = () => {
     }
   }, [user]);
 
-  const showTooltip = (step: string) => {
-    setTooltip({ show: true, content: stepMessages[step], step });
-  };
+  // const showTooltip = (step: string) => {
+  //   setTooltip({ show: true, content: stepMessages[step], step });
+  // };
 
-  const hideTooltip = () => {
-    setTooltip({ show: false, content: "", step: "" });
-  };
+  // const hideTooltip = () => {
+  //   setTooltip({ show: false, content: "", step: "" });
+  // };
 
   return (
     <Container>
@@ -173,7 +173,7 @@ const UserInfo = () => {
         >
           <div className="relative h-80 w-full">
             <div className="relative z-0 h-80 w-full bg-gradient-to-r from-stone-100 to-stone-100  rounded-xl overflow-hidden backdrop-opacity-75"></div>
-            <div className="absolute top-[120px] left-[380px]  flex flex-row gap-24">
+            {/* <div className="absolute top-[120px] left-[380px]  flex flex-row gap-24">
               {Object.entries(steps).map(([step, icon]) => (
                 <div
                   key={step}
@@ -191,7 +191,7 @@ const UserInfo = () => {
                   )}
                 </div>
               ))}
-            </div>
+            </div> */}
 
             <div className="absolute z-30 bottom-[-40px] left-6">
               {userInfo.photo && (
@@ -352,13 +352,13 @@ const UserInfo = () => {
                 </button>
               </div>
             </div>
-            <div className="flex flex-col  w-[50%] h-56 rounded-xl bg-stone-100 mr-8">
+            <div className="flex flex-col  w-[50%] h-56 rounded-xl border-[0.8px] shadow-md mr-8">
               <div className="flex justify-center text-xl font-semibold p-6 border-b-[1px]">
                 {userInfo.wallet || "You don't have a wallet"}
               </div>
-              <div className="flex flex-row mt-3 justify- h-full ">
-                <div className="border-r-[1px] w-full h-full">
-                  <div className="flex justify-center font-semibold">
+              <div className="flex flex-row  justify- h-full ">
+                <div className="border-r-[1px]  w-full h-full">
+                  <div className="flex justify-center mt-3 font-semibold">
                     Total spent
                   </div>
                   <div className="flex justify-center space-x-2 mt-8 items-center  text-green-500">
@@ -370,7 +370,7 @@ const UserInfo = () => {
                 </div>
                 <div className=" w-full h-full">
                   <div className=" w-full h-full">
-                    <div className="flex justify-center font-semibold">
+                    <div className="flex justify-center mt-3 font-semibold">
                       Items bought
                     </div>
                     <div className="flex justify-center  space-x-2 mt-8 items-center text-rose-600 ">

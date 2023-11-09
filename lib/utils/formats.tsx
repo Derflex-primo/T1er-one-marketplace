@@ -204,15 +204,25 @@ export const gadgetDealTypes = [
 
 // ADD ALL LOGISTIS PER COUNTRY
 
-export const logisticsPartnersPH = [
-  { value: "lbc", label: "LBC Express" },
-  { value: "jnt", label: "J&T Express" },
-  { value: "jrs", label: "JRS Express" },
-  { value: "2go", label: "2GO Express" },
-  { value: "xpost", label: "Xpost (Ninja Van)" },
-  { value: "grabexpress", label: "GrabExpress" },
-  { value: "mr-speedy", label: "Mr. Speedy" },
+export type LogisticsPartner = {
+  value: string;
+  label: string;
+  hotline: string;
+  fee?: number;
+  shippingMethod?: string;
+  estimatedDelivery: string; // Add this new field for estimated delivery dates
+};
+
+export const logisticsPartnersPH: LogisticsPartner[] = [
+  { value: "lbc", label: "LBC Express", hotline: "+63 800-10-8585999", fee: 50, shippingMethod: "Standard", estimatedDelivery: "3-5 business days" },
+  { value: "jnt", label: "J&T Express", hotline: "+63 888-988-8888", fee: 20, shippingMethod: "Economy", estimatedDelivery: "5-7 business days" },
+  { value: "jrs", label: "JRS Express", hotline: "+63 800-10-8585999", fee: 10, shippingMethod: "Next Day", estimatedDelivery: "1-2 business days" },
+  { value: "2go", label: "2GO Express", hotline: "+63 2 77-99-222", fee: 20, shippingMethod: "Sea Cargo", estimatedDelivery: "7-10 business days" },
+  { value: "xpost", label: "Xpost (Ninja Van)", hotline: "+63 2 8271-1173", fee: 5, shippingMethod: "Land Cargo", estimatedDelivery: "2-4 business days" },
+  { value: "grabexpress", label: "GrabExpress", hotline: "+63 888-800-0000", fee: 80, shippingMethod: "Same Day", estimatedDelivery: "Same day delivery" },
+  { value: "mr-speedy", label: "Mr. Speedy", hotline: "+63 2 1234 5678", fee: 60, shippingMethod: "Express", estimatedDelivery: "1-3 business days" },
 ];
+
 
 /// Browse logic
 

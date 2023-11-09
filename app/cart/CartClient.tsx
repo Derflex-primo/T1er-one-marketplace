@@ -8,7 +8,10 @@ import ItemContent from "./ItemContent";
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { config, db } from "@/lib/db/firebaseUtils";
-import { formatUSDWithComma } from "@/lib/utils/formats";
+import {
+  formatUSDWithComma,
+  logisticsPartnersPH,
+} from "@/lib/utils/formats";
 import LogisticContent from "./LogisticContent";
 import { useAuth } from "@/hooks/useAuth";
 import { doc, getDoc } from "firebase/firestore";
@@ -18,7 +21,10 @@ const auth = getAuth(app);
 
 const CartClient = () => {
   const { cartProducts, handleClearCart, cartTotalAmount } = useCart();
-  const { user } = useAuth();
+  const { user, signInWithGoogle } = useAuth();
+  const [selectedLogisticsPartner, setSelectedLogisticsPartner] = useState(
+    logisticsPartnersPH[0]
+  );
   const [userInfo, setUserInfo] = useState({
     name: "",
     address: "",
@@ -45,11 +51,16 @@ const CartClient = () => {
 
   const handleCheckout = () => {
     if (!currentUser) {
-      alert("Connect your wallet"); // TEMPORARYY
+      signInWithGoogle().then(() => {
+      }).catch((error) => {
+        console.error("Sign in failed", error);
+      });
     } else {
-      console.log("Proceeding - loading checkout");
+      // Handle the checkout for logged-in users
+      alert(`Your country does not support STRIPE payment gateway. Call the administrator of this account.`);
     }
   };
+  
 
   if (!cartProducts || cartProducts.length === 0) {
     return (
@@ -70,11 +81,16 @@ const CartClient = () => {
       </div>
     );
   }
+
+  const handleLogisticsChange = (selectedOption: any) => {
+    setSelectedLogisticsPartner(selectedOption);
+  };
+
   return (
     <div className="flex flex-row justify-evenly min-h-screen space-x-6">
       <div className="flex flex-col w-[50%] gap-x-4  ">
-        <div className="border-[0.8px] shadow-sm p-4 rounded-xl mb-4">
-          <div className="grid grid-cols-5 text-xs gap-4  items-center pt-2 ">
+        <div className="border-[0.8px]  shadow-sm p-4 rounded-xl mb-4">
+          <div className="grid grid-cols-5 text-xs gap-4  text-rose-600 items-center pt-2 ">
             <div className="col-span-2 justify-self-start  font-semibold">
               PRODUCT
             </div>
@@ -94,13 +110,16 @@ const CartClient = () => {
         <Button label="Clear all" onClick={handleClearCart} />
       </div>
       <div className="flex flex-col w-[50%] gap-4 ">
-        <div className="flex flex-col border-[0.8px] shadow-sm p-4 rounded-xl ">
+        <div className="flex flex-col border-[0.8px]  shadow-sm p-4 rounded-xl ">
           <div className="flex  justify-between ">
-            <div className="flex-shrink-0 font-semibold text-xs items-center pt-2">
+            <div className="flex-shrink-0 text-rose-600 font-semibold text-xs items-center pt-2">
               SHIPPING DETAILS
             </div>
             <div className="flex-shrink-0">
-              <LogisticContent />
+              <LogisticContent
+                selectedLogisticsPartner={selectedLogisticsPartner}
+                handleLogisticsChange={handleLogisticsChange}
+              />
             </div>
           </div>
           <div>
@@ -110,16 +129,50 @@ const CartClient = () => {
             </div>
             <div className="flex flex-row gap-4 items-center mt-4">
               <div className="font-semibold text-sm">ADDRESS</div>
-              <div>{userInfo.address || "Address not set"}</div>
+              <div>{userInfo.address || "Please set your address in user profile"}</div>
+            </div>
+            <div className="flex flex-row gap-4 items-center mt-4">
+              <div className="font-semibold text-sm">COURIER</div>
+              <div>{selectedLogisticsPartner.label || "Address not set"}</div>
+            </div>
+            <div className="flex flex-row gap-4 items-center mt-4">
+              <div className="font-semibold text-sm">SHIPPING METHOD</div>
+              <div>
+                {selectedLogisticsPartner.shippingMethod || "Address not set"}
+              </div>
+            </div>
+            <div className="flex flex-row gap-4 items-center mt-4">
+              <div className="font-semibold text-sm">
+                ESTIMATED DELIVERY DATE
+              </div>
+              <div>
+                {selectedLogisticsPartner.estimatedDelivery ||
+                  "1 - 4 bussiness days"}
+              </div>
+            </div>
+            <div className="flex flex-row gap-4 items-center mt-4">
+              <div className="font-semibold text-sm">
+                ADDITIONAL INSTRUCTIONS
+              </div>
+              <input
+                type="text"
+                className="flex-1 border-b border-gray-300 focus:outline-none focus:border-stone-900"
+                placeholder="Enter any additional instructions here"
+              />
             </div>
             <div className="flex flex-row gap-3 items-center mt-4">
               <span className="font-semibold text-sm">SUBTOTAL</span>
-              <span>{formatUSDWithComma(cartTotalAmount)}</span>
+              <span>{formatUSDWithComma(cartTotalAmount)} + {formatUSDWithComma(selectedLogisticsPartner.fee)}</span>
             </div>
           </div>
         </div>
         <div className="flex flex-col  gap-1 items-start text-sm">
-          <Button label="Check out" onClick={handleCheckout} />
+          <Button label="Check out" 
+          // If there is no user then apply this signInWithGoogle
+           onClick={handleCheckout}
+          
+          
+          />
         </div>
       </div>
     </div>
@@ -127,5 +180,4 @@ const CartClient = () => {
 };
 
 export default CartClient;
-
-// CREATE DATA BASE
+ 
