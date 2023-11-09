@@ -50,25 +50,27 @@ const LogInPage: React.FC<LogInPageProps> = () => {
 
   return (
     <div className={`flex items-center gap-4 ${scrolled ? "text-white" : ""} `}>
-      <div className="flex items-center  ">
+      <div className="flex items-center">
         <span
           className={`flex items-center space-x-4 rounded-l-xl pr-3 py-3 px-4 cursor-pointer ${
             scrolled
-              ? "backdrop-blur-md bg-white bg-opacity-20   hover:bg-stone-900 hover:backdrop-blur-md hover:bg-opacity-20 border-r-[0.8px]  trasition ease-in-out duration-150"
-              : "hover:bg-stone-200 bg-stone-100 trasition ease-in-out duration-150 border-r "
+              ? "backdrop-blur-md bg-white bg-opacity-20 hover:bg-stone-900 hover:backdrop-blur-md hover:bg-opacity-20 border-r-[0.8px] transition ease-in-out duration-150"
+              : "hover:bg-stone-200 bg-stone-100 transition ease-in-out duration-150 border-r"
           }`}
         >
           <MdWallet size={26} />
           <button
-            className="font-semibold "
+            className="font-semibold"
             onClick={handleOpen}
             disabled={authing}
           >
-             Login
+            Login
           </button>
         </span>
-         <Profile connectWallet={handleOpen} scrolled={scrolled} />
+    
+            <Profile connectWallet={handleOpen} scrolled={scrolled} />
       </div>
+
       <Modal
         open={open}
         onClose={handleClose}
@@ -105,9 +107,9 @@ const LogInPage: React.FC<LogInPageProps> = () => {
             }}
           >
             <span>
-            {" "}
-              If you don&apos;t have a account, you can select provider 
-               and create one.{" "}
+              {" "}
+              If you don&apos;t have a account, you can select provider and
+              create one.{" "}
             </span>
             <span className="text-sky-500">Learn more</span>
           </Typography>

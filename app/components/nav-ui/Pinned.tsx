@@ -12,9 +12,8 @@ import {
 import Button from "../products-ui/Button";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/hooks/useCart";
-import { TfiTrash } from "react-icons/tfi"
-
- 
+import { TfiTrash } from "react-icons/tfi";
+import Link from "next/link";
 
 // WHEN THE PRODUCT WAS HOVER SHOW DELETE ICON
 
@@ -23,7 +22,7 @@ const style = {
   top: "15%",
   right: "2.5%",
   transform: "translate(0%, 0%)",
-  maxHeight: "90%",
+  maxHeight: "80%",
   overflowY: "auto",
   width: 330,
   bgcolor: "background.paper",
@@ -89,7 +88,13 @@ const Pinned = () => {
 
   return (
     <div>
-      <button className={`flex items-center cursor-pointer space-x-1 ${cartTotalQty > 0 ? "text-rose-600" : ""} `} onClick={handleOpen}>
+      <button
+      
+        className={`flex items-center cursor-pointer space-x-1 text-sm  font-bold p-3 rounded-xl   hover:bg-stone-100 transition ease-in-out duration-150 ${
+          cartTotalQty > 0 ? "text-rose-600" : ""
+        } `}
+        onClick={handleOpen}
+      >
         <span>
           <AiOutlinePushpin size={18} />
         </span>
@@ -152,7 +157,10 @@ const Pinned = () => {
                     className="mt-2 cursor-pointer hover:bg-stone-100 rounded-xl transition ease-in-out duration-150 group"
                   >
                     <div className="p-2 flex flex-row justify-between   items-center space-x-4 ">
-                      <div className="flex flex-row   items-center space-x-4 ">
+                      <Link
+                        href={`/products/${product.id}`}
+                        className="flex flex-row   items-center space-x-4 "
+                      >
                         <div className="p-1  bg-white border-[0.8px] shadow-inner rounded-xl">
                           <Image
                             src={product.selectedImg?.image || ""}
@@ -180,14 +188,17 @@ const Pinned = () => {
                             ></div>
                           </span>
                         </div>
-                      </div>
+                      </Link>
                       <div
                         className="pl-8 text-sm group-hover:hidden"
                         onClick={() => handleRemoveProductToType(product)}
                       >
                         {formatUSDWithComma(product.type[0].price)}
                       </div>
-                      <TfiTrash onClick={() => handleRemoveProductToType(product)} className="hidden group-hover:block mr-2" /> 
+                      <TfiTrash
+                        onClick={() => handleRemoveProductToType(product)}
+                        className="hidden group-hover:block mr-2"
+                      />
                     </div>
                   </div>
                 ))}

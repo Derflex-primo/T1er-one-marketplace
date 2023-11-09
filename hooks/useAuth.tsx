@@ -9,8 +9,9 @@ import {
   signOut,
 } from "firebase/auth";
 import { initializeApp } from "firebase/app";
-import { config } from "@/lib/db/firebaseUtils";
+import { config, db } from "@/lib/db/firebaseUtils";
 import { User } from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
 
 const app = initializeApp(config.firebaseConfig);
 const auth = getAuth(app);
@@ -20,6 +21,7 @@ interface AuthContextValue {
   loading: boolean;
   signInWithGoogle: () => Promise<void>;
   handleSignOut: () => Promise<void>;
+  fetchUserProfilePhoto: (uid: string) => Promise<string | null>;  
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -67,6 +69,14 @@ export const AuthRouteProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
+
+  const fetchUserProfilePhoto = async (uid: string) => {
+    if (!uid) return null;
+    const userDocRef = doc(db, "users", uid);
+    const userDoc = await getDoc(userDocRef);
+    return userDoc.exists() ? userDoc.data().photo : null;
+  };
+
   const handleSignOut = async () => {
     setIsLoggingOut(true); // Set logging out flag
     setLoading(true);
@@ -89,6 +99,7 @@ export const AuthRouteProvider: React.FC<{ children: React.ReactNode }> = ({
     loading,
     signInWithGoogle,
     handleSignOut,
+    fetchUserProfilePhoto
   };
 
   return (

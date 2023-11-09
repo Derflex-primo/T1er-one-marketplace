@@ -193,17 +193,20 @@ const UserInfo = () => {
               ))}
             </div> */}
 
-            <div className="absolute z-30 bottom-[-40px] left-6">
+            <div
+              className="image-container z-30 bottom-[-40px] left-6"
+              style={{ width: "200px", height: "200px", position: "absolute" }}
+            >
               {userInfo.photo && (
                 <Image
                   src={userInfo.photo}
                   alt="User Photo"
-                  width={200}
-                  height={200}
+                  fill
                   quality={100}
-                  className="rounded-2xl z-30"
+                  className="rounded-2xl object-cover"
                 />
               )}
+
               {isEditing && (
                 <div className="absolute rounded-2xl inset-0 flex justify-center items-center ">
                   <input
@@ -232,7 +235,7 @@ const UserInfo = () => {
                       onClick={deletePhoto}
                       className="mt-2 ml-2"
                     >
-                      <IoCloseSharp className="text-red-500" size={19} />
+                      <IoCloseSharp className="text-stone-900" size={19} />
                     </button>
                   )}
                 </div>
@@ -352,7 +355,7 @@ const UserInfo = () => {
                 </button>
               </div>
             </div>
-            <div className="flex flex-col  w-[50%] h-56 rounded-xl border-[0.8px] shadow-md mr-8">
+            <div className="flex flex-col  w-[50%] h-56 rounded-xl border-[0.8px]   mr-8">
               <div className="flex justify-center text-xl font-semibold p-6 border-b-[1px]">
                 {userInfo.wallet || "You don't have a wallet"}
               </div>

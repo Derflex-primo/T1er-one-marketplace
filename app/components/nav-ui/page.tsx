@@ -126,7 +126,7 @@ const NavBar = () => {
                  }
                 `}
                 type="text"
-                 placeholder="Search"
+                placeholder="Search"
               />
             </div>
 
@@ -171,9 +171,7 @@ const NavBar = () => {
               </Link>
             </div>
             <div className="flex flex-row gap-2">
-              <div className="text-sm font-bold p-3 rounded-xl   hover:bg-stone-100 transition ease-in-out duration-150">
-                <Pinned />
-              </div>
+              <Pinned />
               <Link
                 href={""}
                 className="text-sm font-bold p-3 rounded-xl   hover:bg-stone-100 transition ease-in-out duration-150"
