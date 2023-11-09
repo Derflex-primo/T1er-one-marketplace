@@ -91,8 +91,12 @@ const NavBar = () => {
               </Link>
               <hr className="inline border-[0.8px] h-8 " />
               <div className="flex items-center gap-4 text-base cursor-pointer font-semibold">
-                <Drop />
-                <Trade />
+                <Link href={`/components/fallback-ui`}>
+                  <Drop />
+                </Link>
+                <Link href={`/components/fallback-ui`}>
+                  <Trade />
+                </Link>
               </div>
             </div>
             <div className="flex flex-grow relative ml-10 mx-4 md:block ">
@@ -140,31 +144,31 @@ const NavBar = () => {
             <div className="flex flex-row gap-4   ">
               <SortBrowse />
               <Link
-                href={""}
+                href={`/components/fallback-ui`}
                 className="text-sm font-bold p-3 rounded-xl  hover:bg-stone-100 transition ease-in-out duration-150"
               >
                 Monthly Deals
               </Link>
               <Link
-                href={""}
+                href={`/components/fallback-ui`}
                 className="text-sm font-bold p-3 rounded-xl  hover:bg-stone-100 transition ease-in-out duration-150"
               >
                 Gift cards
               </Link>
               <Link
-                href={""}
+                href={`/components/fallback-ui`}
                 className="text-sm font-bold p-3 rounded-xl hover:bg-stone-100 transition ease-in-out duration-150"
               >
                 Top rated
               </Link>
               <Link
-                href={""}
+                href={`/components/fallback-ui`}
                 className="text-sm font-bold p-3 rounded-xl   hover:bg-stone-100 transition ease-in-out duration-150"
               >
                 New Arrivals
               </Link>
               <Link
-                href={""}
+                href={`/components/fallback-ui`}
                 className="text-sm font-bold p-3 rounded-xl   hover:bg-stone-100 transition ease-in-out duration-150"
               >
                 Pre orders
@@ -173,7 +177,7 @@ const NavBar = () => {
             <div className="flex flex-row gap-2">
               <Pinned />
               <Link
-                href={""}
+                href={`/components/fallback-ui`}
                 className="text-sm font-bold p-3 rounded-xl   hover:bg-stone-100 transition ease-in-out duration-150"
               >
                 Support

@@ -44,9 +44,9 @@ const SortBrowse = () => {
     <div>
       <button
         className={filterPlaceholder}
-        onClick={() => { 
-        setIsModalOpen(!isModalOpen)
-        setSelectedFilter(null);
+        onClick={() => {
+          setIsModalOpen(!isModalOpen);
+          setSelectedFilter(null);
         }}
       >
         {isModalOpen ? <IoCloseSharp size={18} /> : <SlMenu size={18} />}
@@ -55,8 +55,12 @@ const SortBrowse = () => {
 
       {isModalOpen && (
         <div className={`${filterPlaceholderStyle} top-[16]  `}>
-          <div className={filterOption}>Deals</div>
-          <div className={filterOption}>Shops</div>
+          <Link href={`/components/fallback-ui`}>
+            <div className={filterOption}>Deals</div>
+          </Link>
+          <Link href={`/components/fallback-ui`}>
+            <div className={filterOption}>Shops</div>
+          </Link>
           <div
             onClick={() => setSelectedFilter("Brands")}
             className={filterOption}
@@ -94,9 +98,7 @@ const SortBrowse = () => {
       {selectedFilter === "Category" && (
         <div className={`${filterPlaceholderStyle} left-[160px] top-[16] `}>
           {uniqueCategories.map((category) => (
-            <Link 
-            key={category}
-             href={`/product/${category}`}>
+            <Link key={category} href={`/product/${category}`}>
               <div
                 onClick={() => {
                   setIsModalOpen(false);
