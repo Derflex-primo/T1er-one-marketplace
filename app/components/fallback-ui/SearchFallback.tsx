@@ -3,7 +3,7 @@ import Image from "next/image";
 
 const SearchFallback = () => {
     return (
-        <div className="relative h-screen">
+        <div className="relative h-screen p-24">
           <div className="relative w-full h-full">
             <Image
               src={`/images/searchFallback.svg`}
