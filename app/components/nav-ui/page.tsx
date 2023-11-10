@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { Michroma } from "next/font/google";
 import Container from "../Container";
@@ -12,10 +12,15 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import Pinned from "./Pinned";
 import Image from "next/image";
 import SortBrowse from "../browse-ui/SortBrowse";
+import { useSearch } from "@/providers/SearchContext";
+import { useRouter } from "next/navigation";
 
 const michroma = Michroma({ subsets: ["latin"], weight: ["400"] });
 
 const NavBar = () => {
+  const { setSearchTerm } = useSearch();
+  const [search, setSearch] = useState("");
+  const enterPressedLinkRef = useRef<HTMLAnchorElement>(null);
   const [scrolled, setScrolled] = useState(false);
 
   const changedBackground = () => {
@@ -23,6 +28,16 @@ const NavBar = () => {
       setScrolled(true);
     } else {
       setScrolled(false);
+    }
+  };
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+    setSearch(event.target.value);
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter" && enterPressedLinkRef.current) {
+      enterPressedLinkRef.current.click();
     }
   };
 
@@ -119,6 +134,12 @@ const NavBar = () => {
               <label htmlFor="searchProducts" className="sr-only">
                 Search Products
               </label>
+              <div style={{ display: "none" }}>
+                <Link
+                  href={`/product/${search}`}
+                  ref={enterPressedLinkRef}
+                ></Link>
+              </div>
               <input
                 id="searchProducts"
                 className={`
@@ -130,6 +151,8 @@ const NavBar = () => {
                  }
                 `}
                 type="text"
+                onChange={handleSearchChange}
+                onKeyDown={handleKeyDown}
                 placeholder="Search"
               />
             </div>

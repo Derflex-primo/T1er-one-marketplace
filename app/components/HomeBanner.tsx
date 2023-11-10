@@ -1,8 +1,6 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { AiOutlineInfoCircle } from "react-icons/ai";
-import Heading from "./Heading";
 
 const HomeBanner = () => {
   const [currentDate, setCurrentDate] = useState("");

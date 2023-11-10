@@ -224,7 +224,7 @@ const Brand: React.FC<BrowseProps> = ({ products }) => {
 
   return (
     <Container>
-      <div className="flex h-screen w-full mt-4 gap-12">
+      <div className="flex  w-full mt-4 gap-12 ">
         <div className="  rounded-xl w-[20%]">
           <div className="p-3 font-medium">
             <div className="flex rounded-xl border-[0.8px] mb-2 items-center justify-between p-3">

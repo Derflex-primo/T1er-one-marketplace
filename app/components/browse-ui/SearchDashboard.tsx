@@ -1,7 +1,7 @@
+"use client";
+
 import { BrowseProps } from "@/types";
 import React, { useEffect, useState } from "react";
-import Container from "../Container";
-import SortByLevels, { Options } from "./SortByLevels";
 import Image from "next/image";
 import splitWord, {
   brandListed,
@@ -20,7 +20,6 @@ import splitWord, {
   storageCapacity,
 } from "@/lib/utils/formats";
 import Rating from "@mui/material/Rating";
-import { productRating } from "../products-ui/ProductCard";
 import { IoCloseSharp, IoFilterSharp } from "react-icons/io5";
 import { GrUpdate } from "react-icons/gr";
 import { AiOutlinePushpin } from "react-icons/ai";
@@ -29,11 +28,13 @@ import { useCart } from "@/hooks/useCart";
 import { usePinned } from "@/hooks/usePinned";
 import { BsCircleFill } from "react-icons/bs";
 import Link from "next/link";
+import SortByLevels, { Options } from "@/app/components/browse-ui/SortByLevels";
+import Container from "@/app/components/Container";
+import { productRating } from "@/app/components/products-ui/ProductCard";
 
+// BUY NOW LACK
 
-// BUY NOW LACK 
-
-const Category: React.FC<BrowseProps> = ({ products }) => {
+const SearchDashboard: React.FC<BrowseProps> = ({ products }) => {
   const { handleAddProductToType } = useCart();
   const { handleAddPinnedProductToType } = usePinned();
 
@@ -48,6 +49,7 @@ const Category: React.FC<BrowseProps> = ({ products }) => {
   const [selectedFilters, setSelectedFilters] = useState<{
     discount?: string;
     brand?: string;
+    gadjet?: string;
     storage?: string;
     connectivity?: string;
     displayTech?: string;
@@ -160,6 +162,11 @@ const Category: React.FC<BrowseProps> = ({ products }) => {
           (product) => product.brand === value
         );
         break;
+      case "gadjet":
+        filteredProducts = filteredProducts.filter(
+          (product) => product.category === value
+        );
+        break;
       case "storage":
         filteredProducts = filteredProducts.filter((product) => {
           const storageValues =
@@ -225,7 +232,7 @@ const Category: React.FC<BrowseProps> = ({ products }) => {
 
   return (
     <Container>
-      <div className="flex w-full mt-4 gap-12  ">
+      <div className="flex  w-full mt-4 gap-12 ">
         <div className="  rounded-xl w-[20%]">
           <div className="p-3 font-medium">
             <div className="flex rounded-xl border-[0.8px] mb-2 items-center justify-between p-3">
@@ -244,7 +251,7 @@ const Category: React.FC<BrowseProps> = ({ products }) => {
                 setOpenFilter((prev) => ({ ...prev, brand: !prev.brand }))
               }
             >
-               Brand
+              Brand
               <BsCircleFill
                 size={8}
                 className={`mr-2 transition-transform 
@@ -260,13 +267,55 @@ const Category: React.FC<BrowseProps> = ({ products }) => {
 
             {openFilter.brand && (
               <div className="mb-2 p-3 shadow-2xl rounded-2xl border-[0.8px] mt-2 w-full bg-white  ease-in-out duration-300 select-none">
-                {brandListed.map((option) => ( // ADD
+                {brandListed.map(
+                  (
+                    option // ADD
+                  ) => (
+                    <div
+                      key={option}
+                      className="p-3 cursor-pointer rounded-xl hover:bg-stone-100"
+                      onClick={() => handleOptionClick("brand", option)}
+                    >
+                      {splitWord(option)}
+                    </div>
+                  )
+                )}
+              </div>
+            )}
+
+            <div
+              className={`flex items-center justify-between w-full p-3  cursor-pointer select-none ${
+                openFilter.gadjet
+                  ? "border-[0.8px] bg-stone-100 rounded-xl"
+                  : "hover:bg-stone-100 rounded-xl "
+              } `}
+              onClick={() =>
+                setOpenFilter((prev) => ({ ...prev, gadjet: !prev.gadjet }))
+              }
+            >
+              Gadjet type
+              <BsCircleFill
+                size={8}
+                className={`mr-2 transition-transform 
+                ${
+                  selectedFilters.gadjet
+                    ? "text-lime-500"
+                    : openFilter.gadjet
+                    ? "text-rose-500"
+                    : "text-stone-200"
+                }`}
+              />
+            </div>
+
+            {openFilter.gadjet && (
+              <div className="mb-2 p-3 shadow-2xl rounded-2xl border-[0.8px] mt-2 w-full bg-white  ease-in-out duration-300 select-none">
+                {options.map((option) => (
                   <div
-                    key={option}
+                    key={option.value}
                     className="p-3 cursor-pointer rounded-xl hover:bg-stone-100"
-                    onClick={() => handleOptionClick("brand", option)}
+                    onClick={() => handleOptionClick("gadjet", option.label)}
                   >
-                    {splitWord(option)}
+                    {splitWord(option.label)}
                   </div>
                 ))}
               </div>
@@ -756,20 +805,20 @@ const Category: React.FC<BrowseProps> = ({ products }) => {
                   className="relative rounded-xl border  group overflow-hidden   shadow-md "
                 >
                   <Link href={`/products/${product.id}`}>
-                  <div className="relative z-0 h-60 w-56">
-                    {product.images &&
-                      product.images[0] &&
-                      product.images[0].image && (
-                        <Image
-                          src={product.images[0].image}
-                          alt={product.name}
-                          fill
-                          sizes="100%"
-                          className="object-contain p-3 group-transition-transform duration-300 ease-in-out transform group-hover:scale-110 cursor-pointer"
-                          priority={false}
-                        />
-                      )}
-                  </div>
+                    <div className="relative z-0 h-60 w-56">
+                      {product.images &&
+                        product.images[0] &&
+                        product.images[0].image && (
+                          <Image
+                            src={product.images[0].image}
+                            alt={product.name}
+                            fill
+                            sizes="100%"
+                            className="object-contain p-3 group-transition-transform duration-300 ease-in-out transform group-hover:scale-110 cursor-pointer"
+                            priority={false}
+                          />
+                        )}
+                    </div>
                   </Link>
                   <div className="relative p-3 space-y-2">
                     <div className="cursor-default">
@@ -829,7 +878,7 @@ const Category: React.FC<BrowseProps> = ({ products }) => {
                           quantity: 1,
                           type: product.type,
                           reviews: product.reviews,
-                          specs: product.specs
+                          specs: product.specs,
                         });
                       }}
                     >
@@ -850,7 +899,7 @@ const Category: React.FC<BrowseProps> = ({ products }) => {
                         quantity: 1,
                         type: product.type,
                         reviews: product.reviews,
-                        specs: product.specs
+                        specs: product.specs,
                       });
                     }}
                     className="absolute   cursor-pointer text-white r -top-11 -right-11 h-12 w-12 bg-rose-600 rounded-l-full  rounded-t-none group-hover:translate-y-11 group-hover:-translate-x-11  transition-transform hover:bg-rose-500"
@@ -872,4 +921,4 @@ const Category: React.FC<BrowseProps> = ({ products }) => {
   );
 };
 
-export default Category;
+export default SearchDashboard;

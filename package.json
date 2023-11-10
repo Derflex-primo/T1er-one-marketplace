@@ -28,6 +28,7 @@
     "eslint": "8.46.0",
     "eslint-config-next": "13.4.12",
     "firebase": "^9.6.8",
+    "fuse.js": "^7.0.0",
     "leaflet": "^1.9.4",
     "lodash": "^4.17.21",
     "micro": "^10.0.1",
