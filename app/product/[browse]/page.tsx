@@ -3,6 +3,7 @@
 import Brand from "@/app/components/browse-ui/Brand";
 import Category from "@/app/components/browse-ui/Category";
 import SearchDashboard from "@/app/components/browse-ui/SearchDashboard";
+import SearchFallback from "@/app/components/fallback-ui/SearchFallback";
 import { useProducts } from "@/hooks/useProducts";
 import { useSearch } from "@/providers/SearchContext";
 import Fuse from "fuse.js";
@@ -37,8 +38,7 @@ const Browse = () => {
     const filteredProductsBy_Category = products.filter((product) => product.category === segment);
     componentToRender = <Category products={filteredProductsBy_Category} />;
   } else {
-    // Render some default component or null if nothing matches
-    componentToRender = <>Default content or null if not needed</>;
+    componentToRender = <SearchFallback />;
   }
 
   return <div>{componentToRender}</div>;

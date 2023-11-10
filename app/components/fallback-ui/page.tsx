@@ -10,6 +10,8 @@ const UnderMaintenance = () => {
           alt="Under maintenance"
           fill
           className="object-contain"
+          quality={100}
+          sizes="auto"
         />
         <div className="absolute top-[175px] left-[200px]">
           Temporarily refining features 

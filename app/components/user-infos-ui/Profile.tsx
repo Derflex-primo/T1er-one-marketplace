@@ -59,6 +59,7 @@ const Profile: React.FC<Profile> = ({ scrolled, connectWallet }) => {
                 fill
                 className="rounded-full object-cover"
                 alt="User menu"
+                sizes="auto"
               />
             ) : (
               <CgProfile size={26} className="object-cover" />

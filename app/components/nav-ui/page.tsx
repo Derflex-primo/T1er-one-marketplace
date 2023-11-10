@@ -7,7 +7,7 @@ import Container from "../Container";
 import LogInPage from "@/app/auth/Login";
 import Drop from "../dropTrade-ui/Drop";
 import Trade from "../dropTrade-ui/Trade";
-import { IoSearch } from "react-icons/io5";
+import { IoCloseSharp, IoSearch } from "react-icons/io5";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import Pinned from "./Pinned";
 import Image from "next/image";
@@ -36,9 +36,14 @@ const NavBar = () => {
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter" && enterPressedLinkRef.current) {
+    if (event.key === "Enter" && search.trim() && enterPressedLinkRef.current) {
       enterPressedLinkRef.current.click();
     }
+  };
+
+  const clearSearch = () => {
+    setSearch("");
+    setSearchTerm("");
   };
 
   useEffect(() => {
@@ -88,21 +93,19 @@ const NavBar = () => {
                 
             `}
               >
-                {scrolled ? (
-                  <Image
-                    src="/images/tierOneLogoWhite.svg"
-                    alt="Tier One logo"
-                    width={115}
-                    height={115}
-                  />
-                ) : (
-                  <Image
-                    src="/images/tierOneLogo.svg"
-                    alt="Tier One logo"
-                    width={115}
-                    height={115}
-                  />
-                )}
+                <Image
+                  src={
+                    scrolled
+                      ? "/images/tierOneLogoWhite.svg"
+                      : "/images/tierOneLogo.svg"
+                  }
+                  alt="Tier One logo"
+                  width={115}
+                  height={115}
+                  priority
+                  quality={100}
+                  className="object-contain "
+                />
               </Link>
               <hr className="inline border-[0.8px] h-8 " />
               <div className="flex items-center gap-4 text-base cursor-pointer font-semibold">
@@ -129,7 +132,11 @@ const NavBar = () => {
                 }
               `}
               >
-                <BsThreeDotsVertical size={14} />
+                {search ? (
+                  <IoCloseSharp size={14} onClick={clearSearch} />
+                ) : (
+                  <BsThreeDotsVertical size={14} />
+                )}
               </div>
               <label htmlFor="searchProducts" className="sr-only">
                 Search Products

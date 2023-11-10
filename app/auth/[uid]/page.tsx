@@ -204,6 +204,7 @@ const UserInfo = () => {
                   fill
                   quality={100}
                   className="rounded-2xl object-cover"
+                  sizes="auto"
                 />
               )}
 
