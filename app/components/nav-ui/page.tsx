@@ -148,6 +148,7 @@ const NavBar = () => {
                 ></Link>
               </div>
               <input
+                value={search} 
                 id="searchProducts"
                 className={`
                 w-full pl-10 py-3 bg-stone-100 rounded-xl md:block focus:outline-none focus:ring-[0.6px] 
