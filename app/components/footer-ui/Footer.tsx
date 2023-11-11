@@ -28,7 +28,7 @@ const Footer = () => {
               T1er One
             </h3>
             <p className="mb-2">
-              With a strong foundation in reliability and quality, Tier One is
+              With a strong foundation in reliability and quality, Tear One is
               your go-to source for premium laptops, desktops, and other
               electronic devices. Shop with confidence and experience
               excellence.
