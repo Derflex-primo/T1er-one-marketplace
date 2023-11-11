@@ -35,3 +35,28 @@ const Page = () => {
 
 export default Page;
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// PROBLEM - Na searh product su man delete ya el content andentro del input - sale dayun el fallback ui - so if online el context na input - apekta tamen el filter online - it should prevent fall back if filter is online

@@ -46,8 +46,10 @@ export const AuthRouteProvider: React.FC<{ children: React.ReactNode }> = ({
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
       if (!isLoggingOut) {
-        // Check if not in the middle of a logout operation
-        setLoading(false);
+        // Apply the delay on every page reload
+        setTimeout(() => {
+          setLoading(false);
+        }, 2500);
       }
     });
 

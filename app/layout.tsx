@@ -19,7 +19,7 @@ const michroma = Michroma({ subsets: ["latin"], weight: "400" });
 const roboto = Roboto({ subsets: ["latin"], weight: ["400", "700", "900"] });
 
 export const metadata: Metadata = {
-  title: "Tier One Marketplace",
+  title: "T1er One",
   description: "A marketplace based on the philippines",
 };
 
