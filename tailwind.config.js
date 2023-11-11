@@ -22,7 +22,10 @@ module.exports = {
         '2xl': 'blur(40px)',
         '3xl': 'blur(64px)',
       },
-      
+      transitionDuration: {
+        '3000': '3000ms',
+      }
+
     },
   },
   plugins: [],

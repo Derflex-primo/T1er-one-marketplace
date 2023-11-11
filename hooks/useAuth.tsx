@@ -12,6 +12,7 @@ import { initializeApp } from "firebase/app";
 import { config, db } from "@/lib/db/firebaseUtils";
 import { User } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
+import AuthLoading from "@/app/components/AuthLoading";
 
 const app = initializeApp(config.firebaseConfig);
 const auth = getAuth(app);
@@ -104,7 +105,7 @@ export const AuthRouteProvider: React.FC<{ children: React.ReactNode }> = ({
 
   return (
     <AuthContext.Provider value={value}>
-      {!loading ? children : <p>Loading... // AHORA TEMPO </p>}
+      {!loading ? children :  <AuthLoading />}
     </AuthContext.Provider>
   );
 };
