@@ -37,7 +37,7 @@ const AuthLoading = () => {
       </div>
       </div>
       <div className="absolute bottom-4 right-4 text-white font-semibold text-xs ">
-        CEO. Deogracias Daryl 
+        Founder. Deogracias Daryl 
       </div>
     </div>
   );
