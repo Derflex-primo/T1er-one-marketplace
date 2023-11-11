@@ -1,7 +1,7 @@
 "use client";
 
 import { BrowseProps } from "@/types";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Image from "next/image";
 import splitWord, {
   brandListed,
@@ -33,12 +33,14 @@ import Container from "@/app/components/Container";
 import { productRating } from "@/app/components/products-ui/ProductCard";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { LoadingContext } from "@/providers/LoadingProvider";
 
 // BUY NOW LACK
 
 const SearchDashboard: React.FC<BrowseProps> = ({ products }) => {
   const { handleAddProductToType } = useCart();
   const { handleAddPinnedProductToType } = usePinned();
+  const { isLoading } = useContext(LoadingContext);
 
   const [sortCriteria, setSortCriteria] =
     useState<Options>("Price High to low");
@@ -804,7 +806,7 @@ const SearchDashboard: React.FC<BrowseProps> = ({ products }) => {
                   No products found for the selected filters.
                 </p>
               </div>
-            ) : filterLoading ? (
+            ) : filterLoading || isLoading ? (
               Array(filteredProducts.length)
                 .fill(0)
                 .map((_, index) => (

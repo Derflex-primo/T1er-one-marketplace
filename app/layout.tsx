@@ -12,6 +12,7 @@ import { Theme } from "@radix-ui/themes";
 import PinnedProvider from "@/providers/PinnnedProvider";
 import AuthProvider from "@/providers/AuthRouteProvider";
 import { SearchProvider } from "@/providers/SearchContext";
+import { LoadingProvider } from "@/providers/LoadingProvider";
 
 const michroma = Michroma({ subsets: ["latin"], weight: "400" });
 
@@ -53,20 +54,22 @@ export default function RootLayout({
         <Theme>
           <ProductProvider>
             <AuthProvider>
-              <SearchProvider>
-                <CartProvider>
-                  <PinnedProvider>
-                    <div className="flex flex-col min-h-screen">
-                      <NextTopLoader color="#fc0335" showSpinner={false} />
-                      <NavBar />
-                      <main className="flex-grow bg-[#5f7f7]-100">
-                        {children}
-                      </main>
-                      <Footer />
-                    </div>
-                  </PinnedProvider>
-                </CartProvider>
-              </SearchProvider>
+              <LoadingProvider>
+                <SearchProvider>
+                  <CartProvider>
+                    <PinnedProvider>
+                      <div className="flex flex-col min-h-screen">
+                        <NextTopLoader color="#fc0335" showSpinner={false} />
+                        <NavBar />
+                        <main className="flex-grow bg-[#5f7f7]-100">
+                          {children}
+                        </main>
+                        <Footer />
+                      </div>
+                    </PinnedProvider>
+                  </CartProvider>
+                </SearchProvider>
+              </LoadingProvider>
             </AuthProvider>
           </ProductProvider>
         </Theme>

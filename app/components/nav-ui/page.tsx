@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import Link from "next/link";
 import { Michroma } from "next/font/google";
 import Container from "../Container";
@@ -13,12 +13,13 @@ import Pinned from "./Pinned";
 import Image from "next/image";
 import SortBrowse from "../browse-ui/SortBrowse";
 import { useSearch } from "@/providers/SearchContext";
-import { useRouter } from "next/navigation";
+import { LoadingContext } from "@/providers/LoadingProvider";
 
 const michroma = Michroma({ subsets: ["latin"], weight: ["400"] });
 
 const NavBar = () => {
   const { setSearchTerm } = useSearch();
+  const { setIsLoading } = useContext(LoadingContext);
   const [search, setSearch] = useState("");
   const enterPressedLinkRef = useRef<HTMLAnchorElement>(null);
   const [scrolled, setScrolled] = useState(false);
@@ -30,9 +31,22 @@ const NavBar = () => {
       setScrolled(false);
     }
   };
+
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value);
-    setSearch(event.target.value);
+    const searchTerm = event.target.value;
+    setSearch(searchTerm);
+
+    if (searchTerm.trim() !== "") {
+      setSearchTerm(searchTerm.trim()); // Update search term in context
+      setIsLoading(true);
+      // Simulate a delay for fetching search results
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 2000); // Adjust time as needed
+    } else {
+      setSearchTerm(""); // Clear search term in context
+      setIsLoading(false);
+    }
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -148,7 +162,7 @@ const NavBar = () => {
                 ></Link>
               </div>
               <input
-                value={search} 
+                value={search}
                 id="searchProducts"
                 className={`
                 w-full pl-10 py-3 bg-stone-100 rounded-xl md:block focus:outline-none focus:ring-[0.6px] 
