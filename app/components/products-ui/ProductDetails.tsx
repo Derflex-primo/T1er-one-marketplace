@@ -93,7 +93,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
   const productShowRating = product.reviews?.[0]?.rating ?? 0;
 
   return (
-    <div className={`${productDetails} h-screen`}>
+    <div className={`${productDetails} `}>
       <ProductImage cartProduct={cartProduct} product={product} />
       <div className="flex flex-col gap-1 text-sm">
         <div className="border-[0.8px] p-4 rounded-xl cursor-default">

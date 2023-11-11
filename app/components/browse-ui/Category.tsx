@@ -29,9 +29,10 @@ import { useCart } from "@/hooks/useCart";
 import { usePinned } from "@/hooks/usePinned";
 import { BsCircleFill } from "react-icons/bs";
 import Link from "next/link";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
-
-// BUY NOW LACK 
+// BUY NOW LACK
 
 const Category: React.FC<BrowseProps> = ({ products }) => {
   const { handleAddProductToType } = useCart();
@@ -39,7 +40,7 @@ const Category: React.FC<BrowseProps> = ({ products }) => {
 
   const [sortCriteria, setSortCriteria] =
     useState<Options>("Price High to low");
-  const [isLoading, setIsLoading] = useState(false);
+  const [filterLoading, setFilterLoading] = useState(false);
   const [lastButtonPress, setLastButtonPress] = useState<Date | null>(null);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
   const [updatedTimeStr, setUpdatedTimeStr] =
@@ -60,9 +61,13 @@ const Category: React.FC<BrowseProps> = ({ products }) => {
   }>({});
 
   const handleOptionClick = (type: string, value: string) => {
+    setFilterLoading(true);
     setSelectedFilters((prev) => ({ ...prev, [type]: value }));
-  };
 
+    setTimeout(() => {
+      setFilterLoading(false);
+    }, 1500);
+  };
   const removeFilter = (type: string) => {
     setSelectedFilters((prev) => {
       const newFilters = { ...prev };
@@ -84,12 +89,12 @@ const Category: React.FC<BrowseProps> = ({ products }) => {
       return;
     }
 
-    setIsLoading(true);
+    setFilterLoading(true);
     setUpdatedTimeStr("Updated just now"); // Set the text immediately when the user clicks the update
 
     // Simulate a loading delay. You can replace this with your actual product update logic.
     setTimeout(() => {
-      setIsLoading(false);
+      setFilterLoading(false);
       setLastUpdated(new Date());
       setLastButtonPress(new Date());
     }, 2000); // Assuming a 2-second loading time
@@ -244,7 +249,7 @@ const Category: React.FC<BrowseProps> = ({ products }) => {
                 setOpenFilter((prev) => ({ ...prev, brand: !prev.brand }))
               }
             >
-               Brand
+              Brand
               <BsCircleFill
                 size={8}
                 className={`mr-2 transition-transform 
@@ -260,15 +265,19 @@ const Category: React.FC<BrowseProps> = ({ products }) => {
 
             {openFilter.brand && (
               <div className="mb-2 p-3 shadow-2xl rounded-2xl border-[0.8px] mt-2 w-full bg-white  ease-in-out duration-300 select-none">
-                {brandListed.map((option) => ( // ADD
-                  <div
-                    key={option}
-                    className="p-3 cursor-pointer rounded-xl hover:bg-stone-100"
-                    onClick={() => handleOptionClick("brand", option)}
-                  >
-                    {splitWord(option)}
-                  </div>
-                ))}
+                {brandListed.map(
+                  (
+                    option // ADD
+                  ) => (
+                    <div
+                      key={option}
+                      className="p-3 cursor-pointer rounded-xl hover:bg-stone-100"
+                      onClick={() => handleOptionClick("brand", option)}
+                    >
+                      {splitWord(option)}
+                    </div>
+                  )
+                )}
               </div>
             )}
 
@@ -696,7 +705,7 @@ const Category: React.FC<BrowseProps> = ({ products }) => {
                 </div>
 
                 <div className="cursor-default">
-                  {isLoading ? "Loading items..." : updatedTimeStr}
+                  {filterLoading ? "Loading items..." : updatedTimeStr}
                 </div>
               </div>
               <div className="select-none font-semibold">
@@ -749,6 +758,41 @@ const Category: React.FC<BrowseProps> = ({ products }) => {
                   No products found for the selected filters.
                 </p>
               </div>
+            ) : filterLoading ? (
+              Array(filteredProducts.length)
+                .fill(0)
+                .map((_, index) => (
+                  <div
+                    key={index}
+                    className="rounded-xl shadow-md overflow-hidden"
+                    style={{ borderRadius: "0.75rem" }}
+                  >
+                    <Skeleton
+                      width={226}
+                      height={240}
+                      style={{
+                        borderTopLeftRadius: "0.75rem",
+                        borderTopRightRadius: "0.75rem",
+                      }}
+                    />
+                    <div className="relative p-3 space-y-2">
+                      <div className="relative">
+                        <Skeleton height={16} width={102} />
+                      </div>
+                      <div className="relative">
+                        <Skeleton height={12} width={24} />
+                      </div>
+                      <div className="h-1"></div>
+                      <div className="relative space-y-1">
+                        <Skeleton height={16} width={74} />
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <Skeleton height={12} width={54} />
+                        <Skeleton height={12} width={54} />
+                      </div>
+                    </div>
+                  </div>
+                ))
             ) : (
               filteredProducts.map((product) => (
                 <div
@@ -756,20 +800,20 @@ const Category: React.FC<BrowseProps> = ({ products }) => {
                   className="relative rounded-xl border  group overflow-hidden   shadow-md "
                 >
                   <Link href={`/products/${product.id}`}>
-                  <div className="relative z-0 h-60 w-56">
-                    {product.images &&
-                      product.images[0] &&
-                      product.images[0].image && (
-                        <Image
-                          src={product.images[0].image}
-                          alt={product.name}
-                          fill
-                          sizes="100%"
-                          className="object-contain p-3 group-transition-transform duration-300 ease-in-out transform group-hover:scale-110 cursor-pointer"
-                          priority={false}
-                        />
-                      )}
-                  </div>
+                    <div className="relative z-0 h-60 w-56">
+                      {product.images &&
+                        product.images[0] &&
+                        product.images[0].image && (
+                          <Image
+                            src={product.images[0].image}
+                            alt={product.name}
+                            fill
+                            sizes="100%"
+                            className="object-contain p-3 group-transition-transform duration-300 ease-in-out transform group-hover:scale-110 cursor-pointer"
+                            priority={false}
+                          />
+                        )}
+                    </div>
                   </Link>
                   <div className="relative p-3 space-y-2">
                     <div className="cursor-default">
@@ -829,7 +873,7 @@ const Category: React.FC<BrowseProps> = ({ products }) => {
                           quantity: 1,
                           type: product.type,
                           reviews: product.reviews,
-                          specs: product.specs
+                          specs: product.specs,
                         });
                       }}
                     >
@@ -850,7 +894,7 @@ const Category: React.FC<BrowseProps> = ({ products }) => {
                         quantity: 1,
                         type: product.type,
                         reviews: product.reviews,
-                        specs: product.specs
+                        specs: product.specs,
                       });
                     }}
                     className="absolute   cursor-pointer text-white r -top-11 -right-11 h-12 w-12 bg-rose-600 rounded-l-full  rounded-t-none group-hover:translate-y-11 group-hover:-translate-x-11  transition-transform hover:bg-rose-500"

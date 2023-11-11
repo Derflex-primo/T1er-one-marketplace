@@ -31,6 +31,8 @@ import Link from "next/link";
 import SortByLevels, { Options } from "@/app/components/browse-ui/SortByLevels";
 import Container from "@/app/components/Container";
 import { productRating } from "@/app/components/products-ui/ProductCard";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 // BUY NOW LACK
 
@@ -40,7 +42,7 @@ const SearchDashboard: React.FC<BrowseProps> = ({ products }) => {
 
   const [sortCriteria, setSortCriteria] =
     useState<Options>("Price High to low");
-  const [isLoading, setIsLoading] = useState(false);
+  const [filterLoading, setFilterLoading] = useState(false);
   const [lastButtonPress, setLastButtonPress] = useState<Date | null>(null);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
   const [updatedTimeStr, setUpdatedTimeStr] =
@@ -62,9 +64,13 @@ const SearchDashboard: React.FC<BrowseProps> = ({ products }) => {
   }>({});
 
   const handleOptionClick = (type: string, value: string) => {
+    setFilterLoading(true);
     setSelectedFilters((prev) => ({ ...prev, [type]: value }));
-  };
 
+    setTimeout(() => {
+      setFilterLoading(false);
+    }, 1500);
+  };
   const removeFilter = (type: string) => {
     setSelectedFilters((prev) => {
       const newFilters = { ...prev };
@@ -86,15 +92,15 @@ const SearchDashboard: React.FC<BrowseProps> = ({ products }) => {
       return;
     }
 
-    setIsLoading(true);
+    setFilterLoading(true);
     setUpdatedTimeStr("Updated just now"); // Set the text immediately when the user clicks the update
 
     // Simulate a loading delay. You can replace this with your actual product update logic.
     setTimeout(() => {
-      setIsLoading(false);
+      setFilterLoading(false);
       setLastUpdated(new Date());
       setLastButtonPress(new Date());
-    }, 2000); // Assuming a 2-second loading time
+    }, 1500);
   };
 
   const isButtonDisabled =
@@ -745,7 +751,7 @@ const SearchDashboard: React.FC<BrowseProps> = ({ products }) => {
                 </div>
 
                 <div className="cursor-default">
-                  {isLoading ? "Loading items..." : updatedTimeStr}
+                  {filterLoading ? "Loading items..." : updatedTimeStr}
                 </div>
               </div>
               <div className="select-none font-semibold">
@@ -798,6 +804,41 @@ const SearchDashboard: React.FC<BrowseProps> = ({ products }) => {
                   No products found for the selected filters.
                 </p>
               </div>
+            ) : filterLoading ? (
+              Array(filteredProducts.length)
+                .fill(0)
+                .map((_, index) => (
+                  <div
+                    key={index}
+                    className="rounded-xl shadow-md overflow-hidden"
+                    style={{ borderRadius: "0.75rem" }}
+                  >
+                    <Skeleton
+                      width={226}
+                      height={240}
+                      style={{
+                        borderTopLeftRadius: "0.75rem",
+                        borderTopRightRadius: "0.75rem",
+                      }}
+                    />
+                    <div className="relative p-3 space-y-2">
+                      <div className="relative">
+                        <Skeleton height={16} width={102} />
+                      </div>
+                      <div className="relative">
+                        <Skeleton height={12} width={24} />
+                      </div>
+                      <div className="h-1"></div>
+                      <div className="relative space-y-1">
+                        <Skeleton height={16} width={74} />
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <Skeleton height={12} width={54} />
+                        <Skeleton height={12} width={54} />
+                      </div>
+                    </div>
+                  </div>
+                ))
             ) : (
               filteredProducts.map((product) => (
                 <div
