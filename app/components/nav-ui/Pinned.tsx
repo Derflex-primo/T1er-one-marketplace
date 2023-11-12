@@ -191,7 +191,6 @@ const Pinned = () => {
                       </Link>
                       <div
                         className="pl-8 text-sm group-hover:hidden"
-                        onClick={() => handleRemoveProductToType(product)}
                       >
                         {formatUSDWithComma(product.type[0].price)}
                       </div>

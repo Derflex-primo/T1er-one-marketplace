@@ -117,10 +117,10 @@ export const CartContextProvider = (props: Props) => {
   }, []);
   
 
-  const handleRemoveProductToType = useCallback((cartItemId: string) => {
+  const handleRemoveProductToType = useCallback((id: string) => {
     setCartProducts((prev) => {
       if (prev) {
-        const updatedCart = prev.filter((item) => item.cartItemId !== cartItemId);
+        const updatedCart = prev.filter((item) => item.id !== id);
         toast.success("Product has been removed");
         localStorage.setItem("tierOneItems", JSON.stringify(updatedCart));
         return updatedCart;
