@@ -752,7 +752,7 @@ const Brand: React.FC<BrowseProps> = ({ products }) => {
                   priority={false}
                 />
                 <p className="mt-2">
-                  No products found for the selected filters.
+                  No products found. 
                 </p>
               </div>
             ) : filterLoading ? (
