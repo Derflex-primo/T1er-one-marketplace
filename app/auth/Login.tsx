@@ -51,8 +51,9 @@ const LogInPage: React.FC<LogInPageProps> = () => {
 
   return (
     <div className={`flex items-center gap-4 ${scrolled ? "text-white" : ""} `}>
-      <div onClick={handleOpen} className="flex items-center">
+      <div className="flex items-center">
         <span
+          onClick={handleOpen} 
           className={`flex items-center space-x-4 rounded-l-xl pr-3 py-3 px-4 cursor-pointer ${
             scrolled
               ? "backdrop-blur-md bg-white bg-opacity-20 hover:bg-stone-900 hover:backdrop-blur-md hover:bg-opacity-20 border-r-[0.8px] transition ease-in-out duration-150"
