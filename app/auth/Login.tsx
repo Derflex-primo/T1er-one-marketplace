@@ -22,6 +22,7 @@ const style = {
   boxShadow: 24,
   pt: 4,
   borderRadius: "16px",
+  outline: "none"
 };
 
 const LogInPage: React.FC<LogInPageProps> = () => {

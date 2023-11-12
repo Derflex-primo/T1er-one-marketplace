@@ -37,7 +37,7 @@ const Profile: React.FC<Profile> = ({ scrolled, connectWallet }) => {
     updateUserPhoto();
   }, [user, fetchUserProfilePhoto]);
 
-  console.log(user?.photoURL)
+  console.log(user?.photoURL);
 
   const ButtonStyle = `p-3 select-none text-stone-900 cursor-pointer font-semibold rounded-xl flex items-center space-x-4 hover:bg-stone-100   trasition ease-in-out duration-150`;
 
@@ -57,7 +57,7 @@ const Profile: React.FC<Profile> = ({ scrolled, connectWallet }) => {
           } transition-all ease-in-out duration-75`}
         >
           <span className={`${user ? "relative h-[26px] w-[26px]" : ""}`}>
-            {user ? ( 
+            {user ? (
               <Image
                 src={userPhoto || user.photoURL || ""}
                 fill
@@ -88,41 +88,41 @@ const Profile: React.FC<Profile> = ({ scrolled, connectWallet }) => {
                   <h2>Profile</h2>
                 </div>
               )}
-              <div className={ButtonStyle}>
+              <Link className={ButtonStyle} href={`/components/fallback-ui`}>
                 <PiNotificationDuotone size={20} />
                 <h2>Notification</h2>
-              </div>
+              </Link>
             </div>
             <div className="border-b-[0.8px] p-2">
-              <div className={ButtonStyle}>
+              <Link className={ButtonStyle} href={`/components/fallback-ui`}>
                 <PiTimer size={20} />
                 <h2>Purchase</h2>
-              </div>
-              <div className={ButtonStyle}>
+              </Link>
+              <Link className={ButtonStyle} href={`/components/fallback-ui`}>
                 <AiOutlineSetting size={20} />
                 <h2>Settings</h2>
-              </div>
-            </div>
-            <div className="border-b-[0.8px] p-2">
-              <Link href={`/`}>
-                <div
-                  onClick={user ? () => handleSignOut() : undefined}
-                  className={`p-3 select-none text-stone-900 font-semibold rounded-xl flex items-center space-x-4 hover:bg-stone-100   trasition ease-in-out duration-150 ${
-                    !user ? "cursor-not-allowed" : "cursor-pointer"
-                  }`}
-                >
-                  <IoLogOutOutline size={20} />
-                  <h2>Logout</h2>
-                </div>
               </Link>
-              <div className={ButtonStyle}>
-                <MdOutlineBugReport size={20} />
-                <h2>Report</h2>
               </div>
-              <div className={ButtonStyle}>
-                <FiHelpCircle size={18} />
-                <h2>Help center</h2>
-              </div>
+              <div className="p-2">
+                <Link href={`/`}>
+                  <div
+                    onClick={user ? () => handleSignOut() : undefined}
+                    className={`p-3 select-none text-stone-900 font-semibold rounded-xl flex items-center space-x-4 hover:bg-stone-100   trasition ease-in-out duration-150 ${
+                      !user ? "cursor-not-allowed" : "cursor-pointer"
+                    }`}
+                  >
+                    <IoLogOutOutline size={20} />
+                    <h2>Logout</h2>
+                  </div>
+                </Link>
+                <Link className={ButtonStyle} href={`/components/fallback-ui`}>
+                  <MdOutlineBugReport size={20} />
+                  <h2>Report</h2>
+                </Link>
+                <Link className={ButtonStyle} href={`/components/fallback-ui`}>
+                  <FiHelpCircle size={18} />
+                  <h2>Help center</h2>
+                </Link>
             </div>
           </div>
         </HoverCard.Content>

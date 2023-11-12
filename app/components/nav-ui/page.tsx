@@ -118,7 +118,7 @@ const NavBar = () => {
                   height={115}
                   priority
                   quality={100}
-                  className="object-contain "
+                  className="object-contain focus:outline-none"
                 />
               </Link>
               <hr className="inline border-[0.8px] h-8 " />
