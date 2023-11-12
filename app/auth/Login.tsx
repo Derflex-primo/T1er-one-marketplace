@@ -22,7 +22,7 @@ const style = {
   boxShadow: 24,
   pt: 4,
   borderRadius: "16px",
-  outline: "none"
+  outline: "none",
 };
 
 const LogInPage: React.FC<LogInPageProps> = () => {
@@ -51,7 +51,7 @@ const LogInPage: React.FC<LogInPageProps> = () => {
 
   return (
     <div className={`flex items-center gap-4 ${scrolled ? "text-white" : ""} `}>
-      <div className="flex items-center">
+      <div onClick={handleOpen} className="flex items-center">
         <span
           className={`flex items-center space-x-4 rounded-l-xl pr-3 py-3 px-4 cursor-pointer ${
             scrolled
@@ -60,16 +60,12 @@ const LogInPage: React.FC<LogInPageProps> = () => {
           }`}
         >
           <MdWallet size={26} />
-          <button
-            className="font-semibold"
-            onClick={handleOpen}
-            disabled={authing}
-          >
+          <button className="font-semibold" disabled={authing}>
             Login
           </button>
         </span>
-    
-            <Profile connectWallet={handleOpen} scrolled={scrolled} />
+
+        <Profile connectWallet={handleOpen} scrolled={scrolled} />
       </div>
 
       <Modal
