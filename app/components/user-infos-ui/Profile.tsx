@@ -25,15 +25,19 @@ const Profile: React.FC<Profile> = ({ scrolled, connectWallet }) => {
   // Image rendered default load state bug
 
   useEffect(() => {
-    const loadUserProfilePhoto = async () => {
+    async function updateUserPhoto() {
       if (user?.uid) {
-        const photoURL = await fetchUserProfilePhoto(user.uid);
-        setUserPhoto(photoURL);
+        const newPhotoURL = await fetchUserProfilePhoto(user.uid);
+        if (newPhotoURL && newPhotoURL !== user.photoURL) {
+          setUserPhoto(newPhotoURL);
+        }
       }
-    };
+    }
 
-    loadUserProfilePhoto();
+    updateUserPhoto();
   }, [user, fetchUserProfilePhoto]);
+
+  console.log(user?.photoURL)
 
   const ButtonStyle = `p-3 select-none text-stone-900 cursor-pointer font-semibold rounded-xl flex items-center space-x-4 hover:bg-stone-100   trasition ease-in-out duration-150`;
 
@@ -53,16 +57,16 @@ const Profile: React.FC<Profile> = ({ scrolled, connectWallet }) => {
           } transition-all ease-in-out duration-75`}
         >
           <span className={`${user ? "relative h-[26px] w-[26px]" : ""}`}>
-            {user && user.photoURL && userPhoto ? (
+            {user ? ( 
               <Image
-                src={userPhoto}
+                src={userPhoto || user.photoURL || ""}
                 fill
                 className="rounded-full object-cover"
                 alt="User menu"
                 sizes="auto"
               />
             ) : (
-              <CgProfile size={26} className="object-cover" />
+              <CgProfile size={26} className="object-cover" /> // Fallback icon
             )}
           </span>
         </HoverCard.Trigger>
