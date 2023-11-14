@@ -86,6 +86,7 @@ const NavBar = () => {
           <div
             className="
         flex
+        flex-row
         items-center
         justify-between
         gap-3
@@ -131,7 +132,8 @@ const NavBar = () => {
                 </Link>
               </div>
             </div>
-            <div className="flex flex-grow relative ml-10 mx-4 md:block ">
+             
+            <div className="hidden md:flex flex-grow relative ml-10 mx-4 ">
               <IoSearch
                 className={`absolute left-3 top-1/2 transform -translate-y-1/2 ${
                   scrolled ? "text-white" : "text-black"
@@ -178,7 +180,6 @@ const NavBar = () => {
                 placeholder="Search"
               />
             </div>
-
             <LogInPage />
           </div>
         </Container>
@@ -188,6 +189,7 @@ const NavBar = () => {
           <div className="flex flex-row  py-2 justify-between">
             <div className="flex flex-row gap-4   ">
               <SortBrowse />
+              <div className="md:flex flex-row gap-4 hidden  ">
               <Link
                 href={`/components/fallback-ui`}
                 className="text-sm font-bold p-3 rounded-xl  hover:bg-stone-100 transition ease-in-out duration-150"
@@ -218,6 +220,7 @@ const NavBar = () => {
               >
                 Pre orders
               </Link>
+              </div>
             </div>
             <div className="flex flex-row gap-2">
               <Pinned />

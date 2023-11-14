@@ -20,8 +20,8 @@ export const Horizontal = () => {
   return <hr className="w-[100%] my-2" />;
 };
 export const colorCategories =
-  "font-semibold text-sm text-stone-900 cursor-default";
-export const productDetails = "mt-4 grid grid-cols-1 md:grid-cols-2 gap-12";
+  "font-semibold  text-stone-900 cursor-default  ";
+export const productDetails = "mt-4 grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-1 md:space-y-6 sm:gap-1";
 
 const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
   const { handleAddProductToType, cartProducts, handleRemoveProductToType } =
@@ -93,10 +93,12 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
   const productShowRating = product.reviews?.[0]?.rating ?? 0;
 
   return (
-    <div className={`${productDetails} `}>
+    <div className={`${productDetails} sm:space-y-6 `}>
+      <div>
       <ProductImage cartProduct={cartProduct} product={product} />
-      <div className="flex flex-col gap-1 text-sm">
-        <div className="border-[0.8px] p-4 rounded-xl cursor-default">
+      </div>
+      <div className="flex flex-col gap-1 text-sm ">
+        <div className="border-[0.8px] p-4 rounded-xl cursor-default ">
           <span className="text-2xl font-medium text-stone-800">
             {product.name}
           </span>
@@ -115,7 +117,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
               </span>
             </span>
           </span>
-          <div className="flex justify-between mt-2 space-x-2 items-center sm:flex-row-reverse md:flex-row">
+          <div className="flex justify-between mt-2  items-center sm:flex-row-reverse md:flex-row">
             <Rating
               sx={{ fontSize: "0.8rem" }}
               value={productShowRating}
@@ -130,7 +132,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
             </span>
           </div>
         </div>
-        <div className="flex flex-col border-[0.8px] p-4 rounded-xl mt-2">
+        <div className="flex flex-col border-[0.8px] p-4 rounded-xl mt-2 md:text-sm text-xs">
           <div className={`${colorCategories} mb-2`}>Product info</div>
           <p className="text-stone-900 text-justify">
             {expanded ? product.description : product.description.slice(0, 468)}
@@ -145,12 +147,12 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
             </button>
           )}
         </div>
-        <div className="overflow-hidden border-[0.8px] rounded-xl mt-2 mb-3 grid grid-cols-4 md:grid-cols-2 lg:grid-template-columns repeat(4, min-content)  items-center">
-          <div className="flex space-x-3 border-b-[0.8px]  border-r-[0.8px] px-4 py-2 ">
+        <div className="overflow-hidden border-[0.8px] rounded-xl mt-2 mb-3 grid grid-cols-1 sm:grid-cols-2   lg:grid-template-columns repeat(4, min-content)  items-center md:text-sm text-xs">
+          <div className="flex space-x-3 border-b-[0.8px]  border-r-[0.8px] px-4  py-2 ">
             <span className={colorCategories}>Model</span>
             <span>{product.specs?.Model}</span>
           </div>
-          <div className="flex space-x-3 border-b-[0.8px] border-r-[0.8px]  px-4 py-2">
+          <div className="flex space-x-3 border-b-[0.8px] border-r-[0.8px]  px-4 py-2 ">
             <span className={colorCategories}>Product Condition</span>
             <span>{product.specs?.["Product Condition"]}</span>
           </div>

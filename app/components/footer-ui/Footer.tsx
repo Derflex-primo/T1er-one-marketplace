@@ -12,7 +12,7 @@ import {
 
 const footer = "bg-rose-700 text-slate-100 text-sm mt-20";
 const hoverIcon =
-  " rounded-lg  p-3 ease-in-out duration-300 bg-white backdrop-blur-md bg-white bg-opacity-20   hover:bg-stone-900 hover:backdrop-blur-md hover:bg-opacity-20 trasition ease-in-out duration-150";
+  " rounded-lg  xl:p-3 p-2 ease-in-out duration-300 bg-white backdrop-blur-md bg-white bg-opacity-20   hover:bg-stone-900 hover:backdrop-blur-md hover:bg-opacity-20 trasition ease-in-out duration-150";
 const aboutUs = "flex flex-col md:flex-row justify-between pt-16 pd-8";
 const sectionTitle = "text-base font-semibold ";
 
@@ -23,7 +23,7 @@ const Footer = () => {
     <footer className={footer}>
       <Container>
         <div className={aboutUs}>
-          <div className="w-full md:w-1/3  md:mb-0">
+          <div className="w-full md:w-1/3 mb-4  md:mb-0 ">
             <h3 className={`${michroma.className}  font-extrabold mb-2`}>
               T1er One
             </h3>
@@ -39,7 +39,7 @@ const Footer = () => {
           </div>
           <FooterList>
             <h3 className={sectionTitle}>Follow us!</h3>
-            <div className="flex gap-2">
+            <div className="flex gap-2  ">
               <Link href="" className={hoverIcon}>
                 <AiFillFacebook size={24} />
               </Link>

@@ -1,13 +1,27 @@
 "use client";
 
-import { Box, Modal, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { Box, CircularProgress, Modal, Typography } from "@mui/material";
+import { useEffect, useState, useContext, useRef } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { MdWallet } from "react-icons/md";
 import CartCount from "../components/nav-ui/CartCount";
 import { useAuth } from "@/hooks/useAuth";
 import Profile from "../components/user-infos-ui/Profile";
-
+import { IoCloseSharp, IoSearch } from "react-icons/io5";
+import { useSearch } from "@/providers/SearchContext";
+import { LoadingContext } from "@/providers/LoadingProvider";
+import Link from "next/link";
+import { FiChevronDown } from "react-icons/fi";
+import { useProducts } from "@/hooks/useProducts";
+import Fuse from "fuse.js";
+import { ProductTypes } from "@/types";
+import Image from "next/image";
+import {
+  formatModel,
+  formatPinnedStr,
+  formatUSDWithComma,
+} from "@/lib/utils/formats";
+import LinearProgress from '@mui/material/LinearProgress';
 // PROFILE ADDRESS -  TIER ONE FIREBASE
 
 interface LogInPageProps {}
@@ -27,11 +41,71 @@ const style = {
 
 const LogInPage: React.FC<LogInPageProps> = () => {
   const { user, signInWithGoogle, handleSignOut } = useAuth();
+  const { setIsLoading, isLoading } = useContext(LoadingContext);
+  const { setSearchTerm, searchTerm } = useSearch();
+  const { products } = useProducts();
+  const [search, setSearch] = useState("");
   const [authing, setAuthing] = useState(false);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [scrolled, setScrolled] = useState(false);
+  const [searchModalOpen, setSearchModalOpen] = useState(false);
+  const enterPressedLinkRef = useRef<HTMLAnchorElement>(null);
+  const handleSearchModalOpen = () => setSearchModalOpen(true);
+  const handleSearchModalClose = (
+    event: React.MouseEvent | React.TouchEvent
+  ) => {
+    event.stopPropagation();
+    setSearchModalOpen(false);
+  };
+  const fuse = new Fuse(products, {
+    keys: ["name", "description", "category", "brand"],
+    includeScore: true,
+    threshold: 0.2,
+  });
+
+  const filteredProductsBy_Search: ProductTypes[] = searchTerm
+    ? fuse.search(searchTerm).map((result) => result.item)
+    : products;
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const searchTerm = event.target.value;
+    setSearch(searchTerm);
+
+    if (searchTerm.trim() !== "") {
+      setSearchTerm(searchTerm.trim()); // Update search term in context
+      setIsLoading(true);
+      // Simulate a delay for fetching search results
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 2000); // Adjust time as needed
+    } else {
+      setSearchTerm(""); // Clear search term in context
+      setIsLoading(false);
+    }
+  };
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      // Check if the search modal is open
+      if (searchModalOpen) {
+        // Close the search modal
+        setSearchModalOpen(false);
+        // If there is a search term, navigate to the search page
+        if (search.trim() !== "") {
+          if (enterPressedLinkRef.current) {
+            enterPressedLinkRef.current.click();
+          }
+        }
+      }
+    }
+  };
+  
+
+  const handleClearSearch = () => {
+    setSearch("");
+    setSearchTerm("");
+  };
 
   const changedBackground = () => {
     if (window.scrollY >= 1) {
@@ -50,23 +124,119 @@ const LogInPage: React.FC<LogInPageProps> = () => {
   }, []);
 
   return (
-    <div className={`flex items-center gap-4 ${scrolled ? "text-white" : ""} `}>
+    <div className={`flex items-center gap-3 ${scrolled ? "text-white" : ""} `}>
       <div className="flex items-center">
         <span
-          onClick={handleOpen} 
-          className={`flex items-center space-x-4 rounded-l-xl pr-3 py-3 px-4 cursor-pointer ${
+          onClick={handleOpen}
+          className={`flex items-center space-x-4 rounded-l-xl pr-3 py-3 px-3 cursor-pointer ${
             scrolled
               ? "backdrop-blur-md bg-white bg-opacity-20 hover:bg-stone-900 hover:backdrop-blur-md hover:bg-opacity-20 border-r-[0.8px] transition ease-in-out duration-150"
               : "hover:bg-stone-200 bg-stone-100 transition ease-in-out duration-150 border-r"
           }`}
         >
           <MdWallet size={26} />
-          <button className="font-semibold" disabled={authing}>
+          <button className="hidden md:flex font-semibold" disabled={authing}>
             Login
           </button>
         </span>
 
         <Profile connectWallet={handleOpen} scrolled={scrolled} />
+        <div
+          onClick={handleSearchModalOpen}
+          className={`flex md:hidden items-center space-x-4 rounded-xl ml-3 py-4 px-3 cursor-pointer ${
+            scrolled
+              ? "backdrop-blur-md bg-white bg-opacity-20 hover:bg-stone-900 hover:backdrop-blur-md hover:bg-opacity-20  transition ease-in-out duration-150"
+              : "hover:bg-stone-200 bg-stone-100 transition ease-in-out duration-150 "
+          }`}
+        >
+          <IoSearch
+            size={18}
+            className={` ${scrolled ? "text-white" : "text-black"}`}
+          />
+          <div style={{ display: "none" }}>
+            <Link href={`/product/${search}`} ref={enterPressedLinkRef}></Link>
+          </div>
+          {searchModalOpen && (
+            <div className="fixed top-0 right-0 w-full h-screen bg-black bg-opacity-50 z-50">
+              <div className="sticky p-3 h-20 top-0 border-b-[0.8px] bg-white flex justify-between w-full items-center ">
+                <div className="flex w-full justify-between items-center text-stone-900">
+                  <div className="flex items-center ">
+                    <FiChevronDown
+                      onClick={(event) => handleSearchModalClose(event)}
+                      size={26}
+                      className="rotate-90"
+                    />
+                    <input
+                      type="text"
+                      value={search}
+                      onKeyPress={handleKeyPress} 
+                      onChange={handleSearchChange}
+                      className="p-2 w-full focus:outline-none"
+                      placeholder="Search"
+                    />
+                  </div>
+                  {search && (
+                    <button onClick={handleClearSearch}>
+                      <IoCloseSharp size={19} />
+                    </button>
+                  )}
+                </div>
+              </div>
+              {search && (
+                <div className="bg-white">
+                  {isLoading ? (
+                    <div className="flex justify-center z-40 p-6" >
+                       <CircularProgress size={10} color="inherit" />
+                    </div>
+                  ) : (
+                    filteredProductsBy_Search.map((product, index) => (
+                      <div key={index}>
+                        <div className="p-3 flex flex-row justify-between   items-center space-x-4 ">
+                          <Link
+                            href={`/products/${product.id}`}
+                            className="flex flex-row   items-center space-x-4 "
+                          >
+                            <div className="p-1  rounded-xl">
+                              <Image
+                                src={product.images[0].image || ""}
+                                alt={product.name || "product image"}
+                                width={36}
+                                height={36}
+                              />
+                            </div>
+                            <div className="flex flex-col content-center gap-1">
+                              <span className="text-sm font-semibold  ">
+                                {formatPinnedStr(product.name)}
+                              </span>
+                              <span className="flex flex-row items-center space-x-2">
+                                <span className="text-sm">
+                                  {product.specs &&
+                                    Object.values(
+                                      formatModel(product.specs?.Model)
+                                    )}
+                                </span>
+                                <div
+                                  className="space-x-2 h-4 w-4 rounded-full"
+                                  style={{
+                                    backgroundColor:
+                                      product.images[0].colorCode,
+                                  }}
+                                ></div>
+                              </span>
+                            </div>
+                          </Link>
+                          <div className="pl-8 text-sm  ">
+                            {formatUSDWithComma(product.type[0].price)}
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
       </div>
 
       <Modal

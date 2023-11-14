@@ -61,7 +61,7 @@ const ItemContent: React.FC<ItemContentProps> = ({ item }) => {
           <div>{item.selectedImg?.color}</div>
           <div className="w-[70px]">
             <button
-              onClick={() => handleRemoveProductToType(item.cartItemId)}
+              onClick={() => handleRemoveProductToType(item.id)}
               className={removeBtn}
             >
               remove

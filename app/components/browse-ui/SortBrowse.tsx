@@ -73,6 +73,38 @@ const SortBrowse = () => {
           >
             Categories
           </div>
+          <div className="flex flex-col  md:hidden lg:hidden xl:hidden 2xl:hidden ">
+            <Link
+              href={`/components/fallback-ui`}
+              className="text-sm font-bold p-3 rounded-xl  hover:bg-stone-100 transition ease-in-out duration-150"
+            >
+              Monthly Deals
+            </Link>
+            <Link
+              href={`/components/fallback-ui`}
+              className="text-sm font-bold p-3 rounded-xl  hover:bg-stone-100 transition ease-in-out duration-150"
+            >
+              Gift cards
+            </Link>
+            <Link
+              href={`/components/fallback-ui`}
+              className="text-sm font-bold p-3 rounded-xl hover:bg-stone-100 transition ease-in-out duration-150"
+            >
+              Top rated
+            </Link>
+            <Link
+              href={`/components/fallback-ui`}
+              className="text-sm font-bold p-3 rounded-xl   hover:bg-stone-100 transition ease-in-out duration-150"
+            >
+              New Arrivals
+            </Link>
+            <Link
+              href={`/components/fallback-ui`}
+              className="text-sm font-bold p-3 rounded-xl   hover:bg-stone-100 transition ease-in-out duration-150"
+            >
+              Pre orders
+            </Link>
+          </div>
         </div>
       )}
 

@@ -22,7 +22,7 @@ const SetColors: React.FC<SetColorsProps> = ({
 
   return (
     <div>
-      <div className="px-4 flex flex-col  gap-4  ">
+      <div className="px-4 flex flex-col  gap-4  md:text-sm text-xs">
         <span className={colorCategories}>Theme: <strong className="font-normal">{selectedImageColor}</strong></span>
         <div className="flex gap-3">
           {images &&

@@ -60,3 +60,18 @@ html {
 .leaflet-tile {
   filter: brightness(90%) saturate(125%);
 }
+
+/* Adjust Swiper's Navigation Arrows */
+.swiper-container .swiper-button-next, .swiper-container .swiper-button-prev {
+  top: 50%; /* Center vertically */
+  transform: translateY(-50%);
+  z-index: 10; /* Ensure they are above the content */
+}
+
+/* Adjust Swiper's Pagination Dots */
+.swiper-container .swiper-pagination {
+  bottom: -10px; /* Adjust based on your layout */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10; /* Ensure they are above the content */
+}

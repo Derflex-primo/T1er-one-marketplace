@@ -24,7 +24,24 @@ module.exports = {
       },
       transitionDuration: {
         '3000': '3000ms',
+      },
+      screens: { 
+        'sm': '478px',
+        // => @media (min-width: 640px) { ... }
+  
+        'md': '972px',
+        // => @media (min-width: 768px) { ... }
+  
+        'lg': '1044px',
+        // => @media (min-width: 1024px) { ... }
+  
+        'xl': '1280px',
+        // => @media (min-width: 1280px) { ... }
+  
+        '2xl': '1536px',
+        // => @media (min-width: 1536px) { ... }
       }
+
 
     },
   },

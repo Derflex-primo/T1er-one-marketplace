@@ -19,13 +19,27 @@ interface _Specs {
 
 const michroma = Michroma({ subsets: ["latin"], weight: "400" });
 
+function getWidth(windowWidth: number) {
+  if (windowWidth < 478) {
+    return '100%'; // sm
+  } else if (windowWidth >= 478 && windowWidth < 972) {
+    return '90%'; // md
+  } else if (windowWidth >= 972 && windowWidth < 1044) {
+    return '85%'; // lg
+  } else if (windowWidth >= 1044 && windowWidth < 1280) {
+    return '80%'; // xl
+  } else if (windowWidth >= 1280) {
+    return '75%'; // 2xl
+  }
+}
+
 export const styleSpecs = {
   alignItems: "center",
   position: "absolute" as "absolute",
   top: "48%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 1230,
+  width: getWidth(window.innerWidth),
   bgcolor: "background.paper",
   boxShadow: 24,
   borderRadius: "16px",
@@ -64,11 +78,11 @@ const Specs: React.FC<_Specs> = ({ product, categoryItem }) => {
 
   return (
     <div>
-      <div className="flex items-center space-x-3  ">
+      <div className="flex items-center space-x-3 md:text-sm text-xs ">
         <span className={colorCategories}>Product specs </span>
         <button
           onClick={handleOpen}
-          className="font-semibold text-sm flex flex-start text-blue-500 hover:underline underline-offset-2"
+          className="font-semibold  flex flex-start text-blue-500 hover:underline underline-offset-2"
         >
           Browse
         </button>
@@ -126,7 +140,7 @@ const Specs: React.FC<_Specs> = ({ product, categoryItem }) => {
           </Button>
 
           <Typography component="div">
-            <div className="mb-[22px] pt-4 grid grid-cols-2 gap-4 max-h-[650px] overflow-y-auto border-t border ">
+            <div className="mb-[22px] pt-4 grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[650px] overflow-y-auto border-t border ">
               {sortedProductEntries.map(([key, value]) => (
                 <div className="flex flex-col pl-[25px] text-xs" key={key}>
                   <span className="font-semibold">{key}</span>
@@ -140,7 +154,7 @@ const Specs: React.FC<_Specs> = ({ product, categoryItem }) => {
                       {value}
                     </a>
                   ) : (
-                    <span>{value}</span>
+                    <span className="pr-[25px]">{value}</span>
                   )}
                 </div>
               ))}

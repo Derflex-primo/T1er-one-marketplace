@@ -1,3 +1,5 @@
+// NPM CANARY - changed 11/12/23
+
 import React, { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import * as HoverCard from "@radix-ui/react-hover-card";
@@ -36,8 +38,6 @@ const Profile: React.FC<Profile> = ({ scrolled, connectWallet }) => {
 
     updateUserPhoto();
   }, [user, fetchUserProfilePhoto]);
-
-  console.log(user?.photoURL);
 
   const ButtonStyle = `p-3 select-none text-stone-900 cursor-pointer font-semibold rounded-xl flex items-center space-x-4 hover:bg-stone-100   trasition ease-in-out duration-150`;
 
