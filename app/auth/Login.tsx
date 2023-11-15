@@ -21,24 +21,29 @@ import {
   formatPinnedStr,
   formatUSDWithComma,
 } from "@/lib/utils/formats";
-import LinearProgress from '@mui/material/LinearProgress';
 // PROFILE ADDRESS -  TIER ONE FIREBASE
 
 interface LogInPageProps {}
 
 const style = {
-  position: "absolute" as "absolute",
+  position: "absolute",
   top: "30%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 500,
+  width: { 
+    xs: "90%", // Full width for very small devices
+    sm: "80%", // Slightly smaller for small devices
+    md: "70%", // And so on...
+    lg: "40%",
+    xl: "40%",
+    "2xl": "40%"  
+  },
   bgcolor: "background.paper",
   boxShadow: 24,
   pt: 4,
   borderRadius: "16px",
   outline: "none",
 };
-
 const LogInPage: React.FC<LogInPageProps> = () => {
   const { user, signInWithGoogle, handleSignOut } = useAuth();
   const { setIsLoading, isLoading } = useContext(LoadingContext);
@@ -50,6 +55,7 @@ const LogInPage: React.FC<LogInPageProps> = () => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [scrolled, setScrolled] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [searchModalOpen, setSearchModalOpen] = useState(false);
   const enterPressedLinkRef = useRef<HTMLAnchorElement>(null);
   const handleSearchModalOpen = () => setSearchModalOpen(true);
@@ -86,8 +92,8 @@ const LogInPage: React.FC<LogInPageProps> = () => {
     }
   };
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
-      // Check if the search modal is open
+    if (event.key === "Enter") {
+      handleSearchModalClose(event as unknown as React.MouseEvent);
       if (searchModalOpen) {
         // Close the search modal
         setSearchModalOpen(false);
@@ -100,7 +106,6 @@ const LogInPage: React.FC<LogInPageProps> = () => {
       }
     }
   };
-  
 
   const handleClearSearch = () => {
     setSearch("");
@@ -123,38 +128,38 @@ const LogInPage: React.FC<LogInPageProps> = () => {
     };
   }, []);
 
+  useEffect(() => {
+    function handleResize() {
+      setWindowWidth(window.innerWidth);
+    }
+
+    window.addEventListener("resize", handleResize);
+
+    // Clean up
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <div className={`flex items-center gap-3 ${scrolled ? "text-white" : ""} `}>
       <div className="flex items-center">
-        <span
-          onClick={handleOpen}
-          className={`flex items-center space-x-4 rounded-l-xl pr-3 py-3 px-3 cursor-pointer ${
-            scrolled
-              ? "backdrop-blur-md bg-white bg-opacity-20 hover:bg-stone-900 hover:backdrop-blur-md hover:bg-opacity-20 border-r-[0.8px] transition ease-in-out duration-150"
-              : "hover:bg-stone-200 bg-stone-100 transition ease-in-out duration-150 border-r"
-          }`}
-        >
-          <MdWallet size={26} />
-          <button className="hidden md:flex font-semibold" disabled={authing}>
-            Login
-          </button>
-        </span>
-
-        <Profile connectWallet={handleOpen} scrolled={scrolled} />
         <div
           onClick={handleSearchModalOpen}
-          className={`flex md:hidden items-center space-x-4 rounded-xl ml-3 py-4 px-3 cursor-pointer ${
+          className={`flex md:hidden items-center space-x-4 rounded-xl  py-4 px-4 cursor-pointer ${
             scrolled
-              ? "backdrop-blur-md bg-white bg-opacity-20 hover:bg-stone-900 hover:backdrop-blur-md hover:bg-opacity-20  transition ease-in-out duration-150"
-              : "hover:bg-stone-200 bg-stone-100 transition ease-in-out duration-150 "
+              ? "md:backdrop-blur-md md:bg-white bg-opacity-20 md:hover:bg-stone-900 md:hover:backdrop-blur-md hover:bg-opacity-20  transition ease-in-out duration-150"
+              : "md:hover:bg-stone-200 md:bg-stone-100 transition ease-in-out duration-150 "
           }`}
         >
           <IoSearch
-            size={18}
+            size={26}
             className={` ${scrolled ? "text-white" : "text-black"}`}
           />
           <div style={{ display: "none" }}>
-            <Link href={`/product/${search}`} ref={enterPressedLinkRef}></Link>
+            <Link
+              onClick={(event) => handleSearchModalClose(event)}
+              href={`/product/${search}`}
+              ref={enterPressedLinkRef}
+            ></Link>
           </div>
           {searchModalOpen && (
             <div className="fixed top-0 right-0 w-full h-screen bg-black bg-opacity-50 z-50">
@@ -169,7 +174,7 @@ const LogInPage: React.FC<LogInPageProps> = () => {
                     <input
                       type="text"
                       value={search}
-                      onKeyPress={handleKeyPress} 
+                      onKeyPress={handleKeyPress}
                       onChange={handleSearchChange}
                       className="p-2 w-full focus:outline-none"
                       placeholder="Search"
@@ -185,14 +190,15 @@ const LogInPage: React.FC<LogInPageProps> = () => {
               {search && (
                 <div className="bg-white">
                   {isLoading ? (
-                    <div className="flex justify-center z-40 p-6" >
-                       <CircularProgress size={10} color="inherit" />
+                    <div className="flex justify-center z-40 p-6">
+                      <CircularProgress size={10} color="inherit" />
                     </div>
                   ) : (
                     filteredProductsBy_Search.map((product, index) => (
                       <div key={index}>
-                        <div className="p-3 flex flex-row justify-between   items-center space-x-4 ">
+                        <div className="p-3 flex flex-row justify-between text-stone-900  items-center space-x-4 ">
                           <Link
+                            onClick={(event) => handleSearchModalClose(event)}
                             href={`/products/${product.id}`}
                             className="flex flex-row   items-center space-x-4 "
                           >
@@ -237,6 +243,20 @@ const LogInPage: React.FC<LogInPageProps> = () => {
             </div>
           )}
         </div>
+        <span
+          onClick={handleOpen}
+          className={`flex items-center space-x-4 rounded-l-xl  md:pr-3 py-3 px-3 cursor-pointer ${
+            scrolled
+              ? "backdrop-blur-md md:bg-white md:bg-opacity-20 md:hover:bg-stone-900 md:hover:backdrop-blur-md md:border-r md:hover:bg-opacity-20 transition ease-in-out duration-150"
+              : "hover:bg-stone-200 md:bg-stone-100 transition ease-in-out duration-150 md:border-r"
+          } ${user ? "hidden md:flex" : "flex"}`}  
+        >
+          <MdWallet size={26} />
+          <button className="hidden md:flex font-semibold">Login</button>
+        </span>
+        <span className={`flex ${!user ? "hidden md:flex" : "flex md:flex"}`}>
+          <Profile connectWallet={handleOpen} scrolled={scrolled} />
+        </span>
       </div>
 
       <Modal

@@ -93,15 +93,7 @@ const NavBar = () => {
         md:gap-0
         "
           >
-            <div className="flex items-center md:hidden overflow-hidden">
-              <Link
-                href="/"
-                className={`${michroma.className} text-lg font-semibold`}
-              >
-                T1
-              </Link>
-            </div>
-            <div className="hidden md:flex w-80  justify-between items-center">
+            <div className="flex w-80  justify-between items-center">
               <Link
                 href="/"
                 className={`cursor-pointer   
@@ -122,8 +114,8 @@ const NavBar = () => {
                   className="object-contain focus:outline-none"
                 />
               </Link>
-              <hr className="inline border-[0.8px] h-8 " />
-              <div className="flex items-center gap-4 text-base cursor-pointer font-semibold">
+              <hr className="hidden md:inline border-[0.8px] h-8 " />
+              <div className="hidden md:flex items-center gap-4 text-base cursor-pointer font-semibold">
                 <Link href={`/components/fallback-ui`}>
                   <Drop />
                 </Link>

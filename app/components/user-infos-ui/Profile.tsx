@@ -20,10 +20,32 @@ interface Profile {
 
 const Profile: React.FC<Profile> = ({ scrolled, connectWallet }) => {
   const { user, handleSignOut, fetchUserProfilePhoto } = useAuth();
+  const [isCardOpen, setIsCardOpen] = useState(false);
+  const [isMobileDevice, setIsMobileDevice] = useState(false);
   const [userPhoto, setUserPhoto] = useState<string | null>(
     user?.photoURL || null
   );
 
+  useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobileDevice(window.innerWidth < 478);
+    };
+
+    // Check initially and on resize
+    checkIfMobile();
+    window.addEventListener("resize", checkIfMobile);
+
+    // Cleanup
+    return () => {
+      window.removeEventListener("resize", checkIfMobile);
+    };
+  }, []);
+
+  const handleCardToggle = () => {
+    if (isMobileDevice) {
+      setIsCardOpen(!isCardOpen);
+    }
+  };
   // Image rendered default load state bug
 
   useEffect(() => {
@@ -39,22 +61,29 @@ const Profile: React.FC<Profile> = ({ scrolled, connectWallet }) => {
     updateUserPhoto();
   }, [user, fetchUserProfilePhoto]);
 
+  const closeCard = () => {
+    setIsCardOpen(false);
+  };
+
   const ButtonStyle = `p-3 select-none text-stone-900 cursor-pointer font-semibold rounded-xl flex items-center space-x-4 hover:bg-stone-100   trasition ease-in-out duration-150`;
 
   return (
-    <HoverCard.Root openDelay={0} closeDelay={500}>
+    <HoverCard.Root
+      open={isCardOpen}
+      onOpenChange={setIsCardOpen}
+      openDelay={0}
+      closeDelay={500}
+    >
       <div className="group flex">
         {" "}
         {/* Added group class here */}
         <HoverCard.Trigger
-          className={`flex items-center cursor-pointer  border-l-none rounded-r-xl
-         p-3 focus:outline-none ${
-           scrolled
-             ? "backdrop-blur-md bg-white bg-opacity-20 hover:bg-stone-900 hover:backdrop-blur-md hover:bg-opacity-20  trasition ease-in-out duration-150"
-             : "hover:bg-stone-200 bg-stone-100 trasition ease-in-out duration-150 "
-         } ${
-            scrolled ? "text-white" : ""
-          } transition-all ease-in-out duration-75`}
+          onClick={handleCardToggle}
+          className={`flex items-center cursor-pointer border-l-none rounded-r-xl p-3 focus:outline-none ${
+            scrolled
+              ? "backdrop-blur-md md:bg-white md:bg-opacity-20 md:hover:bg-stone-900 md:hover:backdrop-blur-md md:hover:bg-opacity-20 transition ease-in-out duration-150"
+              : "md:hover:bg-stone-200 md:bg-stone-100 transition ease-in-out duration-150"
+          } ${scrolled ? "text-white" : ""}`}
         >
           <span className={`${user ? "relative h-[26px] w-[26px]" : ""}`}>
             {user ? (
@@ -78,51 +107,88 @@ const Profile: React.FC<Profile> = ({ scrolled, connectWallet }) => {
           <div>
             <div className="border-b-[0.8px] p-2">
               {user ? (
-                <Link href={`/auth/${user.uid}`} className={ButtonStyle}>
+                <Link
+                  onClick={closeCard}
+                  href={`/auth/${user.uid}`}
+                  className={ButtonStyle}
+                >
                   <BsPerson size={20} />
                   <h2>Profile</h2>
                 </Link>
               ) : (
-                <div onClick={connectWallet} className={ButtonStyle}>
+                <div
+                  onClick={() => {
+                    connectWallet();
+                    closeCard();
+                  }}
+                  className={ButtonStyle}
+                >
                   <BsPerson size={20} />
                   <h2>Profile</h2>
                 </div>
               )}
-              <Link className={ButtonStyle} href={`/components/fallback-ui`}>
+              <Link
+                onClick={closeCard}
+                className={ButtonStyle}
+                href={`/components/fallback-ui`}
+              >
                 <PiNotificationDuotone size={20} />
                 <h2>Notification</h2>
               </Link>
             </div>
             <div className="border-b-[0.8px] p-2">
-              <Link className={ButtonStyle} href={`/components/fallback-ui`}>
+              <Link
+                onClick={closeCard}
+                className={ButtonStyle}
+                href={`/components/fallback-ui`}
+              >
                 <PiTimer size={20} />
                 <h2>Purchase</h2>
               </Link>
-              <Link className={ButtonStyle} href={`/components/fallback-ui`}>
+              <Link
+                onClick={closeCard}
+                className={ButtonStyle}
+                href={`/components/fallback-ui`}
+              >
                 <AiOutlineSetting size={20} />
                 <h2>Settings</h2>
               </Link>
-              </div>
-              <div className="p-2">
-                <Link href={`/`}>
-                  <div
-                    onClick={user ? () => handleSignOut() : undefined}
-                    className={`p-3 select-none text-stone-900 font-semibold rounded-xl flex items-center space-x-4 hover:bg-stone-100   trasition ease-in-out duration-150 ${
-                      !user ? "cursor-not-allowed" : "cursor-pointer"
-                    }`}
-                  >
-                    <IoLogOutOutline size={20} />
-                    <h2>Logout</h2>
-                  </div>
-                </Link>
-                <Link className={ButtonStyle} href={`/components/fallback-ui`}>
-                  <MdOutlineBugReport size={20} />
-                  <h2>Report</h2>
-                </Link>
-                <Link className={ButtonStyle} href={`/components/fallback-ui`}>
-                  <FiHelpCircle size={18} />
-                  <h2>Help center</h2>
-                </Link>
+            </div>
+            <div className="p-2">
+              <Link href={`/`}>
+                <div
+                  onClick={
+                    user
+                      ? () => {
+                          handleSignOut();
+                          closeCard();
+                        }
+                      : undefined
+                  }
+                  className={`p-3 select-none text-stone-900 font-semibold rounded-xl flex items-center space-x-4 hover:bg-stone-100   trasition ease-in-out duration-150 ${
+                    !user ? "cursor-not-allowed" : "cursor-pointer"
+                  }`}
+                >
+                  <IoLogOutOutline size={20} />
+                  <h2>Logout</h2>
+                </div>
+              </Link>
+              <Link
+                onClick={closeCard}
+                className={ButtonStyle}
+                href={`/components/fallback-ui`}
+              >
+                <MdOutlineBugReport size={20} />
+                <h2>Report</h2>
+              </Link>
+              <Link
+                onClick={closeCard}
+                className={ButtonStyle}
+                href={`/components/fallback-ui`}
+              >
+                <FiHelpCircle size={18} />
+                <h2>Help center</h2>
+              </Link>
             </div>
           </div>
         </HoverCard.Content>
