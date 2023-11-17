@@ -114,8 +114,8 @@ const NavBar = () => {
                   className="object-contain focus:outline-none"
                 />
               </Link>
-              <hr className="hidden md:inline border-[0.8px] h-8 " />
-              <div className="hidden md:flex items-center gap-4 text-base cursor-pointer font-semibold">
+              <hr className="hidden sm:inline border-[0.8px] h-8 " />
+              <div className="hidden sm:flex items-center gap-4 text-base cursor-pointer font-semibold">
                 <Link href={`/components/fallback-ui`}>
                   <Drop />
                 </Link>

@@ -40,6 +40,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
     quantity: 1,
     type: product.type,
     reviews: product.reviews,
+    specs: product.specs
   });
 
   const router = useRouter();

@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, CircularProgress, Modal, Typography } from "@mui/material";
+import { Box, Modal, Typography } from "@mui/material";
 import { useEffect, useState, useContext, useRef } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { MdWallet } from "react-icons/md";
@@ -21,6 +21,7 @@ import {
   formatPinnedStr,
   formatUSDWithComma,
 } from "@/lib/utils/formats";
+import "../globals.css";
 // PROFILE ADDRESS -  TIER ONE FIREBASE
 
 interface LogInPageProps {}
@@ -30,13 +31,13 @@ const style = {
   top: "30%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: { 
+  width: {
     xs: "90%", // Full width for very small devices
     sm: "80%", // Slightly smaller for small devices
     md: "70%", // And so on...
     lg: "40%",
     xl: "40%",
-    "2xl": "40%"  
+    "2xl": "40%",
   },
   bgcolor: "background.paper",
   boxShadow: 24,
@@ -164,8 +165,8 @@ const LogInPage: React.FC<LogInPageProps> = () => {
           {searchModalOpen && (
             <div className="fixed top-0 right-0 w-full h-screen bg-black bg-opacity-50 z-50">
               <div className="sticky p-3 h-20 top-0 border-b-[0.8px] bg-white flex justify-between w-full items-center ">
-                <div className="flex w-full justify-between items-center text-stone-900">
-                  <div className="flex items-center ">
+                <div className="flex w-full items-center text-stone-900">
+                  <div className="flex flex-grow items-center">
                     <FiChevronDown
                       onClick={(event) => handleSearchModalClose(event)}
                       size={26}
@@ -176,12 +177,12 @@ const LogInPage: React.FC<LogInPageProps> = () => {
                       value={search}
                       onKeyPress={handleKeyPress}
                       onChange={handleSearchChange}
-                      className="p-2 w-full focus:outline-none"
+                      className="flex-grow p-2 focus:outline-none"
                       placeholder="Search"
                     />
                   </div>
                   {search && (
-                    <button onClick={handleClearSearch}>
+                    <button onClick={handleClearSearch} className="ml-0">
                       <IoCloseSharp size={19} />
                     </button>
                   )}
@@ -190,13 +191,13 @@ const LogInPage: React.FC<LogInPageProps> = () => {
               {search && (
                 <div className="bg-white">
                   {isLoading ? (
-                    <div className="flex justify-center z-40 p-6">
-                      <CircularProgress size={10} color="inherit" />
+                   <div className="h-1 w-full bg-rose-600 animate-pulse">
+                       
                     </div>
                   ) : (
                     filteredProductsBy_Search.map((product, index) => (
-                      <div key={index}>
-                        <div className="p-3 flex flex-row justify-between text-stone-900  items-center space-x-4 ">
+                      <div key={index} className=" border-b-[0.8px]">
+                        <div className="p-3  flex flex-row justify-between text-stone-900  items-center space-x-4 ">
                           <Link
                             onClick={(event) => handleSearchModalClose(event)}
                             href={`/products/${product.id}`}
@@ -221,13 +222,6 @@ const LogInPage: React.FC<LogInPageProps> = () => {
                                       formatModel(product.specs?.Model)
                                     )}
                                 </span>
-                                <div
-                                  className="space-x-2 h-4 w-4 rounded-full"
-                                  style={{
-                                    backgroundColor:
-                                      product.images[0].colorCode,
-                                  }}
-                                ></div>
                               </span>
                             </div>
                           </Link>
@@ -249,7 +243,7 @@ const LogInPage: React.FC<LogInPageProps> = () => {
             scrolled
               ? "backdrop-blur-md md:bg-white md:bg-opacity-20 md:hover:bg-stone-900 md:hover:backdrop-blur-md md:border-r md:hover:bg-opacity-20 transition ease-in-out duration-150"
               : "hover:bg-stone-200 md:bg-stone-100 transition ease-in-out duration-150 md:border-r"
-          } ${user ? "hidden md:flex" : "flex"}`}  
+          } ${user ? "hidden md:flex" : "flex"}`}
         >
           <MdWallet size={26} />
           <button className="hidden md:flex font-semibold">Login</button>

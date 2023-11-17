@@ -60,7 +60,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
               {windowWidth < 640 ? "+30%" : "Save 30%"}
             </span>
           </div>
-          <div className="flex justify-between items-center mx-2 my-2 flex-col md:flex-row text-center ">
+          <div className="flex justify-between items-center mx-2 my-2 mt-1 flex-row text-center ">
             <Rating
               sx={{ fontSize: "0.8rem" }}
               value={productShowRating}

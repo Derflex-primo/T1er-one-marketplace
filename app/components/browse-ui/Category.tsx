@@ -10,6 +10,7 @@ import splitWord, {
   discountOptions,
   displayTechnologies,
   formatBrowseStr,
+  formatStr,
   formatUSDWithComma,
   operatingSystems,
   options,
@@ -41,6 +42,7 @@ const Category: React.FC<BrowseProps> = ({ products }) => {
   const [sortCriteria, setSortCriteria] =
     useState<Options>("Price High to low");
   const [filterLoading, setFilterLoading] = useState(false);
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 972);
   const [lastButtonPress, setLastButtonPress] = useState<Date | null>(null);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
   const [updatedTimeStr, setUpdatedTimeStr] =
@@ -228,10 +230,19 @@ const Category: React.FC<BrowseProps> = ({ products }) => {
     }
   }
 
+  useEffect(() => {
+    const handleResize = () => {
+      setIsSmallScreen(window.innerWidth < 972);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <Container>
-      <div className="flex w-full mt-4 gap-12  ">
-        <div className="  rounded-xl w-[20%]">
+      <div className="flex  w-full mt-4 gap-12 ">
+        <div className="hidden md:flex  rounded-xl w-[20%]">
           <div className="p-3 font-medium">
             <div className="flex rounded-xl border-[0.8px] mb-2 items-center justify-between p-3">
               <span className="text-sm">FILTER</span>
@@ -687,10 +698,10 @@ const Category: React.FC<BrowseProps> = ({ products }) => {
             )}
           </div>
         </div>
-        <div className="flex flex-col w-[80%]">
+        <div className="flex  flex-col w-full md:w-[80%]">
           <div className="flex justify-between items-center">
-            <div className="flex gap-6">
-              <div className="flex items-center gap-3">
+            <div className="text-sm md:text-base  flex gap-1 md:gap-6">
+              <div className="flex ml-1 items-center gap-3">
                 <div
                   onClick={updateProducts}
                   className={`${
@@ -712,7 +723,11 @@ const Category: React.FC<BrowseProps> = ({ products }) => {
                 {filteredProducts.length} items
               </div>
             </div>
-            <div>
+            <div className="flex items-center space-x-3">
+              <div className=" px-2 py-2 md:hidden border rounded-xl dark:ring-stone-50 outline-none font-semibold ">
+                <IoFilterSharp size={24} />
+              </div>
+
               <SortByLevels
                 currentSort={sortCriteria}
                 setSort={setSortCriteria}
@@ -743,7 +758,7 @@ const Category: React.FC<BrowseProps> = ({ products }) => {
               </button>
             )}
           </div>
-          <div className="flex flex-wrap gap-3 z-10 mt-5 relative">
+          <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-3 z-10 mt-3 md:mt-5 relative">
             {filteredProducts.length === 0 ? (
               <div className="text-center w-full">
                 <Image
@@ -797,10 +812,10 @@ const Category: React.FC<BrowseProps> = ({ products }) => {
               filteredProducts.map((product) => (
                 <div
                   key={product.id}
-                  className="relative rounded-xl border  group overflow-hidden   shadow-md "
+                  className="relative rounded-xl border  group overflow-hidden shadow-md   "
                 >
                   <Link href={`/products/${product.id}`}>
-                    <div className="relative z-0 h-60 w-56">
+                    <div className="aspect-square overflow-hidden relative   sm:h-60 sm:w-56">
                       {product.images &&
                         product.images[0] &&
                         product.images[0].image && (
@@ -808,17 +823,20 @@ const Category: React.FC<BrowseProps> = ({ products }) => {
                             src={product.images[0].image}
                             alt={product.name}
                             fill
-                            sizes="100%"
-                            className="object-contain p-3 group-transition-transform duration-300 ease-in-out transform group-hover:scale-110 cursor-pointer"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                            className="object-contain  p-2 group-transition-transform duration-300 ease-in-out transform group-hover:scale-110 cursor-pointer"
                             priority={false}
                           />
                         )}
                     </div>
                   </Link>
-                  <div className="relative p-3 space-y-2">
+                  <div className="text-sm md:text-base relative p-3 space-y-2">
                     <div className="cursor-default">
-                      {formatBrowseStr(product.name)}
+                      {isSmallScreen
+                        ? formatStr(product.name)
+                        : formatBrowseStr(product.name)}
                     </div>
+
                     <div className="text-xs cursor-default">
                       Model:{" "}
                       {product.specs && Object.values(product.specs?.Model)}
@@ -828,7 +846,7 @@ const Category: React.FC<BrowseProps> = ({ products }) => {
                       {product.images?.map((image, index) => (
                         <div
                           key={index}
-                          className="flex flex-row space-x-2 h-4 w-4 rounded-full"
+                          className="flex flex-row space-x-2 h-2 w-2 md:h-4 md:w-4 rounded-full"
                           style={{ backgroundColor: image.colorCode }}
                         ></div>
                       ))}
@@ -836,7 +854,7 @@ const Category: React.FC<BrowseProps> = ({ products }) => {
                     <div className="cursor-default">
                       {formatUSDWithComma(product.type[0].price)}
                     </div>
-                    <div className="flex justify-between items-center my-2 flex-col md:flex-row text-center cursor-default">
+                    <div className="flex justify-between items-center my-2 flex-row text-center cursor-default">
                       <Rating
                         sx={{ fontSize: "0.8rem" }}
                         value={product.reviews?.[0]?.rating || 2}

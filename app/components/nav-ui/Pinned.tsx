@@ -181,7 +181,7 @@ const Pinned = () => {
                                 )}
                             </span>
                             <div
-                              className="space-x-2 h-4 w-4 rounded-full"
+                              className="flex justify-start space-x-2 h-4 w-4 rounded-full"
                               style={{
                                 backgroundColor: product.selectedImg?.colorCode,
                               }}

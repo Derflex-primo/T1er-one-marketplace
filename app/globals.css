@@ -75,3 +75,24 @@ html {
   transform: translateX(-50%);
   z-index: 10; /* Ensure they are above the content */
 }
+
+
+
+.moving-bg {
+  animation: moveBg 2s linear infinite;
+  background: linear-gradient(to right, transparent 50%, rose 50%) no-repeat center/0 100%;
+}
+
+
+
+@keyframes moveBg {
+  0% {
+    background-size: 0 100%;
+  }
+  50% {
+    background-size: 100% 100%;
+  }
+  100% {
+    background-size: 0 100%;
+  }
+}

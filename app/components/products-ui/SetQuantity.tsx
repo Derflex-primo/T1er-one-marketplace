@@ -12,7 +12,7 @@ interface SetQuantityProps {
 }
 
 const buttonStyle =
-  "border-[0.8px]  border-stone-200 px-2  p-2 text-stone-700 ";
+  "border-[0.8px]  border-stone-200  p-1 md:px-2  md:p-2 text-stone-700 ";
 
 const SetQuantity: React.FC<SetQuantityProps> = ({
   cartProduct,
@@ -30,10 +30,10 @@ const SetQuantity: React.FC<SetQuantityProps> = ({
         >
           <AiOutlineMinus size={16} />
         </button>
-        <div className={`border-[0.8px]  px-2 py-1 md:px-4 `}>{cartProduct.quantity}</div>
+        <div className={`border-[0.8px]  px-2 md:py-1 md:px-4 `}>{cartProduct.quantity}</div>
         <button
           onClick={handleQtyIncrease}
-          className={`${buttonStyle}relative rounded-r-lg hover:bg-rose-600 hover:text-white transition ease-in-out delay-100`}
+          className={`${buttonStyle} relative rounded-r-lg hover:bg-rose-600 hover:text-white transition ease-in-out delay-100`}
         >
            <AiOutlinePlus size={16} />
         </button>

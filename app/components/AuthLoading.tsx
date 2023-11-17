@@ -41,23 +41,24 @@ const AuthLoading = () => {
 
 
   return (
-    <div className="relative h-screen p-96 bg-black">
-      <div className="relative w-full h-full">
-      <div ref={imageRef} style={{ transform: 'scale(0.5)' }} className="w-full h-full">
+    <div className="relative h-screen p-12 sm:p-24 md:p-48 lg:p-72 xl:p-96 bg-black">
+    <div className="relative w-full h-full">
+      <div ref={imageRef} className="w-full h-full transform scale-50 sm:scale-75 md:scale-90 lg:scale-100">
         <Image
           src={`/images/tierOneLogoWhite.svg`}
           alt="Loading fallback"
           fill
-          className="object-contain " 
+          className="object-contain" 
           quality={100}
           sizes="auto"
         />
       </div>
-      </div>
-      <div className="absolute bottom-4 right-4 text-white font-semibold text-xs ">
-        Founder. Deogracias Daryl 
-      </div>
     </div>
+    <div className="absolute bottom-4 right-4 text-white font-semibold text-xs sm:text-sm md:text-base">
+      Founder. Deogracias Daryl 
+    </div>
+  </div>
+  
   );
 };
 
