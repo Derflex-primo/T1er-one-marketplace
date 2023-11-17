@@ -13,6 +13,7 @@ import PinnedProvider from "@/providers/PinnnedProvider";
 import AuthProvider from "@/providers/AuthRouteProvider";
 import { SearchProvider } from "@/providers/SearchContext";
 import { LoadingProvider } from "@/providers/LoadingProvider";
+import Header from "./components/nav-ui/Header";
 
 const michroma = Michroma({ subsets: ["latin"], weight: "400" });
 
@@ -61,6 +62,7 @@ export default function RootLayout({
                       <div className="flex flex-col min-h-screen">
                         <NextTopLoader color="#fc0335" showSpinner={false} />
                         <NavBar />
+                        <Header />
                         <main className="flex-grow bg-[#5f7f7]-100">
                           {children}
                         </main>

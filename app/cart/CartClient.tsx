@@ -178,7 +178,7 @@ const CartClient = () => {
         <div className="flex md:hidden justify-evenly">
         <div className="flex flex-grow justify-evenly gap-3">
         <Button label="Clear all" onClick={handleClearCart} />
-        <Button label="Clear all" onClick={handleClearCart} />
+        <Button label="Check out" onClick={handleCheckout} />
         </div>
         </div>
       </div>

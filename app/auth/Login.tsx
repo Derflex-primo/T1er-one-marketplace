@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Modal, Typography } from "@mui/material";
+import { Box, CircularProgress, Modal, Typography } from "@mui/material";
 import { useEffect, useState, useContext, useRef } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { MdWallet } from "react-icons/md";
@@ -19,7 +19,6 @@ import Image from "next/image";
 import {
   formatModel,
   formatPinnedStr,
-  formatUSDWithComma,
 } from "@/lib/utils/formats";
 import "../globals.css";
 // PROFILE ADDRESS -  TIER ONE FIREBASE
@@ -92,6 +91,7 @@ const LogInPage: React.FC<LogInPageProps> = () => {
       setIsLoading(false);
     }
   };
+
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
       handleSearchModalClose(event as unknown as React.MouseEvent);
@@ -141,7 +141,11 @@ const LogInPage: React.FC<LogInPageProps> = () => {
   }, []);
 
   return (
-    <div className={`flex items-center gap-3 ${scrolled ? "text-white" : ""} `}>
+    <div
+      className={`flex items-center gap-3 ${
+        scrolled ? "text-white" : "text-black"
+      } `}
+    >
       <div className="flex items-center">
         <div
           onClick={handleSearchModalOpen}
@@ -191,24 +195,28 @@ const LogInPage: React.FC<LogInPageProps> = () => {
               {search && (
                 <div className="bg-white">
                   {isLoading ? (
-                   <div className="h-1 w-full bg-rose-600 animate-pulse">
-                       
+                    <div className="animate-pulse p-6 flex justify-center ">
+                      <CircularProgress size={16} color="inherit" />
                     </div>
                   ) : (
                     filteredProductsBy_Search.map((product, index) => (
-                      <div key={index} className=" border-b-[0.8px]">
-                        <div className="p-3  flex flex-row justify-between text-stone-900  items-center space-x-4 ">
-                          <Link
-                            onClick={(event) => handleSearchModalClose(event)}
-                            href={`/products/${product.id}`}
-                            className="flex flex-row   items-center space-x-4 "
-                          >
-                            <div className="p-1  rounded-xl">
+                      <div
+                        key={index}
+                        className="border-b-[0.8px] hover:bg-stone-100 cursor-pointer"
+                      >
+                        <Link
+                          onClick={(event) => handleSearchModalClose(event)}
+                          href={`/products/${product.id}`}
+                          className="p-3  flex flex-row justify-between text-stone-900  items-center space-x-4 "
+                        >
+                          <div className="flex flex-row   items-center space-x-4 ">
+                            <div className="p-1 ">
                               <Image
                                 src={product.images[0].image || ""}
                                 alt={product.name || "product image"}
                                 width={36}
                                 height={36}
+                                className=" rounded"
                               />
                             </div>
                             <div className="flex flex-col content-center gap-1">
@@ -224,11 +232,18 @@ const LogInPage: React.FC<LogInPageProps> = () => {
                                 </span>
                               </span>
                             </div>
-                          </Link>
-                          <div className="pl-8 text-sm  ">
-                            {formatUSDWithComma(product.type[0].price)}
                           </div>
-                        </div>
+
+                          <div className="flex flex-row space-x-4">
+                            {product.images?.map((image, index) => (
+                              <div
+                                key={index}
+                                className="flex flex-row space-x-2 h-2 w-2   rounded-full"
+                                style={{ backgroundColor: image.colorCode }}
+                              ></div>
+                            ))}
+                          </div>
+                        </Link>
                       </div>
                     ))
                   )}

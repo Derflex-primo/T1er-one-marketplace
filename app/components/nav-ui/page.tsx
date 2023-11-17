@@ -9,20 +9,36 @@ import Drop from "../dropTrade-ui/Drop";
 import Trade from "../dropTrade-ui/Trade";
 import { IoCloseSharp, IoSearch } from "react-icons/io5";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import Pinned from "./Pinned";
 import Image from "next/image";
-import SortBrowse from "../browse-ui/SortBrowse";
 import { useSearch } from "@/providers/SearchContext";
 import { LoadingContext } from "@/providers/LoadingProvider";
-
-const michroma = Michroma({ subsets: ["latin"], weight: ["400"] });
+import Fuse from "fuse.js";
+import { useProducts } from "@/hooks/useProducts";
+import { ProductTypes } from "@/types";
+import {
+  formatModel,
+  formatPinnedStr,
+  formatUSDWithComma,
+} from "@/lib/utils/formats";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const NavBar = () => {
-  const { setSearchTerm } = useSearch();
-  const { setIsLoading } = useContext(LoadingContext);
+  const { setSearchTerm, searchTerm } = useSearch();
+  const { products } = useProducts();
+  const { setIsLoading, isLoading } = useContext(LoadingContext);
   const [search, setSearch] = useState("");
   const enterPressedLinkRef = useRef<HTMLAnchorElement>(null);
   const [scrolled, setScrolled] = useState(false);
+
+  const fuse = new Fuse(products, {
+    keys: ["name", "description", "category", "brand"],
+    includeScore: true,
+    threshold: 0.2,
+  });
+
+  const filteredProductsBy_Search: ProductTypes[] = searchTerm
+    ? fuse.search(searchTerm).map((result) => result.item)
+    : products;
 
   const changedBackground = () => {
     if (window.scrollY >= 1) {
@@ -75,7 +91,6 @@ const NavBar = () => {
     top-0 
     w-full 
     z-40 
-    shadow-sm 
     ${scrolled ? "bg-gradient-to-r  bg-rose-700 text-white" : ""}
     transition-colors duration-300
     overflow-visible
@@ -124,16 +139,16 @@ const NavBar = () => {
                 </Link>
               </div>
             </div>
-             
+
             <div className="hidden md:flex flex-grow relative ml-10 mx-4 ">
               <IoSearch
-                className={`absolute left-3 top-1/2 transform -translate-y-1/2 ${
-                  scrolled ? "text-white" : "text-black"
-                }`}
+                className={`absolute  z-40 left-3 top-1/2 transform -translate-y-1/2 
+              
+                `}
               />
 
               <div
-                className={`cursor-pointer shadow-xs text-stone-900 absolute p-2 rounded-lg bg-stone-300 right-3 top-1/2 transform -translate-y-1/2 ${
+                className={`cursor-pointer z-40 shadow-xs text-stone-900 absolute p-2 rounded-lg bg-stone-300 right-3 top-1/2 transform -translate-y-1/2 ${
                   scrolled
                     ? " backdrop-blur-md bg-white bg-opacity-20 text-white "
                     : ""
@@ -155,10 +170,11 @@ const NavBar = () => {
                   ref={enterPressedLinkRef}
                 ></Link>
               </div>
-              <input
-                value={search}
-                id="searchProducts"
-                className={`
+              <span className="relative flex-grow">
+                <input
+                  value={search}
+                  id="searchProducts"
+                  className={`
                 w-full pl-10 py-3 bg-stone-100 rounded-xl md:block focus:outline-none focus:ring-[0.6px] 
                  ${
                    scrolled
@@ -166,66 +182,74 @@ const NavBar = () => {
                      : "text-black placeholder-stone-800 focus:ring-stone-900 hover:bg-stone-200 bg-stone-100 trasition ease-in-out duration-150 "
                  }
                 `}
-                type="text"
-                onChange={handleSearchChange}
-                onKeyDown={handleKeyDown}
-                placeholder="Search"
-              />
+                  type="text"
+                  onChange={handleSearchChange}
+                  onKeyDown={handleKeyDown}
+                  placeholder="Search"
+                />
+                {search && filteredProductsBy_Search.length > 0 && (
+                  <div className="absolute mt-4 z-50 bg-white shadow-md border-[0.8px] rounded-xl max-h-[300px] overflow-auto w-full">
+                    {isLoading ? ( 
+                      <div className="animate-pulse p-7 flex justify-center ">
+                        <CircularProgress size={26} color="inherit"/>
+                      </div>
+                    ) : (
+                      filteredProductsBy_Search.map((product, index) => (
+                        <div
+                          key={index}
+                          className="border-b-[0.8px] hover:bg-stone-100 cursor-pointer"
+                        >
+                          <Link
+                            onClick={clearSearch}
+                            href={`/products/${product.id}`}
+                            className="p-3  flex flex-row justify-between text-stone-900  items-center space-x-4 "
+                          >
+                            <div className="flex flex-row   items-center space-x-4 ">
+                              <div className="p-1 ">
+                                <Image
+                                  src={product.images[0].image || ""}
+                                  alt={product.name || "product image"}
+                                  width={36}
+                                  height={36}
+                                  className=" rounded"
+                                />
+                              </div>
+                              <div className="flex flex-col content-center gap-1">
+                                <span className="text-sm font-semibold  ">
+                                  {formatPinnedStr(product.name)}
+                                </span>
+                                <span className="flex flex-row items-center space-x-2">
+                                  <span className="text-sm">
+                                    {product.specs &&
+                                      Object.values(
+                                        formatModel(product.specs?.Model)
+                                      )}
+                                  </span>
+                                </span>
+                              </div>
+                            </div>
+
+                            <div className="flex flex-row space-x-4">
+                              {product.images?.map((image, index) => (
+                                <div
+                                  key={index}
+                                  className="flex flex-row space-x-2 h-2 w-2   rounded-full"
+                                  style={{ backgroundColor: image.colorCode }}
+                                ></div>
+                              ))}
+                            </div>
+                          </Link>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                )}
+              </span>
             </div>
             <LogInPage />
           </div>
         </Container>
       </div>
-      {!scrolled && (
-        <div className="shadow-t-lg shadow-rose-600 sm:px-1 lg:px-1 xl:px-8 2xl:px-8 ">
-          <div className="flex flex-row  py-2 justify-between">
-            <div className="flex flex-row gap-4   ">
-              <SortBrowse />
-              <div className="md:flex flex-row gap-4 hidden  ">
-              <Link
-                href={`/components/fallback-ui`}
-                className="text-sm font-bold p-3 rounded-xl  hover:bg-stone-100 transition ease-in-out duration-150"
-              >
-                Monthly Deals
-              </Link>
-              <Link
-                href={`/components/fallback-ui`}
-                className="text-sm font-bold p-3 rounded-xl  hover:bg-stone-100 transition ease-in-out duration-150"
-              >
-                Gift cards
-              </Link>
-              <Link
-                href={`/components/fallback-ui`}
-                className="text-sm font-bold p-3 rounded-xl hover:bg-stone-100 transition ease-in-out duration-150"
-              >
-                Top rated
-              </Link>
-              <Link
-                href={`/components/fallback-ui`}
-                className="text-sm font-bold p-3 rounded-xl   hover:bg-stone-100 transition ease-in-out duration-150"
-              >
-                New Arrivals
-              </Link>
-              <Link
-                href={`/components/fallback-ui`}
-                className="text-sm font-bold p-3 rounded-xl   hover:bg-stone-100 transition ease-in-out duration-150"
-              >
-                Pre orders
-              </Link>
-              </div>
-            </div>
-            <div className="flex flex-row gap-2">
-              <Pinned />
-              <Link
-                href={`/components/fallback-ui`}
-                className="text-sm font-bold p-3 rounded-xl   hover:bg-stone-100 transition ease-in-out duration-150"
-              >
-                Support
-              </Link>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

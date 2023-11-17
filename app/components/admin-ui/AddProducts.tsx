@@ -797,21 +797,21 @@ const AddProducts = () => {
       <div className="mt-8 max-h-p4 grid grid-cols-3 border text-xs text-black rounded-lg   overflow-hidden">
         <button
           disabled={!isValid}
-          className="border-r py-1 hover:bg-stone-700  hover:text-slate-50 ease-in-out delay-75"
+          className="border-r py-1 hover:bg-rose-600  hover:text-slate-50 ease-in-out delay-75"
           onClick={() => addProduct("DROP")}
         >
           DROP
         </button>
         <button
           disabled={!isValid}
-          className="border-r py-1 hover:bg-stone-700  hover:text-slate-50 ease-in-out delay-75"
+          className="border-r py-1 hover:bg-rose-600  hover:text-slate-50 ease-in-out delay-75"
           onClick={() => addProduct("SELL")}
         >
           SELL
         </button>
         <button
           disabled={!isValid}
-          className="py-1 hover:bg-stone-700 hover:text-slate-50 ease-in-out delay-75"
+          className="py-1 hover:bg-rose-600 hover:text-slate-50 ease-in-out delay-75"
           onClick={() => addProduct("SWAP")}
         >
           SWAP

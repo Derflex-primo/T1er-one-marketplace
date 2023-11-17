@@ -37,6 +37,7 @@ const SortBrowse = () => {
                                 rounded-xl 
                                 border-[0.8px]   
                                 bg-white 
+                                z-40
                                 shadow-xl 
                                 p-3`;
 

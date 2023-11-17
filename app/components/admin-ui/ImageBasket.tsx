@@ -104,17 +104,16 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({
           </div>
         ) : (
           <div
-            className={`flex justify-center items-center transition-all ease-in-out duration-[3000ms] ${
+            className={`flex justify-center p-3  items-center transition-all ease-in-out duration-[3000ms] ${
               animateDefault ? " " : " "
             }`}
           >
             <Image
               src="/images/imgDefaultBasket.svg"
               alt="default undraw img upload"
-              width={400}
-              height={400}
+              fill
               priority
-              className="w-1/2 h-auto"
+              className="object-contain"
             />
           </div>
         )}
