@@ -2,6 +2,8 @@
 
 Welcome to T1er One, the premier destination for premium laptops, desktops, and electronic devices. At T1er One, we pride ourselves on delivering top-quality products that blend performance with reliability, ensuring that every customer shops with confidence and experiences excellence.
 
+![Car Showcase](https://ibb.co/s3tLLP0)
+
 ## Our Commitment
 
 - **Premium Quality**: Handpicked selection of the finest laptops and desktops.
