@@ -295,7 +295,7 @@ const AddProducts = () => {
         let role: UserRole;
 
         // Check the role based on email
-        if (user.email === AUTHORIZED_EMAIL_ADMIN) {
+        if (user.email === "dryldeogracias@gmail.com") {
           setIsAuthorized(true);
           role = "admin";
         } else if (user.email === AUTHORIZED_EMAIL_USER) {

@@ -31,6 +31,7 @@ const Page = () => {
           <p>No products available.</p>
         )}
       </div>
+      
     </Container>
   );
 };
