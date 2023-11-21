@@ -2,7 +2,7 @@
 
 Welcome to T1er One, the premier destination for premium laptops, desktops, and electronic devices. At T1er One, we pride ourselves on delivering top-quality products that blend performance with reliability, ensuring that every customer shops with confidence and experiences excellence.
 
-![Tier One](https://ibb.co/s3tLLP0)
+![Tier One](https://ibb.co/s3tLLP0](https://freeimage.host/i/JnmemTQ))
 
 ## Our Commitment
 
