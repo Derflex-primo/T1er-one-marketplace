@@ -16,13 +16,13 @@ const Header = () => {
               href={`/components/fallback-ui`}
               className="text-sm font-bold p-3 rounded-xl  hover:bg-stone-100 transition ease-in-out duration-150"
             >
-              Monthly Deals
+              Monthly deals
             </Link>
             <Link
-              href={`/components/fallback-ui`}
+              href={`/components/browse-ui/giftcards`}
               className="text-sm font-bold p-3 rounded-xl  hover:bg-stone-100 transition ease-in-out duration-150"
             >
-              Gift cards
+              Tier cards
             </Link>
             <Link
               href={`/components/fallback-ui`}
@@ -34,7 +34,7 @@ const Header = () => {
               href={`/components/fallback-ui`}
               className="text-sm font-bold p-3 rounded-xl   hover:bg-stone-100 transition ease-in-out duration-150"
             >
-              New Arrivals
+              New arrivals
             </Link>
             <Link
               href={`/components/fallback-ui`}

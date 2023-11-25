@@ -54,9 +54,6 @@ const AuthLoading = () => {
         />
       </div>
     </div>
-    <div className="absolute bottom-4 right-4 text-white font-semibold text-xs sm:text-sm md:text-base">
-      Founder. Deogracias Daryl 
-    </div>
   </div>
   
   );

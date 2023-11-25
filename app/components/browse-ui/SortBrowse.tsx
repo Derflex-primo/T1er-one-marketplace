@@ -54,61 +54,6 @@ const SortBrowse = () => {
         <span>Browse</span>
       </button>
 
-      {isModalOpen && (
-        <div className={`${filterPlaceholderStyle} top-[16]  `}>
-          <Link href={`/components/fallback-ui`}>
-            <div className={filterOption}>Deals</div>
-          </Link>
-          <Link href={`/components/fallback-ui`}>
-            <div className={filterOption}>Shops</div>
-          </Link>
-          <div
-            onClick={() => setSelectedFilter("Brands")}
-            className={filterOption}
-          >
-            Brands
-          </div>
-          <div
-            onClick={() => setSelectedFilter("Category")}
-            className={filterOption}
-          >
-            Categories
-          </div>
-          <div className="flex flex-col  md:hidden lg:hidden xl:hidden 2xl:hidden ">
-            <Link
-              href={`/components/fallback-ui`}
-              className="text-sm font-bold p-3 rounded-xl  hover:bg-stone-100 transition ease-in-out duration-150"
-            >
-              Monthly Deals
-            </Link>
-            <Link
-              href={`/components/fallback-ui`}
-              className="text-sm font-bold p-3 rounded-xl  hover:bg-stone-100 transition ease-in-out duration-150"
-            >
-              Gift cards
-            </Link>
-            <Link
-              href={`/components/fallback-ui`}
-              className="text-sm font-bold p-3 rounded-xl hover:bg-stone-100 transition ease-in-out duration-150"
-            >
-              Top rated
-            </Link>
-            <Link
-              href={`/components/fallback-ui`}
-              className="text-sm font-bold p-3 rounded-xl   hover:bg-stone-100 transition ease-in-out duration-150"
-            >
-              New Arrivals
-            </Link>
-            <Link
-              href={`/components/fallback-ui`}
-              className="text-sm font-bold p-3 rounded-xl   hover:bg-stone-100 transition ease-in-out duration-150"
-            >
-              Pre orders
-            </Link>
-          </div>
-        </div>
-      )}
-
       {selectedFilter === "Brands" && (
         <div className={`${filterPlaceholderStyle} left-[160px] top-[16] `}>
           {uniqueBrands.map((brand) => (
