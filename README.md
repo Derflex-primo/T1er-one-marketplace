@@ -17,7 +17,7 @@ Browse our extensive collection of:
 
 ## Shop with Confidence
 
-Experience a seamless shopping journey on our platform. Visit [T1er One Marketplace](https://t1er-one-marketplace.vercel.app/) to explore our range.
+Experience a seamless shopping journey on our platform. Visit [T1er One Marketplace](https://t1er-one-marketplace.vercel.com/) to explore our range.
 
 ## Feedback and Support
 
